@@ -1,13 +1,19 @@
 import { NavigationContainer } from '@react-navigation/native';
-import {
-  SafeAreaView, Text
-} from 'react-native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Login from './pages/Login';
+import Register from './pages/Register';
+
+const Stack = createNativeStackNavigator();
 import LoggedTab from './routes/LoggedTab';
 
 export default function App() {
   return (
     <NavigationContainer>
-      <LoggedTab />
+      <Stack.Navigator initialRouteName='login' screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="login" component={Login} />
+        <Stack.Screen name="register" component={Register} />
+        <Stack.Screen name="logged" component={LoggedTab} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }

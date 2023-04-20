@@ -12,7 +12,7 @@ export default function LoggedTab() {
                 headerShown: false
             }}
         >
-            <Tab.Screen name="Home" component={Home} options={{
+            <Tab.Screen name="home" component={Home} options={{
                 tabBarIcon: () => (
                     <Fontisto name="home" size={24} />
                 )
