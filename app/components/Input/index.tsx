@@ -8,25 +8,33 @@ type Props = {
     label: string,
     control: Control<FieldValues, string>,
     displayNameLabel: string,
-    isPasswordInput?: boolean
+    isPasswordInput?: boolean,
+    hasError?: boolean,
+    required?: boolean
 }
 
-export default function Input({ label, control, displayNameLabel, isPasswordInput = false }: Props) {
+export default function Input({ label, control, displayNameLabel, isPasswordInput = false, hasError = false, required = false }: Props) {
     const { field } = useController({
         control,
         defaultValue: '',
-        name: label
+        rules: {
+            required: {
+                message: `${displayNameLabel} é obrigatório`,
+                value: required
+            }
+        },
+        name: label,
     })
 
     const [showPassword, setShowPassword] = useState<boolean>(true);
 
     if (isPasswordInput) {
         return (
-            <>
+            <View>
                 <Text style={styles.label}>
                     {displayNameLabel}
                 </Text>
-                <View style={styles.input}>
+                <View style={[styles.input, hasError ? styles.inputError : {}]}>
                     <TextInput
                         value={field.value}
                         onChangeText={field.onChange}
@@ -37,20 +45,20 @@ export default function Input({ label, control, displayNameLabel, isPasswordInpu
                         <Icon name={showPassword ? 'eye' : 'eye-slash'} color={'black'} size={24} />
                     </TouchableOpacity>
                 </View>
-            </>
+            </View>
         )
     }
 
     return (
-        <>
+        <View>
             <Text style={styles.label}>
                 {displayNameLabel}
             </Text>
             <TextInput
                 value={field.value}
                 onChangeText={field.onChange}
-                style={[styles.input, styles.inputNonPassword]}
+                style={[styles.input, styles.inputNonPassword, hasError ? styles.inputError : {}]}
             />
-        </>
+        </View>
     )
 }

@@ -13,7 +13,6 @@ export const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 1,
-        marginBottom: 20,
         borderColor: '#0f0f0f'
     },
     inputNonPassword: {
@@ -23,5 +22,8 @@ export const styles = StyleSheet.create({
     inputPassword: {
         width: '90%',
         padding: 10,
+    },
+    inputError: {
+        borderColor: 'red'
     }
 })
