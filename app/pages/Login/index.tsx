@@ -7,13 +7,16 @@ import Button from '../../components/Button';
 import { useNavigation } from "@react-navigation/native";
 import { globalStyles } from "../../styles/global.styles";
 import { storage } from "../../storage";
+import { postData } from "../../services/apiRequests";
+import jwtDecode from "jwt-decode";
 
 export default function Login() {
     const { control, handleSubmit } = useForm();
     const navigator = useNavigation<any>();
 
-    function onLogin(data: any) {
-        storage.set('user', JSON.stringify({ name: data.username, password: data.password }));
+    async function onLogin(data: any) {
+        const requestData = await postData('Authentication', JSON.stringify(data));
+        storage.set('token', requestData.data);
         navigator.navigate('logged', { screen: 'home' });
     }
 
