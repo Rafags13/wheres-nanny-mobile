@@ -8,69 +8,7 @@ import CheckBox from '@react-native-community/checkbox';
 import { styles } from "./style";
 import { useState } from "react";
 import Button from "../../components/Button";
-
-function Sections(control: any) {
-    return [
-        {
-            title: 'Dados Pessoais',
-            data: [
-                {
-                    label: 'name',
-                    displayNameLabel: 'Nome'
-                },
-                {
-                    label: 'cpf',
-                    displayNameLabel: 'CPF'
-                },
-                {
-                    label: 'birthdayDate',
-                    displayNameLabel: 'Data de Nascimento'
-                },
-            ]
-        }, {
-            title: 'Endereço',
-            data: [
-                {
-                    label: 'cep',
-                    displayNameLabel: 'CEP'
-                },
-                {
-                    label: 'city',
-                    displayNameLabel: 'Cidade'
-                },
-                {
-                    label: 'state',
-                    displayNameLabel: 'Estado'
-                },
-                {
-                    label: 'neighborhood',
-                    displayNameLabel: 'Bairro'
-                },
-                {
-                    label: 'street',
-                    displayNameLabel: 'Rua'
-                },
-                {
-                    label: 'number',
-                    displayNameLabel: 'Número'
-                },
-                {
-                    label: 'complement',
-                    displayNameLabel: 'Complemento'
-                }
-            ]
-        },
-        {
-            title: 'Termos',
-            data: [
-                {
-                    label: 'checkbox',
-                    content: 'Confirmo em oferecer todos os dados acima e me comprometo, em caso de problemas judiciais, em concedê-los.'
-                }
-            ]
-        }
-    ]
-}
+import { NANNY_SECTIONS } from '../../assets/util/contants';
 
 export default function Register() {
     const { control, handleSubmit } = useForm();
@@ -82,7 +20,6 @@ export default function Register() {
     }
 
 
-
     return (
         <View style={styles.container}>
             <Text style={globalStyles.title}>
@@ -90,7 +27,7 @@ export default function Register() {
             </Text>
 
             <SectionList
-                sections={Sections(control)}
+                sections={NANNY_SECTIONS}
                 keyExtractor={item => item.label}
                 scrollToLocationOffset={50}
                 tabBarStyle={styles.tabBar}

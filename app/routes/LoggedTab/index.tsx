@@ -1,11 +1,23 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from '../../pages/Home';
 import Fontisto from 'react-native-vector-icons/Fontisto';
+import { useNavigation } from '@react-navigation/native';
+import { useEffect } from 'react';
+import { Alert, BackHandler } from 'react-native';
 
 
 const Tab = createBottomTabNavigator();
 
 export default function LoggedTab() {
+    const navigator = useNavigation();
+
+    useEffect(() => {
+        navigator.addListener('beforeRemove', (e) => {
+            e.preventDefault();
+            BackHandler.exitApp();
+        })
+    }, []);
+
     return (
         <Tab.Navigator
             screenOptions={{

@@ -6,13 +6,16 @@ import LinkNavigator from "../../components/LinkNavigator";
 import Button from '../../components/Button';
 import { useNavigation } from "@react-navigation/native";
 import { globalStyles } from "../../styles/global.styles";
+import { storage } from "../../storage";
 
 export default function Login() {
     const { control, handleSubmit } = useForm();
     const navigator = useNavigation<any>();
 
-    function onLogin() {
-        navigator.navigate('logged', { screen: 'home' });
+    function onLogin(data: any) {
+        console.log(data);
+        storage.set('user', JSON.stringify({ name: control }))
+        // navigator.navigate('logged', { screen: 'home' });
     }
 
     return (
@@ -30,7 +33,7 @@ export default function Login() {
                 <Input label="username" control={control} displayNameLabel={"Nome de Usuário"} />
                 <Input label="password" control={control} displayNameLabel={"Senha"} isPasswordInput />
 
-                <Button label={"Entrar"} onClick={onLogin} />
+                <Button label={"Entrar"} onClick={handleSubmit(onLogin)} />
             </View>
 
         </View>
