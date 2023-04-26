@@ -13,9 +13,8 @@ export default function Login() {
     const navigator = useNavigation<any>();
 
     function onLogin(data: any) {
-        console.log(data);
-        storage.set('user', JSON.stringify({ name: control }))
-        // navigator.navigate('logged', { screen: 'home' });
+        storage.set('user', JSON.stringify({ name: data.username, password: data.password }));
+        navigator.navigate('logged', { screen: 'home' });
     }
 
     return (
