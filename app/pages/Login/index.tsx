@@ -17,7 +17,11 @@ export default function Login() {
     const navigator = useNavigation<any>();
 
     async function onLogin(data: any) {
-        const requestData = await postData('Authentication', JSON.stringify(data));
+        const dataToRequest: { username: string, password: string } = {
+            username: data.username,
+            password: data.password
+        }
+        const requestData = await postData('Authentication', dataToRequest);
         storage.set('token', requestData.data);
         navigator.navigate('logged', { screen: 'home' });
     }
@@ -39,7 +43,12 @@ export default function Login() {
                     control={control}
                     displayNameLabel={"Nome de Usuário"}
                     hasError={typeof errors.username?.message === 'string'}
-                    required
+                    rules={{
+                        required: {
+                            value: true,
+                            message: "O Nome de Usuário é obrigatório"
+                        }
+                    }}
                 />
                 {errors.username && (
                     <MessageError errorMessage={errors.username.message as string} />
@@ -49,7 +58,12 @@ export default function Login() {
                     control={control}
                     displayNameLabel={"Senha"}
                     hasError={typeof errors.password?.message === 'string'}
-                    required
+                    rules={{
+                        required: {
+                            value: true,
+                            message: "A Senha é obrigatória"
+                        }
+                    }}
                     isPasswordInput />
                 {errors.password && (
                     <MessageError errorMessage={errors.password.message as string} />

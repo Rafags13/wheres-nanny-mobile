@@ -1,5 +1,5 @@
 import { forwardRef, useState } from "react";
-import { Control, FieldValues, useController } from "react-hook-form";
+import { Control, FieldValues, RegisterOptions, useController } from "react-hook-form";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { styles } from "./style";
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -10,19 +10,15 @@ type Props = {
     displayNameLabel: string,
     isPasswordInput?: boolean,
     hasError?: boolean,
-    required?: boolean
+    required?: boolean,
+    rules?: Omit<RegisterOptions<FieldValues, string>, "disabled" | "setValueAs" | "valueAsNumber" | "valueAsDate"> | undefined
 }
 
-export default function Input({ label, control, displayNameLabel, isPasswordInput = false, hasError = false, required = false }: Props) {
+export default function Input({ label, control, displayNameLabel, isPasswordInput = false, hasError = false, rules = undefined }: Props) {
     const { field } = useController({
         control,
         defaultValue: '',
-        rules: {
-            required: {
-                message: `${displayNameLabel} é obrigatório`,
-                value: required
-            }
-        },
+        rules,
         name: label,
     })
 

@@ -26,7 +26,7 @@ export const styles = StyleSheet.create({
         backgroundColor: '#eaeaea'
     },
     sectionHeaderContainer: {
-        height: 30,
+        // height: 30,
         backgroundColor: '#f6f6f6',
         borderTopColor: '#f4f4f4',
         borderTopWidth: 1,
