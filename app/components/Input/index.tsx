@@ -9,12 +9,12 @@ type Props = {
     control: Control<FieldValues, string>,
     displayNameLabel: string,
     isPasswordInput?: boolean,
+    placeholder?: string,
     hasError?: boolean,
-    required?: boolean,
     rules?: Omit<RegisterOptions<FieldValues, string>, "disabled" | "setValueAs" | "valueAsNumber" | "valueAsDate"> | undefined
 }
 
-export default function Input({ label, control, displayNameLabel, isPasswordInput = false, hasError = false, rules = undefined }: Props) {
+export default function Input({ label, control, displayNameLabel, isPasswordInput = false, hasError = false, rules = undefined, placeholder = '' }: Props) {
     const { field } = useController({
         control,
         defaultValue: '',
@@ -54,6 +54,7 @@ export default function Input({ label, control, displayNameLabel, isPasswordInpu
                 value={field.value}
                 onChangeText={field.onChange}
                 style={[styles.input, styles.inputNonPassword, hasError ? styles.inputError : {}]}
+                placeholder={placeholder}
             />
         </View>
     )

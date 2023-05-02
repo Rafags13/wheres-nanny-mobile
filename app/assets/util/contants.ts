@@ -1,9 +1,15 @@
+export const REGEX_EMAIL = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+export const REGEX_CELLPHONE = /^\((?:[14689][1-9]|2[12478]|3[1234578]|5[1345]|7[134579])\) (?:[2-8]|9[1-9])[0-9]{3}\-[0-9]{4}$/;
+export const REGEX_CPF = /[0-9]{3}\.[0-9]{3}\.[0-9]{3}\-[0-9]{2}/;
+export const REGEX_BIRTHDAY_DATE = /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/;
+export const REGEX_CEP = /^([\d]{2})\.?([\d]{3})\-([\d]{3})/;
+
 export const TERMS_SECTION = {
     title: 'Termos',
     data: [
         {
             label: 'checkbox',
-            content: 'Confirmo em oferecer todos os dados acima e me comprometo, em caso de problemas judiciais, em concedê-los.'
+            content: 'Confirmo em oferecer todos os dados acima e me comprometo, em caso de causas judiciais, em concedê-los.'
         }
     ]
 }
@@ -14,87 +20,42 @@ export const USER_DATA_SECTION =
     data: [
         {
             label: 'fullname',
-            displayNameLabel: 'Nome',
-            rules: {
-                required: {
-                    value: true,
-                    message: "O Nome é obrigatório",
-                }
-            }
-
+            displayNameLabel: 'Nome Completo',
         },
         {
             label: 'username',
             displayNameLabel: 'Apelido (Nome de usuário)',
-            rules: {
-                required: {
-                    value: true,
-                    message: "O Apelido é obrigatório",
-                }
-            }
-
         },
         {
             label: 'email',
             displayNameLabel: 'E-mail',
-            rules: {
-                required: {
-                    value: true,
-                    message: "O E-mail é obrigatório",
-                }
-            }
+            placeholder: 'name@provider.com'
 
         },
         {
             label: 'cellphone',
             displayNameLabel: 'Telefone',
-            rules: {
-                required: {
-                    value: true,
-                    message: "O Telefone é obrigatório",
-                }
-            }
-
+            placeholder: '(00) 00000-0000'
         },
         {
             label: 'cpf',
             displayNameLabel: 'CPF',
-            rules: {
-                required: {
-                    value: true,
-                    message: "O CPF é obrigatório",
-                }
-            }
+            placeholder: '000.000.000-00',
         },
         {
             label: 'birthdayDate',
             displayNameLabel: 'Data de Nascimento',
-            rules: {
-                required: {
-                    value: true,
-                    message: "A Data de Nascimento é obrigatória",
-                }
-            }
+            placeholder: '00/00/0000',
         },
         {
             label: 'password',
             displayNameLabel: 'Senha',
-            rules: {
-                required: {
-                    value: true,
-                    message: "A Senha é obrigatória",
-                }
-            }
+            isPasswordInput: true,
         },
         {
             label: 'repeatPassword',
             displayNameLabel: 'Digite a Senha Novamente',
-            rules: {
-                required: {
-                    value: true,
-                    message: "A senha é obrigatória",
-                }
-            }
+            isPasswordInput: true,
         },
     ],
 }
@@ -105,73 +66,7 @@ export const ADDRESS_DATA_SECTION = {
         {
             label: 'cep',
             displayNameLabel: 'CEP',
-            rules: {
-                required: {
-                    value: true,
-                    message: "O CEP é obrigatório",
-                }
-            }
         },
-        {
-            label: 'city',
-            displayNameLabel: 'Cidade',
-            rules: {
-                required: {
-                    value: false,
-                    message: "",
-                }
-            }
-        },
-        {
-            label: 'state',
-            displayNameLabel: 'Estado',
-            rules: {
-                required: {
-                    value: false,
-                    message: "",
-                }
-            }
-        },
-        {
-            label: 'neighborhood',
-            displayNameLabel: 'Bairro',
-            rules: {
-                required: {
-                    value: false,
-                    message: "",
-                }
-            }
-        },
-        {
-            label: 'street',
-            displayNameLabel: 'Rua',
-            rules: {
-                required: {
-                    value: false,
-                    message: "",
-                }
-            }
-        },
-        {
-            label: 'number',
-            displayNameLabel: 'Número',
-            rules: {
-                required: {
-                    value: false,
-                    message: "",
-                }
-            }
-        },
-        {
-            label: 'complement',
-            displayNameLabel: 'Complemento',
-            rules: {
-                required: {
-                    value: false,
-                    message: "",
-                }
-            }
-        }
     ]
 }
 

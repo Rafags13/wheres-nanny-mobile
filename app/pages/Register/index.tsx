@@ -1,22 +1,25 @@
+import { Alert, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { ArrayPath, DeepPartial, FieldArray, FieldError, FieldErrors, FieldValues, FormState, Path, RegisterOptions, useForm, UseFormRegisterReturn } from "react-hook-form";
-import { Alert, ScrollView, Text, View } from "react-native";
-import Input from "../../components/Input";
-import { globalStyles } from "../../styles/global.styles";
+import { useForm } from "react-hook-form";
+
 import SectionList from 'react-native-tabs-section-list';
-import CheckBox from '@react-native-community/checkbox';
-import { styles } from "./style";
-import { useState } from "react";
+import Input from "../../components/Input";
 import Button from "../../components/Button";
-import { COMMON_USER_SECTION } from '../../assets/util/contants';
+import Checkbox from "../../components/Checkbox";
 import MessageError from "../../components/MessageError";
+
+import { globalStyles } from "../../styles/global.styles";
+import { styles } from "./style";
+
+import { COMMON_USER_SECTION } from '../../assets/util/contants';
 import { RegisterUserDto } from "../../dto/User/RegisterUserDto";
 import { ConvertDateBrazilFormatToDateType } from "../../assets/util/functions";
 import { postData } from "../../services/apiRequests";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { registerValidationSchema } from "../../assets/util/yupValidations";
 
 export default function Register() {
-    const { control, handleSubmit, formState: { errors } } = useForm();
-    const [toggleCheckbox, setToggleCheckbox] = useState<boolean>();
+    const { control, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(registerValidationSchema) });
     const navigator = useNavigation<any>();
 
     async function onRegister(data: any) {
@@ -42,7 +45,6 @@ export default function Register() {
         navigator.navigate('login')
     }
 
-
     return (
         <View style={styles.container}>
             <Text style={globalStyles.title}>
@@ -50,7 +52,7 @@ export default function Register() {
             </Text>
 
             <SectionList
-                sections={COMMON_USER_SECTION}
+                sections={COMMON_USER_SECTION} // all layout and verifications
                 keyExtractor={item => item.label}
                 tabBarStyle={styles.tabBar}
                 ItemSeparatorComponent={() => <View style={styles.separator} />}
@@ -83,29 +85,23 @@ export default function Register() {
                     if (item.label === 'checkbox') {
                         return (
                             <>
-                                <View style={{ flexDirection: 'row' }}>
-                                    <CheckBox
-                                        disabled={false}
-                                        value={toggleCheckbox}
-                                        onValueChange={(newValue) => setToggleCheckbox(newValue)}
-                                    />
-                                    <Text style={globalStyles.commonText}>
-                                        {item.content}
-                                    </Text>
-                                </View>
+                                <Checkbox messageContent={item.content} control={control} label={item.label} hasError={errors?.checkbox?.message !== undefined} />
+                                {errors?.checkbox?.message &&
+                                    <MessageError errorMessage={errors?.checkbox?.message as string} />
+                                }
                                 <Button label={"Cadastrar"} onClick={handleSubmit(onRegister)} />
                             </>
                         )
                     }
 
                     return (
-                        <View style={{ marginBottom: 15, gap: 5 }}>
+                        <View style={{ marginBottom: 15 }}>
                             <Input
                                 label={item.label}
                                 control={control}
                                 displayNameLabel={item.displayNameLabel}
-                                hasError={typeof errors?.[item.label]?.message === 'string'}
-                                rules={item.rules}
+                                hasError={errors?.[item.label]?.message !== undefined}
+                                isPasswordInput={item.isPasswordInput}
                             />
 
                             {errors?.[item.label]?.message &&
@@ -116,8 +112,6 @@ export default function Register() {
                     )
                 }}
             />
-
-
 
         </View>
     )

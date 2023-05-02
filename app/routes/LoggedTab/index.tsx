@@ -4,6 +4,7 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import { useNavigation } from '@react-navigation/native';
 import { useEffect } from 'react';
 import { Alert, BackHandler } from 'react-native';
+import { storage } from '../../storage';
 
 
 const Tab = createBottomTabNavigator();
