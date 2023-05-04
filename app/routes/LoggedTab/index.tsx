@@ -16,6 +16,7 @@ export default function LoggedTab() {
         navigator.addListener('beforeRemove', (e) => {
             e.preventDefault();
             BackHandler.exitApp();
+            storage.clearAll();
         })
     }, []);
 

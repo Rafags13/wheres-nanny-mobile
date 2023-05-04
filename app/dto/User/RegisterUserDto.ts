@@ -6,7 +6,7 @@ export class RegisterUserDto {
     cellphone: string = ''
     birthdayDate!: Date
     cpf: string = ''
-    isNanny: boolean = false
+    imageUri: string = ''
     cep: string = ''
     houseNumber: string = ''
     complement: string = ''

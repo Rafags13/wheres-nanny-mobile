@@ -1,6 +1,7 @@
 import { Alert, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useForm } from "react-hook-form";
+import { ImageLibraryOptions, ImagePickerResponse, launchImageLibrary } from 'react-native-image-picker';
 
 import SectionList from 'react-native-tabs-section-list';
 import Input from "../../components/Input";
@@ -13,35 +14,41 @@ import { styles } from "./style";
 
 import { COMMON_USER_SECTION } from '../../assets/util/contants';
 import { RegisterUserDto } from "../../dto/User/RegisterUserDto";
-import { ConvertDateBrazilFormatToDateType } from "../../assets/util/functions";
+import { ConvertDateBrazilFormatToDateType, getPhotoByBase64, isNullOrUndefinedOrEmpty, removeAllSpecialCharacters, removeSpaces } from "../../assets/util/functions";
 import { postData } from "../../services/apiRequests";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerValidationSchema } from "../../assets/util/yupValidations";
+import { useState } from "react";
+import ImagePicker from "../../components/ImagePicker";
 
 export default function Register() {
     const { control, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(registerValidationSchema) });
+    const [base64Image, setBase64Image] = useState<string>('');
     const navigator = useNavigation<any>();
 
     async function onRegister(data: any) {
+
         const date = ConvertDateBrazilFormatToDateType(data.birthdayDate);
+
+        if (isNullOrUndefinedOrEmpty(base64Image)) { Alert.alert('Por favor, selecione uma foto para prosseguir') }
 
         const registerUserDto: RegisterUserDto = {
             fullname: data.fullname,
             username: data.username,
             email: data.email,
             password: data.password,
-            cellphone: data.cellphone,
+            cellphone: removeSpaces(removeAllSpecialCharacters(data.cellphone)),
             birthdayDate: date,
-            cpf: data.cpf,
-            isNanny: false,
-            cep: data.cep,
+            cpf: removeAllSpecialCharacters(data.cpf),
+            imageUri: base64Image,
+            cep: removeAllSpecialCharacters(data.cep),
             houseNumber: data.number,
             complement: data.complement
         }
 
         await postData('User/RegisterUser', registerUserDto).then((response) => {
             Alert.alert("Usuário cadastrado no sistema com sucesso");
-        }).catch((error) => Alert.alert(error.response.request._response));
+        }).catch((error) => console.log(error.response.request._response));
         navigator.navigate('login')
     }
 
@@ -52,7 +59,7 @@ export default function Register() {
             </Text>
 
             <SectionList
-                sections={COMMON_USER_SECTION} // all layout and verifications
+                sections={COMMON_USER_SECTION} // all layout
                 keyExtractor={item => item.label}
                 tabBarStyle={styles.tabBar}
                 ItemSeparatorComponent={() => <View style={styles.separator} />}
@@ -94,6 +101,14 @@ export default function Register() {
                         )
                     }
 
+                    else if (item.label === 'photo') {
+                        return (
+                            <>
+                                <ImagePicker base64Image={base64Image} setBase64Image={(value: string) => setBase64Image(value)} />
+                            </>
+                        )
+                    }
+
                     return (
                         <View style={{ marginBottom: 15 }}>
                             <Input
@@ -101,6 +116,7 @@ export default function Register() {
                                 control={control}
                                 displayNameLabel={item.displayNameLabel}
                                 hasError={errors?.[item.label]?.message !== undefined}
+                                placeholder={item.placeholder || ''}
                                 isPasswordInput={item.isPasswordInput}
                             />
 

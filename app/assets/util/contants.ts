@@ -70,11 +70,23 @@ export const ADDRESS_DATA_SECTION = {
     ]
 }
 
+export const PHOTO_SECTION = {
+    title: 'Foto Pessoal',
+    data: [
+        {
+            label: 'photo'
+        }
+    ]
+}
+
 export const COMMON_USER_SECTION = [
     {
         ...USER_DATA_SECTION
     }, {
         ...ADDRESS_DATA_SECTION
+    },
+    {
+        ...PHOTO_SECTION
     },
     {
         ...TERMS_SECTION
