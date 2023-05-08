@@ -1,7 +1,6 @@
 import { Alert, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useForm } from "react-hook-form";
-import { ImageLibraryOptions, ImagePickerResponse, launchImageLibrary } from 'react-native-image-picker';
 
 import SectionList from 'react-native-tabs-section-list';
 import Input from "../../components/Input";
@@ -14,7 +13,7 @@ import { styles } from "./style";
 
 import { COMMON_USER_SECTION } from '../../assets/util/contants';
 import { RegisterUserDto } from "../../dto/User/RegisterUserDto";
-import { ConvertDateBrazilFormatToDateType, getPhotoByBase64, isNullOrUndefinedOrEmpty, removeAllSpecialCharacters, removeSpaces } from "../../assets/util/functions";
+import { ConvertDateBrazilFormatToDateType, isNullOrUndefinedOrEmpty, removeAllSpecialCharacters, removeSpaces } from "../../assets/util/functions";
 import { postData } from "../../services/apiRequests";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerValidationSchema } from "../../assets/util/yupValidations";

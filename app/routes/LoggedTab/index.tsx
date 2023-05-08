@@ -23,12 +23,16 @@ export default function LoggedTab() {
     return (
         <Tab.Navigator
             screenOptions={{
-                headerShown: false
+                headerShown: false,
+                tabBarShowLabel: false,
+                tabBarActiveTintColor: '#3E9FEB',
+                tabBarInactiveTintColor: '#E0F0FB'
             }}
+
         >
             <Tab.Screen name="home" component={Home} options={{
-                tabBarIcon: () => (
-                    <Fontisto name="home" size={24} />
+                tabBarIcon: (props) => (
+                    <Fontisto name="home" size={24} color={props.color} />
                 )
             }} />
         </Tab.Navigator>
