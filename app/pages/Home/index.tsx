@@ -45,7 +45,19 @@ const NANNYS = [
         starsCounting: 4.25,
         rankCommentCount: 37
     },
-];
+]; // API DATA
+
+
+const orderByNearCep = () => { // important function from backend
+    const needle = 8;
+    const numbers = [1, 10, 7, 2, 4, 9];
+
+    numbers.sort((a, b) => {
+        return Math.abs(needle - a) - Math.abs(needle - b);
+    })
+
+    console.log(numbers[0]);
+}
 
 export default function Home() {
     return (
