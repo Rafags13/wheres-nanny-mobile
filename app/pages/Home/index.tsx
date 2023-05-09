@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Image, Text, TouchableOpacity, View } from "react-native";
+import { Image, Text, TouchableHighlight, TouchableOpacity, TouchableNativeFeedback, View, FlatList } from "react-native";
 import StarRating from 'react-native-star-rating-widget';
 import { Rating, AirbnbRating } from 'react-native-ratings';
 import Stars from "../../components/Stars";
@@ -9,43 +9,115 @@ import Feather from 'react-native-vector-icons/Feather';
 import { storage, TOKEN, USER } from "../../storage";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import RecentCard from "./RecentCard";
+import { globalStyles } from "../../styles/global.styles";
+import { styles } from "./style";
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
+const LABELS = [
+    {
+        icon: <Ionicons name={"location"} size={24} color={'#D5493C'} />,
+        label: 'Mais próximo de mim'
+    },
+    {
+        icon: <FontAwesome5 name={"money-bill-wave"} size={24} color={'#85bb65'} />,
+        label: 'Preço mais acessível'
+    },
+    {
+        icon: <AntDesign name={"star"} size={24} color={'#FFCD3C'} />,
+        label: 'Maior pontuação'
+    },
+];
+
+const NANNYS = [
+    {
+        imageUri: '',
+        fullname: 'Eva Olsen',
+        work: 'babá',
+        starsCounting: 5,
+        rankCommentCount: 25
+    },
+    {
+        imageUri: '',
+        fullname: 'German Miller',
+        work: 'babá',
+        starsCounting: 4.25,
+        rankCommentCount: 37
+    },
+];
 
 export default function Home() {
-
     return (
         <Background
-            // hasBackIcon
             header={
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <TouchableOpacity style={{ backgroundColor: 'white', padding: 10, borderRadius: 10, height: 44 }}>
+                <View style={styles.header}>
+                    <TouchableOpacity style={styles.headerIcon}>
                         <Feather name="bell" color={"#c4c4c4"} size={24} />
                     </TouchableOpacity>
 
                     <View >
-                        <Text style={{ fontSize: 24, color: '#192553', fontWeight: 'bold', textAlign: 'center' }}>Campo Grande</Text>
-                        <Text style={{ fontSize: 18, color: '#999', fontWeight: '500', textAlign: 'center' }}>130 ofertas</Text>
+                        <Text style={globalStyles.headerTitle}>Campo Grande</Text>
+                        <Text style={globalStyles.headerSubtitle}>130 ofertas</Text>
                     </View>
 
-                    <TouchableOpacity style={{ backgroundColor: 'white', padding: 10, borderRadius: 10, height: 44 }}>
+                    <TouchableOpacity style={styles.headerIcon}>
                         <Feather name="search" color={"#c4c4c4"} size={24} />
                     </TouchableOpacity>
                 </View>
             }
         >
             <View style={{ marginTop: 20 }}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 15 }}>
-                    <Text style={{ color: '#192553', fontWeight: 'bold', fontSize: 24 }}>Recente</Text>
+                <View style={styles.recentContainer}>
+                    <Text style={globalStyles.headerTitle}>Recente</Text>
                     <TouchableOpacity style={{ alignItems: 'flex-end' }}>
-                        <Text style={{ color: '#3FA0EB', fontWeight: 'bold', fontSize: 16 }}>Ver todos</Text>
+                        <Text style={styles.seeAll}>Ver todos</Text>
                     </TouchableOpacity>
                 </View>
-                {/* <View style={{ flexDirection: 'row', marginTop: 5 }}>
-                            <Stars rating={4.5} tintBackgroundColorStar={'#3FA0EB'} backgroundColorStars={"#c4c4c4"} />
-                            <Text style={{ marginLeft: 10 }}>4.5 (30)</Text>
-                        </View> */}
+
 
                 <RecentCard nannyName={"Emma Nilson"} serviceDate={"22/09/2004 às 19:30:31"} />
+            </View>
+
+            <View style={styles.findBetterNannyOption}>
+                <Text style={[globalStyles.headerTitle, { textAlign: 'left', marginBottom: 20 }]}>Procurar a melhor babá</Text>
+
+                <FlatList
+                    data={LABELS}
+                    renderItem={(item) => {
+                        const { icon } = item.item;
+                        return (
+                            <TouchableOpacity style={{}}>
+                                {icon}
+                                <Text style={{ color: '#192553', fontSize: 16 }}>{item.item.label}</Text>
+                            </TouchableOpacity>
+                        )
+                    }}
+                    horizontal
+                    showsHorizontalScrollIndicator={false}
+                    style={{ marginBottom: 10 }}
+                />
+
+                <FlatList
+                    data={NANNYS}
+                    renderItem={(item) => {
+                        return (
+                            <TouchableOpacity style={styles.labels}>
+                                <Image style={styles.personPhoto} source={{ uri: `data:image/png;base64,${USER.imageUri}` }} />
+
+                                <View>
+                                    <Text style={styles.fullnameNannyItem}>{item.item.fullname}</Text>
+                                    <Text style={styles.workNannyItem}>{item.item.work}</Text>
+                                    <View style={styles.starsNannyCountingContainer}>
+                                        <Stars rating={item.item.starsCounting} tintBackgroundColorStar={'white'} backgroundColorStars={"#c4c4c4"} />
+                                        <Text style={styles.starsNannyCouting}>{item.item.starsCounting} ({item.item.rankCommentCount})</Text>
+                                    </View>
+                                </View>
+                            </TouchableOpacity>
+                        )
+                    }}
+                    style={{ marginBottom: 20 }}
+                />
             </View>
         </Background>
     )

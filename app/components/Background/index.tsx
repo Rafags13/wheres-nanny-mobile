@@ -31,7 +31,9 @@ export default function Background({ children, header, hasBackIcon = false }: Pr
 
             }
 
-            <ScrollView>
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+            >
                 {children}
             </ScrollView>
         </View>

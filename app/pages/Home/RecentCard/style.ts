@@ -1,10 +1,11 @@
 import { StyleSheet } from "react-native";
+import { globalStyles } from "../../../styles/global.styles";
 
 export const styles = StyleSheet.create({
-    cardContainer: {
-        backgroundColor: '#3E9FEB',
+    cardContainerLinearGradient: {
+        borderRadius: 25,
         padding: 20,
-        borderRadius: 25
+        width: '100%'
     },
     mainInformationContainer: {
         flexDirection: 'row',
@@ -28,5 +29,20 @@ export const styles = StyleSheet.create({
         gap: 10,
         padding: 15,
         borderRadius: 15
+    },
+    bottomOne: {
+        width: '85%',
+        height: 10,
+        backgroundColor: '#77bbf1',
+        // borderRadius: 15,
+        borderBottomRightRadius: 10,
+        borderBottomLeftRadius: 10,
+    },
+    bottomTwo: {
+        width: '75%',
+        height: 10,
+        backgroundColor: '#c5e2f9',
+        borderBottomRightRadius: 10,
+        borderBottomLeftRadius: 10,
     }
 })

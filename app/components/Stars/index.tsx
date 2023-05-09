@@ -14,9 +14,6 @@ export default function Stars({ rating, backgroundColorStars = 'red', tintBackgr
             imageSize={20}
             startingValue={rating}
             ratingCount={5} readonly
-            ratingColor='#F2A64E'
-            ratingBackgroundColor={backgroundColorStars}
-            tintColor={tintBackgroundColorStar}
         />
     );
 }
