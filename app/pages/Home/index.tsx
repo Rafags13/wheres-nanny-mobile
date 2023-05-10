@@ -99,7 +99,7 @@ export default function Home() {
                     renderItem={(item) => {
                         const { icon } = item.item;
                         return (
-                            <TouchableOpacity style={{}}>
+                            <TouchableOpacity style={styles.labels}>
                                 {icon}
                                 <Text style={{ color: '#192553', fontSize: 16 }}>{item.item.label}</Text>
                             </TouchableOpacity>
@@ -107,14 +107,14 @@ export default function Home() {
                     }}
                     horizontal
                     showsHorizontalScrollIndicator={false}
-                    style={{ marginBottom: 10 }}
+                    style={{ marginBottom: 20 }}
                 />
 
                 <FlatList
                     data={NANNYS}
                     renderItem={(item) => {
                         return (
-                            <TouchableOpacity style={styles.labels}>
+                            <TouchableOpacity style={[styles.labels, { marginBottom: 20 }]}>
                                 <Image style={styles.personPhoto} source={{ uri: `data:image/png;base64,${USER.imageUri}` }} />
 
                                 <View>
