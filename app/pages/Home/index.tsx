@@ -85,7 +85,6 @@ export default function Home() {
                     </TouchableOpacity>
                 </View>
 
-
                 <RecentCard nannyName={"Emma Nilson"} serviceDate={"22/09/2004 às 19:30:31"} />
             </View>
 
