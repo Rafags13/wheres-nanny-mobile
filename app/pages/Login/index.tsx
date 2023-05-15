@@ -1,4 +1,4 @@
-import { Text, TextInput, View } from "react-native";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useForm } from "react-hook-form";
 import { styles } from "./style";
 import Input from "../../components/Input";
@@ -22,6 +22,7 @@ export default function Login() {
             password: data.password
         }
         const requestData = await postData('Authentication', dataToRequest);
+        console.log(requestData.data)
         storage.set('token', requestData.data);
         navigator.navigate('logged', { screen: 'home' });
     }
@@ -70,6 +71,20 @@ export default function Login() {
                 )}
 
                 <Button label={"Entrar"} onClick={handleSubmit(onLogin)} />
+
+                <View>
+                    <Text>
+                        ou
+                    </Text>
+                </View>
+
+                <TouchableOpacity >
+                    <LinkNavigator
+                        label={"Quero ser uma babá"}
+                        navigateTo={"register"}
+                        params={{ isNannyRegister: true }}
+                    />
+                </TouchableOpacity>
             </View>
 
         </View>

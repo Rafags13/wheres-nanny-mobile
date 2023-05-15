@@ -38,7 +38,7 @@ export default function Input({ label, control, displayNameLabel, isPasswordInpu
                         secureTextEntry={showPassword}
                     />
                     <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
-                        <Icon name={showPassword ? 'eye' : 'eye-slash'} color={'black'} size={24} />
+                        <Icon name={showPassword ? 'eye' : 'eye-slash'} color={'#192553'} size={24} />
                     </TouchableOpacity>
                 </View>
             </View>

@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect } from "react";
+import { Control, FieldValues, useController } from "react-hook-form";
 import { Image, View } from "react-native";
 import { TouchableOpacity } from "react-native";
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -7,30 +8,32 @@ import { getPhotoByBase64 } from "../../assets/util/functions";
 import { common, styles } from "./style";
 
 type Props = {
-    base64Image: string,
-    setBase64Image: (value: string) => void,
+    control: Control<FieldValues, string>,
+    hasError?: boolean,
+    label: string,
 }
 
-export default function ImagePicker({ base64Image, setBase64Image }: Props) {
-    const [hasImageSelected, setHasImageSelected] = useState<boolean>(false);
+export default function ImagePicker({ control, label, hasError = false }: Props) {
+    const { field } = useController({
+        control,
+        defaultValue: '',
+        name: 'photo',
+    })
 
     async function getSelectedPhoto() {
         const base64Uri = await getPhotoByBase64() as string;
-        setBase64Image(base64Uri);
-        setHasImageSelected(!hasImageSelected);
+        field.onChange(base64Uri);
     }
-
     function removeSelectedPhoto() {
-        setBase64Image('');
-        setHasImageSelected(!hasImageSelected);
+        field.onChange('');
     }
 
-    return hasImageSelected ?
+    return field.value ?
         (
-            <View style={styles.imageContainer}>
+            <View style={[styles.imageContainer, hasError ? { borderColor: 'red' } : {}]}>
                 <Image
                     source={{
-                        uri: `data:image/png;base64,${base64Image}`
+                        uri: `data:image/png;base64,${field.value}`
                     }}
                     style={styles.image}
                 />
@@ -40,8 +43,8 @@ export default function ImagePicker({ base64Image, setBase64Image }: Props) {
             </View>
         ) : (
             <View>
-                <TouchableOpacity style={common.imagePickerContainer} onPress={getSelectedPhoto}>
-                    <Entypo name="camera" size={64} color={'#c4c4c4'} />
+                <TouchableOpacity style={[common.imagePickerContainer, hasError ? { borderColor: 'red' } : {}]} onPress={getSelectedPhoto}>
+                    <Entypo name="camera" size={64} color={'#3E9FEB'} />
                 </TouchableOpacity>
             </View>
         )

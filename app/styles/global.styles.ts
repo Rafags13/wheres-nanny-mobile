@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 
 const common = StyleSheet.create({
     defaultText: {
-        color: '#0f0f0f',
+        color: '#192553',
         fontFamily: 'Roboto',
     }
 })

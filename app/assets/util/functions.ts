@@ -1,5 +1,7 @@
 import { Alert } from "react-native";
 import { ImageLibraryOptions, ImagePickerResponse, launchImageLibrary } from "react-native-image-picker";
+import { RegisterNannyDto } from "../../dto/User/RegisterNannyDto";
+import { RegisterUserDto } from "../../dto/User/RegisterUserDto";
 
 export function ConvertDateBrazilFormatToDateType(date: string): Date {
     const dateSplitted = date.split('/');
@@ -49,4 +51,56 @@ export function removeSpaces(value: string) {
     const newString = value.replace(/\s/g, '');
 
     return newString;
+}
+
+export async function base64File(url: string) {
+    const data = await fetch(url);
+    const blob = await data.blob();
+    return new Promise(resolve => {
+        const reader = new FileReader();
+        reader.readAsDataURL(blob);
+        reader.onloadend = () => {
+            const base64data = reader.result;
+            resolve(base64data);
+        };
+    });
+}
+
+export function replacePdfExtensioNames(name: string) {
+
+    let nameReplaced = name.replace('.pdf', '');
+
+    console.log(nameReplaced);
+    return nameReplaced;
+}
+
+export function createModelRegisterCommonUser(data: any): RegisterUserDto {
+    const date = ConvertDateBrazilFormatToDateType(data.birthdayDate);
+    const registerUserDto: RegisterUserDto = {
+        fullname: data.fullname,
+        username: data.username,
+        email: data.email,
+        password: data.password,
+        cellphone: removeSpaces(removeAllSpecialCharacters(data.cellphone)),
+        birthdayDate: date,
+        cpf: removeAllSpecialCharacters(data.cpf),
+        imageUri: data.photo,
+        cep: removeAllSpecialCharacters(data.cep),
+        houseNumber: data.number,
+        complement: data.complement
+    }
+
+    return registerUserDto;
+}
+
+export function createModelRegisterNanny(data: any): RegisterNannyDto {
+    const registerUserDto = createModelRegisterCommonUser(data);
+    const registerNannyDto: RegisterNannyDto = {
+        userDataToRegister: registerUserDto,
+        base64CriminalRecord: data.criminalRecord,
+        base64ProofOfAddress: data.proofOfAddress,
+        servicePrice: Number(data.servicePrice)
+    }
+
+    return registerNannyDto;
 }

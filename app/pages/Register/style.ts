@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
     },
     tabText: {
         padding: 15,
-        color: '#9e9e9e',
+        color: '#192553',
         fontSize: 18,
         fontWeight: '500'
     },

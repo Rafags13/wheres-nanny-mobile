@@ -79,6 +79,33 @@ export const PHOTO_SECTION = {
     ]
 }
 
+export const DOCUMENT_SECTION = {
+    title: 'Documento',
+    data: [
+        {
+            label: 'document',
+            documentIdentifier: 'proofOfAddress',
+            typeOfDocument: 'Comprovante de residência',
+        },
+        {
+            label: 'document',
+            documentIdentifier: 'criminalRecord',
+            typeOfDocument: 'Antecedentes criminais',
+        }
+    ]
+}
+
+export const SALARY_FOR_SERVICE_SECTION = {
+    title: 'Serviço',
+    data: [
+        {
+            label: 'servicePrice',
+            displayNameLabel: 'Preço por serviço',
+            placeholder: '0000,00',
+        },
+    ]
+}
+
 export const COMMON_USER_SECTION = [
     {
         ...USER_DATA_SECTION
@@ -93,11 +120,20 @@ export const COMMON_USER_SECTION = [
     }
 ]
 
-export const NANNY_SECTIONS = [
+export const NANNY_SECTION = [
     {
         ...USER_DATA_SECTION
     }, {
         ...ADDRESS_DATA_SECTION
+    },
+    {
+        ...PHOTO_SECTION
+    },
+    {
+        ...DOCUMENT_SECTION
+    },
+    {
+        ...SALARY_FOR_SERVICE_SECTION
     },
     {
         ...TERMS_SECTION

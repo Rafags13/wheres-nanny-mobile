@@ -11,9 +11,10 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         borderRadius: 4,
         justifyContent: 'center',
+        backgroundColor: 'white',
         alignItems: 'center',
         borderWidth: 1,
-        borderColor: '#0f0f0f'
+        borderColor: '#3E9FEB'
     },
     inputNonPassword: {
         paddingVertical: 10,

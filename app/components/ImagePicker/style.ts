@@ -8,7 +8,7 @@ export const common = StyleSheet.create({
         height: 90,
         borderRadius: 4,
         borderWidth: 1,
-        borderColor: '#c4c4c4'
+        borderColor: '#3E9FEB'
     },
 })
 

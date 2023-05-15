@@ -7,7 +7,7 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 4,
-        backgroundColor: '#0f0f0f',
+        backgroundColor: '#3E9FEB',
         marginVertical: 20,
     },
     labelButton: {

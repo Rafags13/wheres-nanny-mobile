@@ -1,19 +1,15 @@
-import { useState } from "react";
-import { Image, Text, TouchableHighlight, TouchableOpacity, TouchableNativeFeedback, View, FlatList } from "react-native";
-import StarRating from 'react-native-star-rating-widget';
-import { Rating, AirbnbRating } from 'react-native-ratings';
+import { Image, Text, TouchableOpacity, View, FlatList } from "react-native";
 import Stars from "../../components/Stars";
-import StarPicker from "../../components/StarPicker";
 import Background from "../../components/Background";
 import Feather from 'react-native-vector-icons/Feather';
-import { storage, TOKEN, USER } from "../../storage";
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { getCurrentUser, storage, USER } from "../../storage";
 import RecentCard from "./RecentCard";
 import { globalStyles } from "../../styles/global.styles";
 import { styles } from "./style";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import jwt_decode from "jwt-decode";
 
 const LABELS = [
     {
@@ -58,6 +54,8 @@ const orderByNearCep = () => { // important function from backend
 
     console.log(numbers[0]);
 }
+
+const currentUser = getCurrentUser();
 
 export default function Home() {
     return (
@@ -115,7 +113,7 @@ export default function Home() {
                     renderItem={(item) => {
                         return (
                             <TouchableOpacity style={[styles.labels, { marginBottom: 20 }]}>
-                                <Image style={styles.personPhoto} source={{ uri: `data:image/png;base64,${USER.imageUri}` }} />
+                                <Image style={styles.personPhoto} source={{ uri: `data:image/png;base64,${USER?.imageUri}` }} />
 
                                 <View>
                                     <Text style={styles.fullnameNannyItem}>{item.item.fullname}</Text>

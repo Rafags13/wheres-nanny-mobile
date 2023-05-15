@@ -1,21 +1,23 @@
 import { useNavigation } from "@react-navigation/native"
-import { Text } from "react-native";
+import { StyleProp, Text, TextStyle } from "react-native";
 import { TouchableOpacity } from 'react-native';
 import { styles } from "./style";
 
 type Props = {
     label: string,
-    navigateTo: string
+    navigateTo: string,
+    style?: StyleProp<TextStyle>,
+    params?: {}
 }
 
-export default function LinkNavigator({ label, navigateTo }: Props) {
+export default function LinkNavigator({ label, navigateTo, params, style }: Props) {
     const navigator = useNavigation<any>();
 
     function navigate() {
-        navigator.navigate(navigateTo)
+        navigator.navigate(navigateTo, params)
     }
     return (
-        <Text style={styles.link} onPress={() => navigate()}>
+        <Text style={[styles.link, style]} onPress={() => navigate()}>
             {label}
         </Text>
     )

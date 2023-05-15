@@ -4,6 +4,12 @@ import { UserTokenDto } from '../dto/User/UserTokenDto';
 
 export const storage = new MMKV({ id: 'WheresNanny' });
 
-export const TOKEN = storage.getString('token');
+export const TOKEN = storage.getString('token') || '';
 
-export const USER: UserTokenDto = jwt_decode(TOKEN as string);
+export const USER: UserTokenDto | undefined = TOKEN !== '' ? jwt_decode(TOKEN as string) : undefined;
+
+export function getCurrentUser() {
+    const currentUser: UserTokenDto | undefined = TOKEN !== '' ? jwt_decode(TOKEN as string) : undefined;
+
+    return currentUser;
+}
