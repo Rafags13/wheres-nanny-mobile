@@ -16,22 +16,27 @@ export default function Background({ children, header, hasBackIcon = false }: Pr
     return (
         <View style={styles.background}>
 
-            {hasBackIcon ? (
-                <View>
-                    <TouchableOpacity style={styles.backButtonHeader} onPress={() => navigator.goBack()}>
-                        <Entypo name="chevron-small-left" size={32} color={"#c4c4c4"} />
-                    </TouchableOpacity>
-                </View>
-            ) :
-                (
-                    <>
-                        {header}
-                    </>
-                )
+            <View style={{ flex: 0.1 }}>
 
-            }
+
+                {hasBackIcon ? (
+                    <View>
+                        <TouchableOpacity style={styles.backButtonHeader} onPress={() => navigator.goBack()}>
+                            <Entypo name="chevron-small-left" size={32} color={"#c4c4c4"} />
+                        </TouchableOpacity>
+                    </View>
+                ) :
+                    (
+                        <>
+                            {header}
+                        </>
+                    )
+
+                }
+            </View>
 
             <View
+                style={{ flex: 0.9 }}
             >
                 {children}
             </View>

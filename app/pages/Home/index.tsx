@@ -26,26 +26,6 @@ const NANNYS: NannyCardProps[] = [
         starsCounting: 4.25,
         rankCommentCount: "0"
     },
-    {
-        fullname: 'German Miller',
-        starsCounting: 4.25,
-        rankCommentCount: "0"
-    },
-    {
-        fullname: 'German Miller',
-        starsCounting: 4.25,
-        rankCommentCount: "0"
-    },
-    {
-        fullname: 'German Miller',
-        starsCounting: 4.25,
-        rankCommentCount: "37"
-    },
-    {
-        fullname: 'German Miller',
-        starsCounting: 4.25,
-        rankCommentCount: "0"
-    },
 ]; // API DATA
 
 
@@ -82,7 +62,7 @@ export default function Home() {
                 </View>
             }
         >
-            <View style={{ marginTop: 20 }}>
+            <View style={{ marginTop: 10 }}>
                 <View style={styles.recentContainer}>
                     <Text style={globalStyles.headerTitle}>Recente</Text>
                     <TouchableOpacity style={{ alignItems: 'flex-end' }}>

@@ -22,7 +22,7 @@ export default function NannyCardList({ nannyList }: Props) {
                     <NannyCard fullname={fullname} starsCounting={starsCounting} rankCommentCount={rankCommentCount} />
                 )
             }}
-            style={{ marginBottom: 20, maxHeight: 150 }}
+            style={{ maxHeight: 150 }}
         />
     )
 }

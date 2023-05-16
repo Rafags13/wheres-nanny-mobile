@@ -5,8 +5,10 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         gap: 10,
         marginRight: 25,
+        flex: 1,
         backgroundColor: 'white',
         padding: 15,
-        borderRadius: 20
+        height: 55,
+        borderRadius: 20,
     },
 })

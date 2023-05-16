@@ -2,7 +2,10 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
     background: {
-        padding: 20,
+        flex: 1,
+        margin: 20,
+        marginBottom: 0,
+        justifyContent: 'space-between',
     },
     backButtonHeader: {
         alignSelf: 'flex-start',
