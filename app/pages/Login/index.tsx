@@ -11,6 +11,7 @@ import { postData } from "../../services/apiRequests";
 import jwtDecode from "jwt-decode";
 import { useEffect } from "react";
 import MessageError from "../../components/MessageError";
+import Line from "../../components/Line";
 
 export default function Login() {
     const { control, handleSubmit, formState: { errors } } = useForm();
@@ -72,13 +73,15 @@ export default function Login() {
 
                 <Button label={"Entrar"} onClick={handleSubmit(onLogin)} />
 
-                <View>
-                    <Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginVertical: 20 }}>
+                    <Line styles={{ width: '45%' }} />
+                    <Text style={globalStyles.commonText}>
                         ou
                     </Text>
+                    <Line styles={{ width: '45%' }} />
                 </View>
 
-                <TouchableOpacity >
+                <TouchableOpacity style={{ alignItems: 'center' }}>
                     <LinkNavigator
                         label={"Quero ser uma babá"}
                         navigateTo={"register"}

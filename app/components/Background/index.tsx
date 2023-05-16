@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { ReactNode } from "react"
-import { ScrollView, View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import Entypo from 'react-native-vector-icons/Entypo';
 import { styles } from "./style";
 
@@ -31,11 +31,10 @@ export default function Background({ children, header, hasBackIcon = false }: Pr
 
             }
 
-            <ScrollView
-                showsVerticalScrollIndicator={false}
+            <View
             >
                 {children}
-            </ScrollView>
+            </View>
         </View>
     )
 }
