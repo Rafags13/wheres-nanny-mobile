@@ -70,7 +70,6 @@ export function replacePdfExtensioNames(name: string) {
 
     let nameReplaced = name.replace('.pdf', '');
 
-    console.log(nameReplaced);
     return nameReplaced;
 }
 

@@ -8,9 +8,9 @@ export type NannyCardProps = {
     starsCounting: number,
     rankCommentCount: string
 }
-const currentUser = getCurrentUser();
 
 export default function NannyCard({ fullname, starsCounting, rankCommentCount }: NannyCardProps) {
+    const currentUser = getCurrentUser();
     return (
         <TouchableOpacity style={[styles.labels, { marginBottom: 20 }]}>
             <Image style={styles.personPhoto} source={{ uri: `data:image/png;base64,${currentUser?.imageUri}` }} />

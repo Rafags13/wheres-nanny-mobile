@@ -1,17 +1,16 @@
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { getCurrentUser, USER } from "../../../storage";
 import { styles } from "./style";
 import LinearGradient from 'react-native-linear-gradient';
+import { getCurrentUser } from "../../../storage";
 
 type Props = {
     nannyName: string,
     serviceDate: string
 }
 
-const currentUser = getCurrentUser();
-
 export default function RecentCard({ nannyName, serviceDate }: Props) {
+    const currentUser = getCurrentUser();
     return (
         <TouchableOpacity style={{ alignItems: 'center' }}>
             <LinearGradient colors={['#3E9FEB', '#51a8ed']} style={styles.cardContainerLinearGradient}>

@@ -1,14 +1,16 @@
 import { Text, TouchableOpacity, View, FlatList } from "react-native";
 import Background from "../../components/Background";
 import Feather from 'react-native-vector-icons/Feather';
-import { getCurrentUser } from "../../storage";
+import { getCurrentUser, getToken } from "../../storage";
 import RecentCard from "./RecentCard";
 import { globalStyles } from "../../styles/global.styles";
 import { styles } from "./style";
 import NannyCardList from "../../components/NannyCardList";
 import { NannyCardProps } from "../../components/NannyCard";
-import { useEffect, useRef, useState } from "react";
 import ListFilterNanny from "../../components/ListFilterNanny";
+import { postData } from "../../services/apiRequests";
+import { FindCommonUserServicesDto } from "../../dto/Person/FindCommonUserServicesDto";
+import { useQuery } from "react-query";
 
 const NANNYS: NannyCardProps[] = [
     {
@@ -39,10 +41,10 @@ const orderByNearCep = () => { // important function from backend
 
     console.log(numbers[0]);
 }
-
-const currentUser = getCurrentUser();
-
 export default function Home() {
+    const currentUser = getCurrentUser();
+    const { isLoading, error, data } = useQuery('getInfoUser', () => postData('Person/GetUserHomeInformation', new FindCommonUserServicesDto(currentUser?.id, currentUser?.cep)))
+
     return (
         <Background
             header={
@@ -62,7 +64,7 @@ export default function Home() {
                 </View>
             }
         >
-            <View style={{ marginTop: 10 }}>
+            <View style={{ flex: 0.4, marginTop: 10 }}>
                 <View style={styles.recentContainer}>
                     <Text style={globalStyles.headerTitle}>Recente</Text>
                     <TouchableOpacity style={{ alignItems: 'flex-end' }}>
@@ -72,12 +74,14 @@ export default function Home() {
 
                 <RecentCard nannyName={"Emma Nilson"} serviceDate={"22/09/2004 às 19:30:31"} />
             </View>
+            <View style={{ flex: 0.6 }}>
 
-            <Text style={[globalStyles.headerTitle, { textAlign: 'left', marginVertical: 20 }]}>Procurar a melhor babá</Text>
+                <Text style={[globalStyles.headerTitle, { textAlign: 'left', marginVertical: 20 }]}>Procurar a melhor babá</Text>
 
-            <ListFilterNanny />
+                <ListFilterNanny />
 
-            <NannyCardList nannyList={NANNYS} />
+                <NannyCardList nannyList={NANNYS} />
+            </View>
 
         </Background>
     )

@@ -1,6 +1,8 @@
 export class UserTokenDto {
-    Id!: number
+    constructor() { }
+    id!: number
     email: string = ""
     imageUri: string = ""
-    sub: string = ""
+    username: string = ""
+    cep: string = ""
 }

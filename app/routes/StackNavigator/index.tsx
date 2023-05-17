@@ -3,16 +3,18 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useEffect } from "react";
 import Login from "../../pages/Login";
 import Register from "../../pages/Register";
-import { storage, TOKEN } from "../../storage";
+import { getToken } from "../../storage";
 import LoggedTab from "../LoggedTab";
 
 const Stack = createNativeStackNavigator();
+
+const token = getToken();
 
 export default function StackNavigator() {
     const navigator = useNavigation<any>();
     useEffect(() => {
         async function findUserLogged() {
-            if (TOKEN !== "") {
+            if (token) {
                 navigator.navigate('logged', { screen: 'home' });
             }
         }
