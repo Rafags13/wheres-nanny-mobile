@@ -11,9 +11,13 @@ export const registerValidationSchema = yup.object().shape({
     cep: yup.string().required('o CEP é obrigatório.').matches(REGEX_CEP, 'Informe um CEP válido.'),
     password: yup.string().required('a Senha é obrigatória'),
     repeatPassword: yup.string().required('é necessário repetir a Senha').oneOf([yup.ref('password')], 'as Senhas não conferem.'),
-    proofOfAddress: yup.string().required('é necessário que você insira o seu comprovante de residência.'),
-    criminalRecord: yup.string().required('é necessário que você insira os seus antecedentes criminais.'),
-    servicePrice: yup.string().required('é necessário informar um preço para o seu serviço.'),
     photo: yup.string().required('é necessário selecionar uma foto para seu perfil.'),
-    checkbox: yup.bool().oneOf([true], "Você precisa concordar com os termos para prosseguir.")
 })
+
+
+export const registerValidationSchemaNanny =
+    registerValidationSchema.shape({
+        proofOfAddress: yup.string().required('é necessário que você insira o seu comprovante de residência.'),
+        criminalRecord: yup.string().required('é necessário que você insira os seus antecedentes criminais.'),
+        servicePrice: yup.string().required('é necessário informar um preço para o seu serviço.'),
+    })

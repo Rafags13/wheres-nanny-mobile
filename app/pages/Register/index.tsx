@@ -15,16 +15,21 @@ import { COMMON_USER_SECTION, NANNY_SECTION } from '../../assets/util/contants';
 import { createModelRegisterCommonUser, createModelRegisterNanny } from "../../assets/util/functions";
 import { postData } from "../../services/apiRequests";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { registerValidationSchema } from "../../assets/util/yupValidations";
+import { registerValidationSchema, registerValidationSchemaNanny } from "../../assets/util/yupValidations";
 import ImagePicker from "../../components/ImagePicker";
 import DocumentPick from "../../components/DocumentPick";
 
 export default function Register() {
-    const { control, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(registerValidationSchema) });
     const { params } = useRoute<RouteProp<{ params: { isNannyRegister: boolean } }, 'params'>>();
+    const { control, handleSubmit, formState: { errors } } =
+        useForm({
+            resolver: yupResolver(params?.isNannyRegister ? registerValidationSchemaNanny : registerValidationSchema)
+        });
     const navigator = useNavigation<any>();
+    console.log(params?.isNannyRegister ? true : false)
 
     async function onRegister(data: any) {
+        console.log(data)
         const userToRegisteSpecified =
             params?.isNannyRegister ?
                 createModelRegisterNanny(data) :
