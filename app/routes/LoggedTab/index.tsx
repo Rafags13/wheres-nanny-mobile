@@ -14,15 +14,7 @@ import Profile from '../../pages/Profile';
 const Tab = createBottomTabNavigator();
 
 export default function LoggedTab() {
-    const navigator = useNavigation();
 
-    useEffect(() => {
-        navigator.addListener('beforeRemove', (e) => {
-            e.preventDefault();
-            BackHandler.exitApp();
-            storage.clearAll();
-        })
-    }, []);
 
     return (
         <Tab.Navigator

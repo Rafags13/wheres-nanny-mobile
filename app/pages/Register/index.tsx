@@ -18,6 +18,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { registerValidationSchema, registerValidationSchemaNanny } from "../../assets/util/yupValidations";
 import ImagePicker from "../../components/ImagePicker";
 import DocumentPick from "../../components/DocumentPick";
+import { useContext } from "react";
+import { ModalContext, ModalContextType } from "../../context/ModalContext";
 
 export default function Register() {
     const { params } = useRoute<RouteProp<{ params: { isNannyRegister: boolean } }, 'params'>>();
@@ -26,18 +28,20 @@ export default function Register() {
             resolver: yupResolver(params?.isNannyRegister ? registerValidationSchemaNanny : registerValidationSchema)
         });
     const navigator = useNavigation<any>();
-    console.log(params?.isNannyRegister ? true : false)
+
+    const { showModal } = useContext(ModalContext) as ModalContextType;
 
     async function onRegister(data: any) {
-        console.log(data)
         const userToRegisteSpecified =
             params?.isNannyRegister ?
                 createModelRegisterNanny(data) :
                 createModelRegisterCommonUser(data);
 
         await postData(`User/${params?.isNannyRegister ? 'RegisterNanny' : 'RegisterUser'}`, userToRegisteSpecified).then((response) => {
-            Alert.alert("Usuário cadastrado no sistema com sucesso");
-        }).catch((error) => console.log(error.response.request._response));
+            showModal({ message: 'Usuário registrado com sucesso!', modalType: 'success' });
+        }).catch((error) => {
+            showModal({ message: 'Não foi possível registrar o usuário. Tente Novamente mais tarde.', modalType: 'error' });
+        });
         navigator.navigate('login')
     }
 

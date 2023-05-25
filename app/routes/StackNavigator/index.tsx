@@ -14,7 +14,7 @@ export default function StackNavigator() {
     const navigator = useNavigation<any>();
     useEffect(() => {
         async function findUserLogged() {
-            if (token) {
+            if (token !== '') {
                 navigator.navigate('logged', { screen: 'home' });
             }
         }

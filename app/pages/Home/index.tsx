@@ -1,7 +1,7 @@
 import { Text, TouchableOpacity, View, FlatList } from "react-native";
 import Background from "../../components/Background";
 import Feather from 'react-native-vector-icons/Feather';
-import { getCurrentUser, getToken } from "../../storage";
+import { getCurrentUser, getToken, logOut } from "../../storage";
 import RecentCard from "./RecentCard";
 import { globalStyles } from "../../styles/global.styles";
 import { styles } from "./style";
@@ -11,6 +11,15 @@ import ListFilterNanny from "../../components/ListFilterNanny";
 import { postData } from "../../services/apiRequests";
 import { FindCommonUserServicesDto } from "../../dto/Person/FindCommonUserServicesDto";
 import { useQuery } from "react-query";
+import AnimatedLoader from "react-native-animated-loader";
+import Spinner from "../../components/Spinner";
+import { DisplayInformationHomeUser } from "../../dto/Person/DisplayInformationHomeUser";
+import Modal from "react-native-modal";
+import React, { useState } from "react";
+import Lottie from 'lottie-react-native';
+import Button from "../../components/Button";
+import { useNavigation, CommonActions } from "@react-navigation/native";
+import ErrorModal from "./ErrorModal";
 
 const NANNYS: NannyCardProps[] = [
     {
@@ -43,8 +52,23 @@ const orderByNearCep = () => { // important function from backend
 }
 export default function Home() {
     const currentUser = getCurrentUser();
-    const { isLoading, error, data } = useQuery('getInfoUser', () => postData('Person/GetUserHomeInformation', new FindCommonUserServicesDto(currentUser?.id, currentUser?.cep)))
+    const navigation = useNavigation<any>();
+    const { isLoading, error, data } = useQuery('GetUserHomeInformation', (): Promise<any> => postData('Person/GetUserHomeInformation', new FindCommonUserServicesDto(currentUser?.id, currentUser?.cep)))
+    const currentUserData: DisplayInformationHomeUser = data?.data;
 
+
+
+    if (isLoading) {
+        return (
+            <Spinner visible={isLoading} />
+        )
+    }
+
+    if (currentUserData?.nannyListOrderedByFilter?.length === 0) {
+        return (
+            <ErrorModal />
+        )
+    }
     return (
         <Background
             header={
