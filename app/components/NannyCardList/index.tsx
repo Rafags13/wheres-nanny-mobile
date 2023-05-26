@@ -5,21 +5,15 @@ type Props = {
     nannyList: NannyCardProps[]
 }
 
-const RenderedItem = (item: any) => {
-    return (
-        <NannyCard fullname={item.fullname} starsCounting={item.starsCounting} rankCommentCount={item.rankCommentCount} />
-    )
-}
-
 export default function NannyCardList({ nannyList }: Props) {
     return (
         <FlatList
             data={nannyList}
             renderItem={(item: ListRenderItemInfo<NannyCardProps>) => {
-                const { fullname, rankCommentCount, starsCounting } = item.item;
+                const { fullname, rankCommentCount, starsCounting, id, imageUri } = item.item;
 
                 return (
-                    <NannyCard fullname={fullname} starsCounting={starsCounting} rankCommentCount={rankCommentCount} />
+                    <NannyCard fullname={fullname} starsCounting={starsCounting} rankCommentCount={rankCommentCount} id={id} imageUri={imageUri} />
                 )
             }}
             style={{ maxHeight: 150 }}

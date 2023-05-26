@@ -21,42 +21,11 @@ import Button from "../../components/Button";
 import { useNavigation, CommonActions } from "@react-navigation/native";
 import ErrorModal from "./ErrorModal";
 
-const NANNYS: NannyCardProps[] = [
-    {
-        fullname: 'Eva Olsen',
-        starsCounting: 5,
-        rankCommentCount: "25"
-    },
-    {
-        fullname: 'German Miller',
-        starsCounting: 4.25,
-        rankCommentCount: "0"
-    },
-    {
-        fullname: 'German Miller',
-        starsCounting: 4.25,
-        rankCommentCount: "0"
-    },
-]; // API DATA
-
-
-const orderByNearCep = () => { // important function from backend
-    const needle = 8;
-    const numbers = [1, 10, 7, 2, 4, 9];
-
-    numbers.sort((a, b) => {
-        return Math.abs(needle - a) - Math.abs(needle - b);
-    })
-
-    console.log(numbers[0]);
-}
 export default function Home() {
     const currentUser = getCurrentUser();
     const navigation = useNavigation<any>();
-    const { isLoading, error, data } = useQuery('GetUserHomeInformation', (): Promise<any> => postData('Person/GetUserHomeInformation', new FindCommonUserServicesDto(currentUser?.id, currentUser?.cep)))
+    const { isLoading, error, data } = useQuery('GetUserHomeInformation', () => postData('Person/GetUserHomeInformation', new FindCommonUserServicesDto(currentUser?.id, currentUser?.cep)))
     const currentUserData: DisplayInformationHomeUser = data?.data;
-
-
 
     if (isLoading) {
         return (
@@ -91,12 +60,27 @@ export default function Home() {
             <View style={{ flex: 0.4, marginTop: 10 }}>
                 <View style={styles.recentContainer}>
                     <Text style={globalStyles.headerTitle}>Recente</Text>
-                    <TouchableOpacity style={{ alignItems: 'flex-end' }}>
-                        <Text style={styles.seeAll}>Ver todos</Text>
-                    </TouchableOpacity>
+                    {currentUserData?.mostRecentService !== null && (
+                        <TouchableOpacity style={{ alignItems: 'flex-end' }}>
+                            <Text style={styles.seeAll}>Ver todos</Text>
+                        </TouchableOpacity>
+                    )}
                 </View>
 
-                <RecentCard nannyName={"Emma Nilson"} serviceDate={"22/09/2004 às 19:30:31"} />
+                {currentUserData?.mostRecentService === null ? (
+                    <View style={{ flex: 1, backgroundColor: 'white', borderRadius: 10, padding: 10, justifyContent: 'space-between' }}>
+                        <Text style={globalStyles.headerSubtitle}>
+                            Nenhum serviço encontrado
+                        </Text>
+                        <Text >
+                            Nenhum serviço foi encontrado na sua conta. Clique no botão abaixo e contrate um serviço, ou escolha uma das babás abaixo e as contrate.
+                        </Text>
+                        <Button label={"Contratar"} onClick={() => { }} />
+                    </View>
+                ) : (
+                    <RecentCard nannyName={"Emma Nilson"} serviceDate={"22/09/2004 às 19:30:31"} />
+                )}
+                {/* Alterar para caso realmente exista um último serviço: se não existir, verificar como mostrar isso ao usuário */}
             </View>
             <View style={{ flex: 0.6 }}>
 
@@ -104,7 +88,10 @@ export default function Home() {
 
                 <ListFilterNanny />
 
-                <NannyCardList nannyList={NANNYS} />
+                {currentUserData?.nannyListOrderedByFilter && (
+                    <NannyCardList nannyList={currentUserData?.nannyListOrderedByFilter} />
+                )}
+
             </View>
 
         </Background>

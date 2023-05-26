@@ -4,16 +4,18 @@ import Stars from "../Stars";
 import { styles } from "./style";
 
 export type NannyCardProps = {
+    id: number,
     fullname: string,
     starsCounting: number,
-    rankCommentCount: string
+    rankCommentCount: string,
+    imageUri: string
 }
 
-export default function NannyCard({ fullname, starsCounting, rankCommentCount }: NannyCardProps) {
+export default function NannyCard({ fullname, starsCounting, rankCommentCount, imageUri }: NannyCardProps) {
     const currentUser = getCurrentUser();
     return (
         <TouchableOpacity style={[styles.labels, { marginBottom: 20 }]}>
-            <Image style={styles.personPhoto} source={{ uri: `data:image/png;base64,${currentUser?.imageUri}` }} />
+            <Image style={styles.personPhoto} source={{ uri: `data:image/png;base64,${imageUri}` }} />
 
             <View>
                 <Text style={styles.fullnameNannyItem}>{fullname}</Text>

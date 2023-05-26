@@ -1,6 +1,9 @@
+import { Person } from "./person"
+
 export class Nanny {
     id!: number
     servicePrice!: number
-    averageStars!: number
+    rankAverageStars!: number
     commentsRankCount!: number
+    person!: Person
 }
