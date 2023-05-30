@@ -1,31 +1,21 @@
-import { Text, TouchableOpacity, View, FlatList } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import Background from "../../components/Background";
 import Feather from 'react-native-vector-icons/Feather';
-import { getCurrentUser, getToken, logOut } from "../../storage";
 import RecentCard from "./RecentCard";
 import { globalStyles } from "../../styles/global.styles";
 import { styles } from "./style";
-import NannyCardList from "../../components/NannyCardList";
-import { NannyCardProps } from "../../components/NannyCard";
+import NannyCardList from "../../features/listNanny/NannyCardList";
 import ListFilterNanny from "../../components/ListFilterNanny";
-import { postData } from "../../services/apiRequests";
-import { FindCommonUserServicesDto } from "../../dto/Person/FindCommonUserServicesDto";
-import { useQuery } from "react-query";
-import AnimatedLoader from "react-native-animated-loader";
 import Spinner from "../../components/Spinner";
-import { DisplayInformationHomeUser } from "../../dto/Person/DisplayInformationHomeUser";
-import Modal from "react-native-modal";
-import React, { useState } from "react";
-import Lottie from 'lottie-react-native';
+import React from "react";
 import Button from "../../components/Button";
-import { useNavigation, CommonActions } from "@react-navigation/native";
 import ErrorModal from "./ErrorModal";
 
+import { useAppSelector } from '../../app/hooks';
+
 export default function Home() {
-    const currentUser = getCurrentUser();
-    const navigation = useNavigation<any>();
-    const { isLoading, error, data } = useQuery('GetUserHomeInformation', () => postData('Person/GetUserHomeInformation', new FindCommonUserServicesDto(currentUser?.id, currentUser?.cep)))
-    const currentUserData: DisplayInformationHomeUser = data?.data;
+    const currentInformation = useAppSelector((state) => state.userInformation.value)
+    const isLoading = useAppSelector((state) => state.userInformation.status === 'loading')
 
     if (isLoading) {
         return (
@@ -33,7 +23,7 @@ export default function Home() {
         )
     }
 
-    if (currentUserData?.nannyListOrderedByFilter?.length === 0) {
+    if (currentInformation?.nannyListOrderedByFilter?.length === 0) {
         return (
             <ErrorModal />
         )
@@ -60,14 +50,14 @@ export default function Home() {
             <View style={{ flex: 0.4, marginTop: 10 }}>
                 <View style={styles.recentContainer}>
                     <Text style={globalStyles.headerTitle}>Recente</Text>
-                    {currentUserData?.mostRecentService !== null && (
+                    {currentInformation?.mostRecentService !== null && (
                         <TouchableOpacity style={{ alignItems: 'flex-end' }}>
                             <Text style={styles.seeAll}>Ver todos</Text>
                         </TouchableOpacity>
                     )}
                 </View>
 
-                {currentUserData?.mostRecentService === null ? (
+                {currentInformation?.mostRecentService === null ? (
                     <View style={{ flex: 1, backgroundColor: 'white', borderRadius: 10, padding: 10, justifyContent: 'space-between' }}>
                         <Text style={globalStyles.headerSubtitle}>
                             Nenhum serviço encontrado
@@ -80,7 +70,7 @@ export default function Home() {
                 ) : (
                     <RecentCard nannyName={"Emma Nilson"} serviceDate={"22/09/2004 às 19:30:31"} />
                 )}
-                {/* Alterar para caso realmente exista um último serviço: se não existir, verificar como mostrar isso ao usuário */}
+
             </View>
             <View style={{ flex: 0.6 }}>
 
@@ -88,9 +78,8 @@ export default function Home() {
 
                 <ListFilterNanny />
 
-                {currentUserData?.nannyListOrderedByFilter && (
-                    <NannyCardList nannyList={currentUserData?.nannyListOrderedByFilter} />
-                )}
+                <NannyCardList nannyList={currentInformation?.nannyListOrderedByFilter} />
+
 
             </View>
 

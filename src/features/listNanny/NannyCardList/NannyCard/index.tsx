@@ -1,6 +1,6 @@
 import { Image, Text, TouchableOpacity, View } from "react-native";
-import { getCurrentUser } from "../../storage";
-import Stars from "../Stars";
+import { getCurrentUser } from "../../../../storage";
+import Stars from "../../../../components/Stars";
 import { styles } from "./style";
 
 export type NannyCardProps = {

@@ -1,4 +1,4 @@
-import { NannyCardProps } from "../../components/NannyCard"
+import { NannyCardProps } from "../../features/listNanny/NannyCardList/NannyCard"
 import { Nanny } from "../../model/Person/nanny"
 
 export class DisplayInformationHomeUser {

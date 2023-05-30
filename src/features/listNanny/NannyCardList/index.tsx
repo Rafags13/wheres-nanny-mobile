@@ -1,5 +1,5 @@
 import { FlatList, ListRenderItem, ListRenderItemInfo } from "react-native"
-import NannyCard, { NannyCardProps } from "../NannyCard"
+import NannyCard, { NannyCardProps } from "./NannyCard"
 
 type Props = {
     nannyList: NannyCardProps[]
