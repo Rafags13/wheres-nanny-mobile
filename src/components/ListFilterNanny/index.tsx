@@ -6,22 +6,21 @@ import { useEffect, useRef, useState } from "react";
 import ItemToFilterListNanny from "../ItemToFilterListNanny";
 import { globalStyles } from "../../styles/global.styles";
 
-type Props = {
-
-}
-
 const LABELS = [
     {
         icon: <Ionicons name={"location"} size={24} color={'#D5493C'} />,
-        label: 'Mais próximo de mim'
+        label: 'Mais próximo de mim',
+        orderBy: "location"
     },
     {
         icon: <FontAwesome5 name={"money-bill-wave"} size={24} color={'#85bb65'} />,
-        label: 'Preço mais acessível'
+        label: 'Preço mais acessível',
+        orderBy: 'price'
     },
     {
         icon: <AntDesign name={"star"} size={24} color={'#FFCD3C'} />,
-        label: 'Maior pontuação'
+        label: 'Maior pontuação',
+        orderBy: 'rank'
     },
 ];
 
@@ -42,9 +41,9 @@ export default function ListFilterNanny() {
             initialScrollIndex={flatListIndex}
             ref={listRef}
             renderItem={({ item, index: flatListIndex }) => {
-                const { icon, label } = item;
+                const { icon, label, orderBy } = item;
                 return (
-                    <ItemToFilterListNanny icon={icon} label={label} setFlatListIndex={() => setFlatListIndex(flatListIndex)} />
+                    <ItemToFilterListNanny icon={icon} label={label} orderBy={orderBy} setFlatListIndex={() => setFlatListIndex(flatListIndex)} />
                 )
             }}
             horizontal

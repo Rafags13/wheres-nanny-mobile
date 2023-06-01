@@ -78,8 +78,7 @@ export default function Home() {
 
                 <ListFilterNanny />
 
-                <NannyCardList nannyList={currentInformation?.nannyListOrderedByFilter} />
-
+                <NannyCardList />
 
             </View>
 

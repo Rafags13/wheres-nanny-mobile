@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState, AppThunk } from '../app/store';
 import { DisplayInformationHomeUser } from '../dto/Person/DisplayInformationHomeUser';
 import { FindCommonUserServicesDto } from '../dto/Person/FindCommonUserServicesDto';
-import { fetchUserHomeInformation } from './listNannyAPI';
+import { fetchNannyListByFilter, fetchUserHomeInformation } from './listNannyAPI';
 
 export interface UserHomeInformationState {
     value: DisplayInformationHomeUser,
@@ -21,6 +21,14 @@ export const loadInitialHomeInformation = createAsyncThunk(
     'Person/GetUserHomeInformation',
     async () => {
         const response = await fetchUserHomeInformation();
+        return response.data;
+    }
+)
+
+export const changeNannyListByFilter = createAsyncThunk(
+    'Person/ChangeNannyListByFilter',
+    async (filter: string) => {
+        const response = await fetchNannyListByFilter(filter);
         return response.data;
     }
 )
@@ -44,7 +52,11 @@ export const listNannySlice = createSlice({
             })
             .addCase(loadInitialHomeInformation.rejected, (state) => {
                 state.status = 'failed';
-            });
+            })
+            .addCase(changeNannyListByFilter.fulfilled, (state, action) => {
+                state.status = 'idle';
+                state.value.nannyListOrderedByFilter = action.payload;
+            })
     }
 })
 
