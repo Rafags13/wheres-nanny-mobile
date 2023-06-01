@@ -2,6 +2,7 @@ import { Image, Text, TouchableOpacity, View } from "react-native";
 import { getCurrentUser } from "../../../../storage";
 import Stars from "../../../../components/Stars";
 import { styles } from "./style";
+import { useNavigation } from "@react-navigation/native";
 
 export type NannyCardProps = {
     id: number,
@@ -11,10 +12,15 @@ export type NannyCardProps = {
     imageUri: string
 }
 
-export default function NannyCard({ fullname, starsCounting, rankCommentCount, imageUri }: NannyCardProps) {
-    const currentUser = getCurrentUser();
+export default function NannyCard({ fullname, starsCounting, rankCommentCount, imageUri, id }: NannyCardProps) {
+    const navigator = useNavigation<any>();
+
+    function redirectToNannyProfile() {
+        navigator.navigate('nannyInformation', { nannyId: id });
+    }
+
     return (
-        <TouchableOpacity style={[styles.labels, { marginBottom: 20 }]}>
+        <TouchableOpacity style={[styles.labels, { marginBottom: 20 }]} onPress={redirectToNannyProfile}>
             <Image style={styles.personPhoto} source={{ uri: `data:image/png;base64,${imageUri}` }} />
 
             <View>

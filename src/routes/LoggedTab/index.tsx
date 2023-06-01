@@ -12,6 +12,7 @@ import Profile from '../../pages/Profile';
 import { Provider, useDispatch } from 'react-redux';
 import { store } from '../../app/store';
 import { loadInitialHomeInformation } from '../../features/listNannySlice';
+import HomeNavigationPages from './HomeNavigatorPages';
 
 
 const Tab = createBottomTabNavigator();
@@ -27,9 +28,9 @@ export default function LoggedTab() {
                     tabBarActiveTintColor: '#3E9FEB',
                     tabBarInactiveTintColor: '#c4c4c4'
                 }}
-
+                initialRouteName="homeDerivatedPages"
             >
-                <Tab.Screen name="home" component={Home} options={{
+                <Tab.Screen name="homeDerivatedPages" component={HomeNavigationPages} options={{
                     tabBarIcon: (props) => (
                         <Fontisto name="home" size={24} color={props.color} />
                     )
