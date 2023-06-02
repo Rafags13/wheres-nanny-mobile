@@ -1,17 +1,12 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Home from '../../pages/Home';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useNavigation } from '@react-navigation/native';
-import { useEffect } from 'react';
-import { Alert, BackHandler } from 'react-native';
-import { storage } from '../../storage';
+import { getFocusedRouteNameFromRoute, } from '@react-navigation/native';
 import Favorites from '../../pages/Favorites';
 import Profile from '../../pages/Profile';
-import { Provider, useDispatch } from 'react-redux';
+import { Provider } from 'react-redux';
 import { store } from '../../app/store';
-import { loadInitialHomeInformation } from '../../features/listNannySlice';
 import HomeNavigationPages from './HomeNavigatorPages';
 
 
@@ -30,11 +25,19 @@ export default function LoggedTab() {
                 }}
                 initialRouteName="homeDerivatedPages"
             >
-                <Tab.Screen name="homeDerivatedPages" component={HomeNavigationPages} options={{
+                <Tab.Screen name="homeDerivatedPages" component={HomeNavigationPages} options={({ route }) => ({
                     tabBarIcon: (props) => (
                         <Fontisto name="home" size={24} color={props.color} />
-                    )
-                }} />
+                    ),
+                    tabBarStyle: ((route) => {
+                        const routeName = getFocusedRouteNameFromRoute(route) ?? "";
+
+                        if (routeName === 'nannyInformation') {
+                            return { display: "none" }
+                        }
+                        return
+                    })(route),
+                })} />
                 <Tab.Screen name="favorites" component={Favorites} options={{
                     tabBarIcon: (props) => (
                         <AntDesign name="heart" size={24} color={props.color} />

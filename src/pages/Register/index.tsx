@@ -1,4 +1,4 @@
-import { Alert, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { useForm } from "react-hook-form";
 
@@ -20,8 +20,10 @@ import ImagePicker from "../../components/ImagePicker";
 import DocumentPick from "../../components/DocumentPick";
 import { useContext } from "react";
 import { ModalContext, ModalContextType } from "../../context/ModalContext";
+import { LoadingContextType, LoadingContext } from "../../context/LoadingContext";
 
 export default function Register() {
+    const { setLoading } = useContext(LoadingContext) as LoadingContextType;
     const { params } = useRoute<RouteProp<{ params: { isNannyRegister: boolean } }, 'params'>>();
     const { control, handleSubmit, formState: { errors } } =
         useForm({
@@ -32,14 +34,17 @@ export default function Register() {
     const { showModal } = useContext(ModalContext) as ModalContextType;
 
     async function onRegister(data: any) {
+        setLoading(true);
         const userToRegisteSpecified =
             params?.isNannyRegister ?
                 createModelRegisterNanny(data) :
                 createModelRegisterCommonUser(data);
 
         await postData(`User/${params?.isNannyRegister ? 'RegisterNanny' : 'RegisterUser'}`, userToRegisteSpecified).then((response) => {
+            setLoading(false);
             showModal({ message: 'Usuário registrado com sucesso!', modalType: 'success' });
         }).catch((error) => {
+            setLoading(false);
             showModal({ message: 'Não foi possível registrar o usuário. Tente Novamente mais tarde.', modalType: 'error' });
         });
         navigator.navigate('login')

@@ -9,20 +9,24 @@ import { globalStyles } from "../../styles/global.styles";
 import { storage } from "../../storage";
 import { postData } from "../../services/apiRequests";
 import jwtDecode from "jwt-decode";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import MessageError from "../../components/MessageError";
 import Line from "../../components/Line";
+import { LoadingContextType, LoadingContext } from "../../context/LoadingContext";
 
 export default function Login() {
     const { control, handleSubmit, formState: { errors } } = useForm();
+    const { setLoading } = useContext(LoadingContext) as LoadingContextType;
     const navigator = useNavigation<any>();
 
     async function onLogin(data: any) {
+        setLoading(true);
         const dataToRequest: { username: string, password: string } = {
             username: data.username,
             password: data.password
         }
         const requestData = await postData('Authentication', dataToRequest);
+        setLoading(true);
         storage.set('token', requestData.data);
         navigator.navigate('logged', { screen: 'home' });
     }

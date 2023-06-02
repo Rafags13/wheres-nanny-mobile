@@ -7,21 +7,21 @@ import { styles } from "./style";
 import NannyCardList from "../../features/listNanny/NannyCardList";
 import ListFilterNanny from "../../components/ListFilterNanny";
 import Spinner from "../../components/Spinner";
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import Button from "../../components/Button";
 import ErrorModal from "./ErrorModal";
 
 import { useAppSelector } from '../../app/hooks';
+import { LoadingContextType, LoadingContext } from "../../context/LoadingContext";
 
 export default function Home() {
+    const { setLoading } = useContext(LoadingContext) as LoadingContextType;
     const currentInformation = useAppSelector((state) => state.userInformation.value)
     const isLoading = useAppSelector((state) => state.userInformation.status === 'loading')
 
-    if (isLoading) {
-        return (
-            <Spinner visible={isLoading} />
-        )
-    }
+    useEffect(() => {
+        setLoading(isLoading);
+    }, [isLoading])
 
     if (currentInformation?.nannyListOrderedByFilter?.length === 0) {
         return (
