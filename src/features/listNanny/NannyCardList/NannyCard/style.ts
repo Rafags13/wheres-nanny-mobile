@@ -28,9 +28,14 @@ export const styles = StyleSheet.create({
     labels: {
         flexDirection: 'row',
         gap: 10,
-        marginRight: 25,
+        // marginRight: 25,
         backgroundColor: 'white',
+        // width: '90%',
+        marginHorizontal: 10,
+        // marginLeft
+        // maxWidth: 300,
         padding: 15,
-        borderRadius: 20
+        borderRadius: 20,
+        ...globalStyles.shadow
     },
 })

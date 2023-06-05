@@ -6,7 +6,6 @@ import { globalStyles } from "../../styles/global.styles";
 import { styles } from "./style";
 import NannyCardList from "../../features/listNanny/NannyCardList";
 import ListFilterNanny from "../../components/ListFilterNanny";
-import Spinner from "../../components/Spinner";
 import React, { useContext, useEffect } from "react";
 import Button from "../../components/Button";
 import ErrorModal from "./ErrorModal";
@@ -17,13 +16,14 @@ import { LoadingContextType, LoadingContext } from "../../context/LoadingContext
 export default function Home() {
     const { setLoading } = useContext(LoadingContext) as LoadingContextType;
     const currentInformation = useAppSelector((state) => state.userInformation.value)
-    const isLoading = useAppSelector((state) => state.userInformation.status === 'loading')
+    const isLoadingData = useAppSelector((state) => state.userInformation.statusQuery === 'loading')
+    const error = useAppSelector((state) => state.userInformation.error);
 
     useEffect(() => {
-        setLoading(isLoading);
-    }, [isLoading])
+        setLoading(isLoadingData)
+    }, [isLoadingData])
 
-    if (currentInformation?.nannyListOrderedByFilter?.length === 0) {
+    if (error) {
         return (
             <ErrorModal />
         )
@@ -47,41 +47,41 @@ export default function Home() {
                 </View>
             }
         >
-            <View style={{ flex: 0.4, marginTop: 10 }}>
-                <View style={styles.recentContainer}>
-                    <Text style={globalStyles.headerTitle}>Recente</Text>
-                    {currentInformation?.mostRecentService !== null && (
-                        <TouchableOpacity style={{ alignItems: 'flex-end' }}>
-                            <Text style={styles.seeAll}>Ver todos</Text>
-                        </TouchableOpacity>
-                    )}
-                </View>
-
-                {currentInformation?.mostRecentService === null ? (
-                    <View style={{ flex: 1, backgroundColor: 'white', borderRadius: 10, padding: 10, justifyContent: 'space-between' }}>
-                        <Text style={globalStyles.headerSubtitle}>
-                            Nenhum serviço encontrado
-                        </Text>
-                        <Text >
-                            Nenhum serviço foi encontrado na sua conta. Clique no botão abaixo e contrate um serviço, ou escolha uma das babás abaixo e as contrate.
-                        </Text>
-                        <Button label={"Contratar"} onClick={() => { }} />
+            <View style={{ padding: 10 }}>
+                <View style={{ marginTop: 10 }}>
+                    <View style={styles.recentContainer}>
+                        <Text style={globalStyles.headerTitle}>Recente</Text>
+                        {currentInformation?.mostRecentService !== null && (
+                            <TouchableOpacity style={{ alignItems: 'flex-end' }}>
+                                <Text style={styles.seeAll}>Ver todos</Text>
+                            </TouchableOpacity>
+                        )}
                     </View>
-                ) : (
-                    <RecentCard nannyName={"Emma Nilson"} serviceDate={"22/09/2004 às 19:30:31"} />
-                )}
 
+                    {currentInformation?.mostRecentService === null ? (
+                        <View style={{ backgroundColor: 'white', borderRadius: 10, padding: 10, gap: 10, justifyContent: 'space-between', ...globalStyles.shadow }}>
+                            <Text style={globalStyles.headerSubtitle}>
+                                Nenhum serviço encontrado
+                            </Text>
+                            <Text >
+                                Nenhum serviço foi encontrado na sua conta. Clique no botão abaixo e contrate um serviço, ou escolha uma das babás abaixo e as contrate.
+                            </Text>
+                            <Button label={"Contratar"} onClick={() => { }} />
+                        </View>
+                    ) : (
+                        <RecentCard nannyName={"Emma Nilson"} serviceDate={"22/09/2004 às 19:30:31"} />
+                        // modify when the contract is finished
+                    )}
+
+                </View>
+                <View>
+
+                    <Text style={[globalStyles.headerTitle, { textAlign: 'left', marginVertical: 20 }]}>Procurar a melhor babá</Text>
+
+                    <ListFilterNanny />
+                    <NannyCardList />
+                </View>
             </View>
-            <View style={{ flex: 0.6 }}>
-
-                <Text style={[globalStyles.headerTitle, { textAlign: 'left', marginVertical: 20 }]}>Procurar a melhor babá</Text>
-
-                <ListFilterNanny />
-
-                <NannyCardList />
-
-            </View>
-
         </Background>
     )
 }

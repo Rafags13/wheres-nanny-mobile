@@ -5,13 +5,13 @@ export const styles = StyleSheet.create({
     header: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        padding: 10,
     },
     headerIcon: {
         backgroundColor: 'white',
         padding: 10,
         borderRadius: 10,
-        height: 44,
         ...globalStyles.shadow
     },
     recentContainer: {

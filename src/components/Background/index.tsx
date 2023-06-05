@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { ReactNode } from "react"
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, ScrollView } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import Entypo from 'react-native-vector-icons/Entypo';
 import { styles } from "./style";
 
@@ -14,11 +15,11 @@ export default function Background({ children, header, hasBackIcon = false }: Pr
     const navigator = useNavigation<any>();
 
     return (
-        <View style={styles.background}>
 
-            <View style={{ flex: 0.1 }}>
-
-
+        <ScrollView style={styles.background}
+            showsVerticalScrollIndicator={false}
+        >
+            <View>
                 {hasBackIcon ? (
                     <View>
                         <TouchableOpacity style={styles.backButtonHeader} onPress={() => navigator.goBack()}>
@@ -36,10 +37,10 @@ export default function Background({ children, header, hasBackIcon = false }: Pr
             </View>
 
             <View
-                style={{ flex: 0.9 }}
             >
                 {children}
             </View>
-        </View>
+        </ScrollView>
+
     )
 }

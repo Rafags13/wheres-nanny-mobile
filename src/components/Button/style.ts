@@ -10,6 +10,7 @@ export const styles = StyleSheet.create({
         backgroundColor: '#3E9FEB',
     },
     labelButton: {
-        color: 'white'
+        color: 'white',
+        fontWeight: 'bold',
     }
 });

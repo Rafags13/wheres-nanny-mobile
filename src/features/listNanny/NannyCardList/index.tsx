@@ -7,6 +7,7 @@ export default function NannyCardList() {
     return (
         <FlatList
             data={nannyList}
+            scrollEnabled={false}
             renderItem={(item: ListRenderItemInfo<NannyCardProps>) => {
                 const { fullname, rankCommentCount, starsCounting, id, imageUri } = item.item;
 
@@ -14,7 +15,7 @@ export default function NannyCardList() {
                     <NannyCard fullname={fullname} starsCounting={starsCounting} rankCommentCount={rankCommentCount} id={id} imageUri={imageUri} />
                 )
             }}
-            style={{ maxHeight: 150 }}
+            style={{ flex: 1, marginTop: 20 }}
         />
     )
 }

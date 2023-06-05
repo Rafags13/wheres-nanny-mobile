@@ -26,7 +26,7 @@ export default function Login() {
             password: data.password
         }
         const requestData = await postData('Authentication', dataToRequest);
-        setLoading(true);
+        setLoading(false);
         storage.set('token', requestData.data);
         navigator.navigate('logged', { screen: 'home' });
     }

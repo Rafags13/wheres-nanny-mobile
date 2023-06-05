@@ -6,15 +6,19 @@ import { fetchNannyListByFilter, fetchUserHomeInformation } from './listNannyAPI
 
 export interface UserHomeInformationState {
     value: DisplayInformationHomeUser,
-    status: 'idle' | 'loading' | 'failed'
+    statusQuery: 'idle' | 'loading' | 'failed',
+    statusList: 'idle' | 'loading';
+    error: boolean,
 }
 
 const initialState: UserHomeInformationState = {
     value: {
         mostRecentService: null,
-        nannyListOrderedByFilter: []
+        nannyListOrderedByFilter: [],
     },
-    status: 'idle',
+    statusList: 'idle',
+    statusQuery: 'idle',
+    error: false
 }
 
 export const loadInitialHomeInformation = createAsyncThunk(
@@ -44,17 +48,21 @@ export const listNannySlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(loadInitialHomeInformation.pending, (state) => {
-                state.status = 'loading';
+                state.statusQuery = 'loading';
             })
-            .addCase(loadInitialHomeInformation.fulfilled, (state, action) => {
-                state.status = 'idle';
+            .addCase(loadInitialHomeInformation.fulfilled, (state, action: PayloadAction<DisplayInformationHomeUser>) => {
+                state.statusQuery = 'idle';
                 state.value = action.payload;
+                state.error = action.payload.nannyListOrderedByFilter.length === 0;
             })
             .addCase(loadInitialHomeInformation.rejected, (state) => {
-                state.status = 'failed';
+                state.statusQuery = 'failed';
+            })
+            .addCase(changeNannyListByFilter.pending, (state) => {
+                state.statusList = 'loading';
             })
             .addCase(changeNannyListByFilter.fulfilled, (state, action) => {
-                state.status = 'idle';
+                state.statusList = 'idle';
                 state.value.nannyListOrderedByFilter = action.payload;
             })
     }

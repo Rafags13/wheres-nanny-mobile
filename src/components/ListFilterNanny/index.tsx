@@ -48,7 +48,6 @@ export default function ListFilterNanny() {
             }}
             horizontal
             showsHorizontalScrollIndicator={false}
-            style={{ marginBottom: 20 }}
         />
     )
 }

@@ -21,7 +21,7 @@ export default function LoggedTab() {
                     headerShown: false,
                     tabBarShowLabel: false,
                     tabBarActiveTintColor: '#3E9FEB',
-                    tabBarInactiveTintColor: '#c4c4c4'
+                    tabBarInactiveTintColor: '#c4c4c4',
                 }}
                 initialRouteName="homeDerivatedPages"
             >
