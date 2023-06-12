@@ -1,5 +1,5 @@
 import { RouteProp, useRoute } from "@react-navigation/native";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { useQuery } from "react-query";
 import Background from "../../components/Background";
@@ -15,16 +15,36 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Octicons from 'react-native-vector-icons/Octicons';
 import styles from "./style";
 import LinearGradient from "react-native-linear-gradient";
+import { getDistance, getPreciseDistance } from 'geolib';
+import { getCurrentUser, storage } from "../../storage";
+import DateTimePicker, { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
+import { formatCellphoneNumber } from "../../assets/util/functions";
 
 export default function NannyInformations() {
     const { setLoading } = useContext(LoadingContext) as LoadingContextType;
     const { params } = useRoute<RouteProp<{ params: { nannyId: number } }, 'params'>>();
+    const [date, setDate] = useState<Date>(new Date());
     const { data, isLoading } = useQuery('nanny', async () => {
         setLoading(true)
-        var data = await getData(`Person/GetNannyById/${params.nannyId}`);
+        var currentUser = getCurrentUser();
+        var data = await getData(`Person/GetNannyById/${params.nannyId}/${currentUser.id}`);
         setLoading(false)
         return data
     });
+
+    function openDatePicker(mode: 'date' | 'time') {
+        console.log(date.toLocaleDateString('pt-PT'))
+        DateTimePickerAndroid.open({
+            mode,
+            value: date,
+            minimumDate: new Date(),
+            onChange: (event, date) => {
+                console.log(date?.toLocaleDateString('pt-PT'))
+                setDate(date || new Date)
+                // TODO: Format correct the date and display it correctly.
+            },
+        });
+    }
 
     const nannyInformation: NannyContractDto = data?.data;
 
@@ -44,12 +64,12 @@ export default function NannyInformations() {
                     </View>
                 </View>
             </View>
-            <LinearGradient colors={['#FCFCFC', '#F2F2F2']} style={styles.mainContentContainer}>
-                <View style={{ padding: 15, }}>
+            <LinearGradient colors={['white', '#F2F2F2']} style={styles.mainContentContainer}>
+                <View style={{ padding: 15 }}>
                     <Text style={styles.titleLabels}>Informações de contato</Text>
                     <View style={styles.contactNannyContainer}>
                         <Text style={globalStyles.commonText}>
-                            Telefone: {nannyInformation.person.cellphone}
+                            Telefone: {formatCellphoneNumber(nannyInformation.person.cellphone)}
                         </Text>
                         <Text style={globalStyles.commonText}>
                             E-mail: {nannyInformation.person.email}
@@ -57,8 +77,8 @@ export default function NannyInformations() {
                     </View>
                     <Text style={styles.titleLabels} >Área de trabalho</Text>
                     <Slider
-                        value={100}
-                        maximumValue={1000}
+                        value={Number(nannyInformation.address.distanceBetweenThePeople)}
+                        maximumValue={10000}
                         onValueChange={value => { }}
                         thumbTintColor={'#409FEA'}
                         minimumTrackTintColor={'#409FEA'}
@@ -67,7 +87,7 @@ export default function NannyInformations() {
                         renderBelowThumbComponent={
                             () => (
                                 <View style={{ width: 200, left: -100, alignItems: 'center', marginBottom: 20, }}>
-                                    <Text style={globalStyles.commonText}>1000 km</Text>
+                                    <Text style={globalStyles.commonText}>{nannyInformation.address.distanceBetweenThePeople} m</Text>
                                 </View>
                             )
                         }
@@ -80,47 +100,35 @@ export default function NannyInformations() {
                             width: 25,
                             ...globalStyles.shadow
                         }}
-
                     />
-                    <Text style={[styles.titleLabels, { marginTop: 40, marginBottom: 15 }]}>Data e Hora</Text>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 10 }}>
-
-                        <TouchableOpacity style={{ backgroundColor: 'white', padding: 10, borderRadius: 20, flexDirection: 'row', alignItems: 'center', gap: 10, ...globalStyles.shadow }}>
-                            <View style={{ backgroundColor: '#3E9FEB', padding: 5, borderRadius: 10 }}>
+                    <Text style={styles.dateTimeTitle}>Data e Hora</Text>
+                    <View style={styles.dateTimeContainer}>
+                        <TouchableOpacity style={styles.dateTimeComponent} onPress={() => openDatePicker('date')}>
+                            <View style={styles.iconContainer}>
                                 <Feather name='calendar' color='white' size={24} />
                             </View>
-                            <Text style={[globalStyles.commonText]}>10/10/2010</Text>
+                            <Text style={[globalStyles.commonText]}>{date.toLocaleDateString()}</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={{ backgroundColor: 'white', padding: 10, borderRadius: 20, flexDirection: 'row', alignItems: 'center', gap: 10, ...globalStyles.shadow }}>
-                            <View style={{ backgroundColor: '#3E9FEB', padding: 5, borderRadius: 10 }}>
+                        <TouchableOpacity style={styles.dateTimeComponent}>
+                            <View style={styles.iconContainer}>
                                 <Feather name='clock' color='white' size={24} />
                             </View>
-                            <Text style={[globalStyles.commonText, { alignSelf: 'center', marginHorizontal: 10 }]}>10:20am</Text>
+                            <Text style={[globalStyles.commonText, { alignSelf: 'center', marginHorizontal: 10 }]}>10:20 am</Text>
                         </TouchableOpacity>
                     </View>
-                    <Text style={styles.titleLabels}>Endereço</Text>
-                    <View style={{ paddingVertical: 10, paddingHorizontal: 25, marginVertical: 10, borderRadius: 15, backgroundColor: 'white', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', ...globalStyles.shadow }}>
-                        <Text style={[globalStyles.commonText, { fontSize: 16 }]}>Rua engenheiro Antônio Góes, 91</Text>
-                        <TouchableOpacity onPress={() => console.log('redirecting to map')}>
-                            <Octicons name='location' size={32} color={'#c4c4c4'} />
-                        </TouchableOpacity>
-                        {/* {nannyInformation.address.} */}
-                        {/* search name street by cep and put it here adding in the end
-                        the number (if exists) */}
-                    </View>
                 </View>
-                <View style={{ backgroundColor: 'white', padding: 25, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <View>
-                        <Text style={[globalStyles.headerSubtitle, { alignSelf: "flex-start" }]}>Preço</Text>
-                        <View style={{ flexDirection: 'row' }}>
-                            <Text style={globalStyles.headerTitle}>R$ {nannyInformation.servicePrice}</Text>
-                            <Text style={[globalStyles.headerTitle, { fontSize: 14, alignSelf: 'center' }]}>/Dia</Text>
-                        </View>
-                    </View>
-                    <Button containerStyle={{ maxWidth: 150, borderRadius: 15, height: 60 }} textStyle={{ fontSize: 16 }} label={"Contratar agora"} onClick={() => { }} />
-                </View>
-                {/* finish the layout and add google route by cep */}
             </LinearGradient>
+            <View style={styles.finalPriceContractNannyContainer}>
+                <View>
+                    <Text style={[globalStyles.headerSubtitle, { alignSelf: "flex-start" }]}>Preço</Text>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Text style={globalStyles.headerTitle}>R$ {nannyInformation.servicePrice}</Text>
+                        <Text style={[globalStyles.headerTitle, { fontSize: 14, alignSelf: 'center' }]}>/Dia</Text>
+                    </View>
+                </View>
+                <Button containerStyle={{ maxWidth: 150, borderRadius: 15, height: 60 }} textStyle={{ fontSize: 16 }} label={"Contratar agora"} onClick={() => { }} />
+                {/* Add event that sends to api the necessary informations to contract */}
+            </View>
 
         </Background >
     )

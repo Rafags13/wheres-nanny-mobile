@@ -6,5 +6,5 @@ export class NannyContractDto {
     rankCommentCount!: number
     servicePrice!: number
     person!: { cellphone: string, email: string, name: string }
-    address!: { cep: string, houseNumber: string }
+    address!: { cep: string, houseNumber: string, distanceBetweenThePeople: string }
 }

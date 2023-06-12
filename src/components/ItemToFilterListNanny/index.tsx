@@ -21,7 +21,7 @@ export default function ItemToFilterListNanny({ icon, label, orderBy, setFlatLis
     return (
         <TouchableOpacity style={styles.labels} onPress={filterListerBySelectOrdernation}>
             {icon}
-            <Text style={{ color: '#192553', fontSize: 16 }}>{label}</Text>
+            <Text style={{ color: '#192553', fontSize: 16, fontFamily: 'Gellix-Regular' }}>{label}</Text>
         </TouchableOpacity>
     )
 }

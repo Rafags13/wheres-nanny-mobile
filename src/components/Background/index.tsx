@@ -9,17 +9,17 @@ type Props = {
     children: ReactNode,
     hasBackIcon?: boolean,
     header?: ReactNode,
+    isScroll?: boolean
 }
 
-export default function Background({ children, header, hasBackIcon = false }: Props) {
+export default function Background({ children, header, hasBackIcon = false, isScroll = false }: Props) {
     const navigator = useNavigation<any>();
 
     return (
 
-        <ScrollView style={styles.background}
-            showsVerticalScrollIndicator={false}
+        <DefineView isScroll={isScroll}
         >
-            <View>
+            <View >
                 {hasBackIcon ? (
                     <View>
                         <TouchableOpacity style={styles.backButtonHeader} onPress={() => navigator.goBack()}>
@@ -36,11 +36,34 @@ export default function Background({ children, header, hasBackIcon = false }: Pr
                 }
             </View>
 
-            <View
+            {children}
+        </DefineView>
+
+    )
+}
+
+type NewViewProps = {
+    children: ReactNode,
+    isScroll: boolean
+}
+
+function DefineView({ children, isScroll }: NewViewProps) {
+    if (isScroll) {
+        return (
+            <ScrollView style={styles.background}
+                showsVerticalScrollIndicator={false}
             >
                 {children}
-            </View>
-        </ScrollView>
+            </ScrollView>
+        )
+    }
 
+    return (
+        <View style={{
+            flex: 1, paddingTop: 10,
+            backgroundColor: '#F8FDFE',
+        }}>
+            {children}
+        </View>
     )
 }

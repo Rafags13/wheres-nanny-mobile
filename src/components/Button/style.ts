@@ -11,6 +11,7 @@ export const styles = StyleSheet.create({
     },
     labelButton: {
         color: 'white',
-        fontWeight: 'bold',
+        // fontWeight: 'bold',
+        fontFamily: 'Gellix-Bold'
     }
 });

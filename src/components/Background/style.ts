@@ -4,7 +4,7 @@ import { globalStyles } from "../../styles/global.styles";
 export const styles = StyleSheet.create({
     background: {
         paddingTop: 10,
-        backgroundColor: '#F8FDFE'
+        backgroundColor: '#F8FDFE',
     },
     backButtonHeader: {
         alignSelf: 'flex-start',

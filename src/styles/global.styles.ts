@@ -3,7 +3,10 @@ import { StyleSheet } from "react-native";
 const common = StyleSheet.create({
     defaultText: {
         color: '#192553',
-        fontFamily: 'Roboto',
+        fontFamily: 'Gellix-Regular',
+    },
+    title: {
+        fontFamily: 'Gellix-Bold',
     }
 })
 
@@ -12,10 +15,10 @@ export const globalStyles = StyleSheet.create({
         ...common.defaultText
     },
     title: {
+        ...common.defaultText,
         fontSize: 32,
-        fontWeight: 'bold',
         marginTop: 10,
-        ...common.defaultText
+        ...common.title
     },
     subtitle: {
         fontSize: 24,
@@ -31,19 +34,19 @@ export const globalStyles = StyleSheet.create({
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-
         elevation: 5,
     },
     headerTitle: {
         fontSize: 24,
         color: '#192553',
-        fontWeight: 'bold',
-        textAlign: 'center'
+        textAlign: 'center',
+        fontFamily: 'Gellix-Bold'
     },
     headerSubtitle: {
         fontSize: 18,
         color: '#999',
         fontWeight: '500',
         textAlign: 'center',
+        fontFamily: 'Gellix-Bold'
     }
 })

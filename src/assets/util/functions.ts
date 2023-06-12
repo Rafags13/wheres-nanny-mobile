@@ -103,3 +103,9 @@ export function createModelRegisterNanny(data: any): RegisterNannyDto {
 
     return registerNannyDto;
 }
+
+export function formatCellphoneNumber(cellphone: string) {
+    const formatedCellphone = cellphone.toString().replace(/(\d{2})(\d{1})(\d{4})(\d{4})/, "($1) $2 $3-$4");
+
+    return formatedCellphone;
+}

@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'flex-end',
-        marginBottom: 15
+        marginBottom: 15,
     },
     seeAll: {
         color: '#3FA0EB',

@@ -1349,6 +1349,13 @@
     prompts "^2.4.0"
     semver "^6.3.0"
 
+"@react-native-community/datetimepicker@^7.1.0":
+  version "7.1.0"
+  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-7.1.0.tgz#627c2be65256c87b25bef0ca373e0d2aae69ece5"
+  integrity sha512-bXK1/UnutKgJMbHKcbh6TQN3GmzOWROo6Hc9z6tfVG6KIwq5MrdvxZTFJA97PB6xwW8p3v9ddkaSfkFa1pelPA==
+  dependencies:
+    invariant "^2.2.4"
+
 "@react-native-community/eslint-config@^3.0.0":
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/@react-native-community/eslint-config/-/eslint-config-3.2.0.tgz#42f677d5fff385bccf1be1d3b8faa8c086cf998d"
@@ -3572,6 +3579,11 @@ gensync@^1.0.0-beta.2:
   version "1.0.0-beta.2"
   resolved "https://registry.npmjs.org/gensync/-/gensync-1.0.0-beta.2.tgz"
   integrity sha512-3hN7NaskYvMDLQY55gnW3NQ+mesEAepTqlg+VEbj7zzqEMBVNhzcGYYeqFo/TlYz6eQiFcp1HcsCZO+nGgS8zg==
+
+geolib@^3.3.4:
+  version "3.3.4"
+  resolved "https://registry.yarnpkg.com/geolib/-/geolib-3.3.4.tgz#09883ba2fdab84d2764cf3615dbafb9bce3c54d0"
+  integrity sha512-EicrlLLL3S42gE9/wde+11uiaYAaeSVDwCUIv2uMIoRBfNJCn8EsSI+6nS3r4TCKDO6+RQNM9ayLq2at+oZQWQ==
 
 get-caller-file@^2.0.1, get-caller-file@^2.0.5:
   version "2.0.5"

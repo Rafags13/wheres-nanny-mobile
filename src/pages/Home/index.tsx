@@ -30,6 +30,7 @@ export default function Home() {
     }
     return (
         <Background
+            isScroll
             header={
                 <View style={styles.header}>
                     <TouchableOpacity style={styles.headerIcon}>
@@ -63,7 +64,7 @@ export default function Home() {
                             <Text style={globalStyles.headerSubtitle}>
                                 Nenhum serviço encontrado
                             </Text>
-                            <Text >
+                            <Text style={{ fontFamily: 'Gellix-Regular' }}>
                                 Nenhum serviço foi encontrado na sua conta. Clique no botão abaixo e contrate um serviço, ou escolha uma das babás abaixo e as contrate.
                             </Text>
                             <Button label={"Contratar"} onClick={() => { }} />
@@ -79,6 +80,7 @@ export default function Home() {
                     <Text style={[globalStyles.headerTitle, { textAlign: 'left', marginVertical: 20 }]}>Procurar a melhor babá</Text>
 
                     <ListFilterNanny />
+
                     <NannyCardList />
                 </View>
             </View>
