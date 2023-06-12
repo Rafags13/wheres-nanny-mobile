@@ -14,7 +14,7 @@ import Services from '../../pages/Services';
 
 const Tab = createBottomTabNavigator();
 
-export default function LoggedTab() {
+export default function CommonUserTab() {
 
     return (
         <Provider store={store}>

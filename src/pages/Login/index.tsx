@@ -6,7 +6,7 @@ import LinkNavigator from "../../components/LinkNavigator";
 import Button from '../../components/Button';
 import { useNavigation } from "@react-navigation/native";
 import { globalStyles } from "../../styles/global.styles";
-import { storage } from "../../storage";
+import { getCurrentUser, storage } from "../../storage";
 import { postData } from "../../services/apiRequests";
 import jwtDecode from "jwt-decode";
 import { useContext, useEffect } from "react";
@@ -28,7 +28,12 @@ export default function Login() {
         const requestData = await postData('Authentication', dataToRequest);
         setLoading(false);
         storage.set('token', requestData.data);
-        navigator.navigate('logged', { screen: 'home' });
+        const currentUser = getCurrentUser();
+        if (currentUser.isNanny) {
+            navigator.navigate('nannyUser', { screen: 'dashboard' });
+        } else {
+            navigator.navigate('commonUser', { screen: 'homeDerivatedPages' });
+        }
     }
 
     return (

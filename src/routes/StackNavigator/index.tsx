@@ -4,7 +4,8 @@ import { useEffect } from "react";
 import Login from "../../pages/Login";
 import Register from "../../pages/Register";
 import { getToken } from "../../storage";
-import LoggedTab from "../LoggedTab";
+import CommonUserTab from "../CommonUserTab";
+import NannyUserTab from "../NannyUserTab";
 
 const Stack = createNativeStackNavigator();
 
@@ -26,7 +27,8 @@ export default function StackNavigator() {
         <Stack.Navigator initialRouteName='login' screenOptions={{ headerShown: false }}>
             <Stack.Screen name="login" component={Login} />
             <Stack.Screen name="register" component={Register} />
-            <Stack.Screen name="logged" component={LoggedTab} />
+            <Stack.Screen name="commonUser" component={CommonUserTab} />
+            <Stack.Screen name="nannyUser" component={NannyUserTab} />
         </Stack.Navigator>
     )
 }
