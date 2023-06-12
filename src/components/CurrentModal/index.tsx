@@ -20,7 +20,7 @@ export default function CurrentModal() {
                     loop={false}
                 />
 
-                <Text style={[globalStyles.commonText, modalInfo.modalType === 'error' ? { color: 'red' } : {}, { textAlign: 'center' }]}>{modalInfo.message}</Text>
+                <Text style={[globalStyles.commonText, modalInfo.modalType === 'error' ? { color: 'red' } : {}, { textAlign: 'center' }, { marginBottom: 15 }]}>{modalInfo.message}</Text>
 
                 <Button label={"Ok"} onClick={closeModal} />
             </View>

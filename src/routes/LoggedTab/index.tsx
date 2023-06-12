@@ -2,12 +2,14 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { getFocusedRouteNameFromRoute, } from '@react-navigation/native';
 import Favorites from '../../pages/Favorites';
 import Profile from '../../pages/Profile';
 import { Provider } from 'react-redux';
 import { store } from '../../app/store';
 import HomeNavigationPages from './HomeNavigatorPages';
+import Services from '../../pages/Services';
 
 
 const Tab = createBottomTabNavigator();
@@ -41,6 +43,11 @@ export default function LoggedTab() {
                 <Tab.Screen name="favorites" component={Favorites} options={{
                     tabBarIcon: (props) => (
                         <AntDesign name="heart" size={24} color={props.color} />
+                    )
+                }} />
+                <Tab.Screen name="services" component={Services} options={{
+                    tabBarIcon: (props) => (
+                        <FontAwesome5 name="baby" size={24} color={props.color} />
                     )
                 }} />
                 <Tab.Screen name="profile" component={Profile} options={{

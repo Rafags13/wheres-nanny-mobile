@@ -12,7 +12,8 @@ const common = StyleSheet.create({
 
 export const globalStyles = StyleSheet.create({
     commonText: {
-        ...common.defaultText
+        ...common.defaultText,
+        fontSize: 16,
     },
     title: {
         ...common.defaultText,

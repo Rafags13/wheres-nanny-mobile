@@ -1,4 +1,4 @@
-import { RouteProp, useRoute } from "@react-navigation/native";
+import { CommonActions, RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { useContext, useEffect, useState } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { useQuery } from "react-query";
@@ -7,7 +7,7 @@ import Button from "../../components/Button";
 import Stars from "../../components/Stars";
 import { LoadingContextType, LoadingContext } from "../../context/LoadingContext";
 import { NannyContractDto } from "../../dto/Person/NannyContractDto";
-import { getData } from "../../services/apiRequests";
+import { getData, postData } from "../../services/apiRequests";
 import { globalStyles } from "../../styles/global.styles";
 import { Slider } from '@miblanchard/react-native-slider';
 import Feather from 'react-native-vector-icons/Feather'
@@ -19,18 +19,23 @@ import { getDistance, getPreciseDistance } from 'geolib';
 import { getCurrentUser, storage } from "../../storage";
 import DateTimePicker, { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import { formatCellphoneNumber } from "../../assets/util/functions";
+import moment from "moment";
+import { Alert } from "react-native";
+import { ModalContextType, ModalContext } from "../../context/ModalContext";
 
 export default function NannyInformations() {
     const { setLoading } = useContext(LoadingContext) as LoadingContextType;
+    const currentUser = getCurrentUser();
     const { params } = useRoute<RouteProp<{ params: { nannyId: number } }, 'params'>>();
+    const { showModal } = useContext(ModalContext) as ModalContextType;
     const [date, setDate] = useState<Date>(new Date());
     const { data, isLoading } = useQuery('nanny', async () => {
         setLoading(true)
-        var currentUser = getCurrentUser();
         var data = await getData(`Person/GetNannyById/${params.nannyId}/${currentUser.id}`);
         setLoading(false)
         return data
     });
+    const navigation = useNavigation<any>();
 
     function openDatePicker(mode: 'date' | 'time') {
         console.log(date.toLocaleDateString('pt-PT'))
@@ -39,11 +44,46 @@ export default function NannyInformations() {
             value: date,
             minimumDate: new Date(),
             onChange: (event, date) => {
-                console.log(date?.toLocaleDateString('pt-PT'))
-                setDate(date || new Date)
-                // TODO: Format correct the date and display it correctly.
+                if ((date as Date) < new Date()) {
+                    showModal({ message: 'Não é possível escolher uma data menor que a data atual. Tente novamente.', modalType: 'error' });
+                    return;
+                }
+                setDate(date as Date)
             },
         });
+    }
+
+    type CreateContractNannyDto = {
+        serviceFinishHour: Date,
+        hiringDate: Date,
+        price: number,
+        personId: number,
+        nannyId: number
+    }
+    async function contractNanny() {
+        const createContractNanny: CreateContractNannyDto = {
+            serviceFinishHour: date,
+            hiringDate: date,
+            price: nannyInformation.servicePrice,
+            personId: currentUser.id,
+            nannyId: nannyInformation.nannyId
+        }
+        await postData('Service/Create', createContractNanny).then(response => {
+            showModal({ modalType: 'success', message: response.data });
+            navigation.dispatch(
+                CommonActions.reset({
+                    index: 1,
+                    routes: [
+                        { name: 'logged' },
+                    ],
+                })
+            );
+            // TODO: redirect this to the new service 
+        }).catch((err: Error) => {
+            console.log(err)
+            showModal({ modalType: 'error', message: 'Algo de errado deu durante a sua requisição. Tente Novamente.' });
+        })
+
     }
 
     const nannyInformation: NannyContractDto = data?.data;
@@ -64,7 +104,7 @@ export default function NannyInformations() {
                     </View>
                 </View>
             </View>
-            <LinearGradient colors={['white', '#F2F2F2']} style={styles.mainContentContainer}>
+            <LinearGradient colors={['white', '#F6F6F6']} style={styles.mainContentContainer}>
                 <View style={{ padding: 15 }}>
                     <Text style={styles.titleLabels}>Informações de contato</Text>
                     <View style={styles.contactNannyContainer}>
@@ -107,13 +147,13 @@ export default function NannyInformations() {
                             <View style={styles.iconContainer}>
                                 <Feather name='calendar' color='white' size={24} />
                             </View>
-                            <Text style={[globalStyles.commonText]}>{date.toLocaleDateString()}</Text>
+                            <Text style={[globalStyles.commonText]}>{moment(date).format('DD/MM/YYYY')}</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.dateTimeComponent}>
+                        <TouchableOpacity style={styles.dateTimeComponent} onPress={() => openDatePicker('time')}>
                             <View style={styles.iconContainer}>
                                 <Feather name='clock' color='white' size={24} />
                             </View>
-                            <Text style={[globalStyles.commonText, { alignSelf: 'center', marginHorizontal: 10 }]}>10:20 am</Text>
+                            <Text style={[globalStyles.commonText, { alignSelf: 'center', marginHorizontal: 10 }]}>{moment(date).format('HH:mm')}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -126,7 +166,7 @@ export default function NannyInformations() {
                         <Text style={[globalStyles.headerTitle, { fontSize: 14, alignSelf: 'center' }]}>/Dia</Text>
                     </View>
                 </View>
-                <Button containerStyle={{ maxWidth: 150, borderRadius: 15, height: 60 }} textStyle={{ fontSize: 16 }} label={"Contratar agora"} onClick={() => { }} />
+                <Button containerStyle={{ maxWidth: 150, borderRadius: 15, height: 60 }} textStyle={{ fontSize: 16 }} label={"Contratar agora"} onClick={contractNanny} />
                 {/* Add event that sends to api the necessary informations to contract */}
             </View>
 

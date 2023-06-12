@@ -35,7 +35,13 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 25,
         marginTop: 25,
         justifyContent: 'space-between',
-        // ...globalStyles.shadow,
+        shadowRadius: 2,
+        shadowOffset: {
+            width: 0,
+            height: -3,
+        },
+        shadowColor: '#000000',
+        elevation: 4,
         height: '100%',
     },
     titleLabels: {
