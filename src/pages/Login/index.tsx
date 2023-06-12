@@ -13,10 +13,12 @@ import { useContext, useEffect } from "react";
 import MessageError from "../../components/MessageError";
 import Line from "../../components/Line";
 import { LoadingContextType, LoadingContext } from "../../context/LoadingContext";
+import { ModalContextType, ModalContext } from "../../context/ModalContext";
 
 export default function Login() {
     const { control, handleSubmit, formState: { errors } } = useForm();
     const { setLoading } = useContext(LoadingContext) as LoadingContextType;
+    const { showModal } = useContext(ModalContext) as ModalContextType;
     const navigator = useNavigation<any>();
 
     async function onLogin(data: any) {
@@ -25,15 +27,21 @@ export default function Login() {
             username: data.username,
             password: data.password
         }
-        const requestData = await postData('Authentication', dataToRequest);
-        setLoading(false);
-        storage.set('token', requestData.data);
-        const currentUser = getCurrentUser();
-        if (currentUser.isNanny) {
-            navigator.navigate('nannyUser', { screen: 'dashboard' });
-        } else {
-            navigator.navigate('commonUser', { screen: 'homeDerivatedPages' });
-        }
+
+        await postData('Authentication', dataToRequest).then((response) => {
+            storage.set('token', response.data);
+            const currentUser = getCurrentUser();
+            if (currentUser.isNanny) {
+                navigator.navigate('nannyUser', { screen: 'dashboard' });
+            } else {
+                navigator.navigate('commonUser', { screen: 'homeDerivatedPages' });
+            }
+        }).catch((error) => {
+            showModal({ modalType: 'error', message: error.response.data });
+        }).finally(() => {
+            setLoading(false);
+        });
+
     }
 
     return (
@@ -47,7 +55,7 @@ export default function Login() {
                 {" "}
                 para poder acessar e desfrutar do nosso sistema.
             </Text>
-            <View style={{ flex: 1, gap: 10 }}>
+            <View style={{ gap: 10 }}>
                 <Input
                     label="username"
                     control={control}

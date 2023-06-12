@@ -4,7 +4,8 @@ import { globalStyles } from "../../styles/global.styles";
 export const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 20
+        padding: 20,
+        justifyContent: 'center',
     },
     createAccountContainer: {
         flexDirection: 'row',
@@ -12,9 +13,7 @@ export const styles = StyleSheet.create({
         backgroundColor: 'red',
     },
     createAccountText: {
-        fontSize: 14,
-        marginTop: 10,
-        marginBottom: 40,
+        marginVertical: 10,
         ...globalStyles.commonText,
     },
 
