@@ -1,4 +1,4 @@
-import { Alert, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import DocumentPicker, { DocumentPickerOptions } from 'react-native-document-picker';
 import { styles } from "./style";
 import Feather from 'react-native-vector-icons/Feather';
@@ -7,7 +7,6 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Control, FieldValues, useController } from "react-hook-form";
 import { SupportedPlatforms } from "react-native-document-picker/lib/typescript/fileTypes";
 import RNFetchBlob from 'rn-fetch-blob';
-import RNFS from 'react-native-fs';
 import { replacePdfExtensioNames } from "../../assets/util/functions";
 import { useState } from "react";
 

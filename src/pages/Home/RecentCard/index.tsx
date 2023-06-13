@@ -3,10 +3,12 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { styles } from "./style";
 import LinearGradient from 'react-native-linear-gradient';
 import { getCurrentUser } from "../../../storage";
+import moment from "moment";
 
 type Props = {
+    serviceId: number,
     nannyName: string,
-    serviceDate: string
+    serviceDate: Date
 }
 
 export default function RecentCard({ nannyName, serviceDate }: Props) {
@@ -25,7 +27,7 @@ export default function RecentCard({ nannyName, serviceDate }: Props) {
 
                 <View style={styles.dataContainer}>
                     <MaterialCommunityIcons name="calendar-blank" size={16} color="white" />
-                    <Text style={{ color: 'white' }}>{serviceDate}</Text>
+                    <Text style={{ color: 'white' }}>{moment(serviceDate).format('DD/MM/YYYY, HH:mm:ss')}</Text>
                 </View>
             </LinearGradient >
             <View style={styles.bottomOne} />

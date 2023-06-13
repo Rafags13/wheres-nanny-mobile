@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useEffect } from "react";
 import Login from "../../pages/Login";
 import Register from "../../pages/Register";
-import { getToken } from "../../storage";
+import { getCurrentUser, getToken } from "../../storage";
 import CommonUserTab from "../CommonUserTab";
 import NannyUserTab from "../NannyUserTab";
 
@@ -16,7 +16,11 @@ export default function StackNavigator() {
     useEffect(() => {
         async function findUserLogged() {
             if (token !== '') {
-                navigator.navigate('logged', { screen: 'home' });
+                const currentUser = getCurrentUser();
+                if (currentUser.isNanny) {
+                    navigator.navigate('nannyUser', { screen: 'dashboard' })
+                }
+                navigator.navigate('commonUser', { screen: 'homeDerivatedPages' });
             }
         }
 

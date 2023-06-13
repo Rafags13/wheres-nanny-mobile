@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { Control, FieldValues, useController } from "react-hook-form";
 import { Image, View } from "react-native";
 import { TouchableOpacity } from "react-native";

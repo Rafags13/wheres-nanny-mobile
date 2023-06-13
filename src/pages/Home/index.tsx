@@ -70,8 +70,11 @@ export default function Home() {
                             <Button label={"Contratar"} onClick={() => { }} />
                         </View>
                     ) : (
-                        <RecentCard nannyName={"Emma Nilson"} serviceDate={"22/09/2004 às 19:30:31"} />
-                        // modify when the contract is finished
+                        <RecentCard
+                            nannyName={currentInformation?.mostRecentService.personName}
+                            serviceDate={currentInformation?.mostRecentService.date}
+                            serviceId={currentInformation?.mostRecentService.serviceId}
+                        />
                     )}
 
                 </View>

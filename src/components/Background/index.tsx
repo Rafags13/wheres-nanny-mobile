@@ -1,7 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { ReactNode } from "react"
 import { View, TouchableOpacity, ScrollView } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import Entypo from 'react-native-vector-icons/Entypo';
 import { styles } from "./style";
 

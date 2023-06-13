@@ -1,10 +1,9 @@
-import { FlatList, Text, TouchableOpacity } from "react-native";
+import { FlatList } from "react-native";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useEffect, useRef, useState } from "react";
 import ItemToFilterListNanny from "../ItemToFilterListNanny";
-import { globalStyles } from "../../styles/global.styles";
 
 const LABELS = [
     {

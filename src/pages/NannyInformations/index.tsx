@@ -22,9 +22,12 @@ import { formatCellphoneNumber } from "../../assets/util/functions";
 import moment from "moment";
 import { Alert } from "react-native";
 import { ModalContextType, ModalContext } from "../../context/ModalContext";
+import { useDispatch } from "react-redux";
+import { loadInitialHomeInformation } from "../../features/listNannySlice";
 
 export default function NannyInformations() {
     const { setLoading } = useContext(LoadingContext) as LoadingContextType;
+    const dispatch = useDispatch<any>();
     const currentUser = getCurrentUser();
     const { params } = useRoute<RouteProp<{ params: { nannyId: number } }, 'params'>>();
     const { showModal } = useContext(ModalContext) as ModalContextType;
@@ -68,13 +71,14 @@ export default function NannyInformations() {
             personId: currentUser.id,
             nannyId: nannyInformation.nannyId
         }
-        await postData('Service/Create', createContractNanny).then(response => {
+        await postData('Service/Create', createContractNanny).then(async response => {
             showModal({ modalType: 'success', message: response.data });
+            dispatch(loadInitialHomeInformation());
             navigation.dispatch(
                 CommonActions.reset({
-                    index: 1,
+                    index: 0,
                     routes: [
-                        { name: 'logged' },
+                        { name: 'home' },
                     ],
                 })
             );

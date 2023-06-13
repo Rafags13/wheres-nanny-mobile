@@ -1,4 +1,4 @@
-import { forwardRef, useState } from "react";
+import { useState } from "react";
 import { Control, FieldValues, RegisterOptions, useController } from "react-hook-form";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import { styles } from "./style";
