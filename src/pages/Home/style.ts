@@ -6,7 +6,8 @@ export const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: 10,
+        backgroundColor: 'white',
+        padding: 10
     },
     headerIcon: {
         backgroundColor: 'white',

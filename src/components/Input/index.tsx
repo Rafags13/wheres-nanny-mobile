@@ -7,14 +7,14 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 type Props = {
     label: string,
     control: Control<FieldValues, string>,
-    displayNameLabel: string,
+    displayNameLabel?: string,
     isPasswordInput?: boolean,
     placeholder?: string,
     hasError?: boolean,
     rules?: Omit<RegisterOptions<FieldValues, string>, "disabled" | "setValueAs" | "valueAsNumber" | "valueAsDate"> | undefined
 }
 
-export default function Input({ label, control, displayNameLabel, isPasswordInput = false, hasError = false, rules = undefined, placeholder = '' }: Props) {
+export default function Input({ label, control, displayNameLabel = '', isPasswordInput = false, hasError = false, rules = undefined, placeholder = '' }: Props) {
     const { field } = useController({
         control,
         defaultValue: '',
@@ -27,9 +27,11 @@ export default function Input({ label, control, displayNameLabel, isPasswordInpu
     if (isPasswordInput) {
         return (
             <View>
-                <Text style={styles.label}>
-                    {displayNameLabel}
-                </Text>
+                {displayNameLabel && (
+                    <Text style={styles.label}>
+                        {displayNameLabel}
+                    </Text>
+                )}
                 <View style={[styles.input, hasError ? styles.inputError : {}]}>
                     <TextInput
                         value={field.value}
@@ -46,10 +48,12 @@ export default function Input({ label, control, displayNameLabel, isPasswordInpu
     }
 
     return (
-        <View>
-            <Text style={styles.label}>
-                {displayNameLabel}
-            </Text>
+        <View >
+            {displayNameLabel && (
+                <Text style={styles.label}>
+                    {displayNameLabel}
+                </Text>
+            )}
             <TextInput
                 value={field.value}
                 onChangeText={field.onChange}

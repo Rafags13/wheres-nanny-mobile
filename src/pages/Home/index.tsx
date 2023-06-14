@@ -23,6 +23,12 @@ export default function Home() {
         setLoading(isLoadingData)
     }, [isLoadingData])
 
+    if (isLoadingData) {
+        return (
+            <></>
+        )
+    }
+
     if (error) {
         return (
             <ErrorModal />
@@ -74,7 +80,7 @@ export default function Home() {
                             nannyName={currentInformation?.mostRecentService.personName}
                             serviceDate={currentInformation?.mostRecentService.date}
                             serviceId={currentInformation?.mostRecentService.serviceId}
-                        />
+                            imageUri={currentInformation.mostRecentService.imageUri} />
                     )}
 
                 </View>

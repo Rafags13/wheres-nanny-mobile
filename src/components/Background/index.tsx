@@ -18,7 +18,7 @@ export default function Background({ children, header, hasBackIcon = false, isSc
 
         <DefineView isScroll={isScroll}
         >
-            <View >
+            <View>
                 {hasBackIcon ? (
                     <View>
                         <TouchableOpacity style={styles.backButtonHeader} onPress={() => navigator.goBack()}>
@@ -51,6 +51,7 @@ function DefineView({ children, isScroll }: NewViewProps) {
         return (
             <ScrollView style={styles.background}
                 showsVerticalScrollIndicator={false}
+                stickyHeaderIndices={[0]}
             >
                 {children}
             </ScrollView>
@@ -59,7 +60,7 @@ function DefineView({ children, isScroll }: NewViewProps) {
 
     return (
         <View style={{
-            flex: 1, paddingTop: 10,
+            flex: 1,
             backgroundColor: '#F8FDFE',
         }}>
             {children}

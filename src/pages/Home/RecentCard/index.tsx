@@ -8,16 +8,17 @@ import moment from "moment";
 type Props = {
     serviceId: number,
     nannyName: string,
-    serviceDate: Date
+    serviceDate: Date,
+    imageUri: string
 }
 
-export default function RecentCard({ nannyName, serviceDate }: Props) {
+export default function RecentCard({ nannyName, serviceDate, imageUri }: Props) {
     const currentUser = getCurrentUser();
     return (
         <TouchableOpacity style={{ alignItems: 'center' }}>
             <LinearGradient colors={['#3E9FEB', '#51a8ed']} style={styles.cardContainerLinearGradient}>
                 <View style={styles.mainInformationContainer}>
-                    <Image style={styles.personPhoto} source={{ uri: `data:image/png;base64,${currentUser?.imageUri}` }} />
+                    <Image style={styles.personPhoto} source={{ uri: `data:image/png;base64,${imageUri}` }} />
 
                     <View>
                         <Text style={styles.fullnameText}>{nannyName}</Text>

@@ -14,7 +14,8 @@ export const styles = StyleSheet.create({
         backgroundColor: 'white',
         alignItems: 'center',
         borderWidth: 1,
-        borderColor: '#3E9FEB'
+        borderColor: '#3E9FEB',
+        minWidth: '80%'
     },
     inputNonPassword: {
         paddingVertical: 10,

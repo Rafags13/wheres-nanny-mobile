@@ -7,6 +7,7 @@ export class DisplayInformationHomeUser {
 }
 
 export class recentCardDto {
+    imageUri: string = ""
     serviceId!: number
     personName: string = ""
     date!: Date
