@@ -11,6 +11,7 @@ import { globalStyles } from "../../styles/global.styles";
 import RecentCard from "../Home/RecentCard";
 import { styles } from "./style";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 
 export default function Services() {
     const currentUser = getCurrentUser();
@@ -43,7 +44,10 @@ export default function Services() {
     return (
         <Background
             header={
-                <Text style={globalStyles.headerTitle}>Meus Serviços</Text>
+                <View style={{ padding: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 15 }}>
+                    <Text style={[globalStyles.headerTitle]}>Meus Serviços</Text>
+                    <FontAwesome5 name="baby-carriage" size={24} color="#192553" />
+                </View>
             }>
 
             <FlatList

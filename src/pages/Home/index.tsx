@@ -12,9 +12,11 @@ import ErrorModal from "./ErrorModal";
 
 import { useAppSelector } from '../../app/hooks';
 import { LoadingContextType, LoadingContext } from "../../context/LoadingContext";
+import { useNavigation } from "@react-navigation/native";
 
 export default function Home() {
     const { setLoading } = useContext(LoadingContext) as LoadingContextType;
+    const navigator = useNavigation<any>();
     const currentInformation = useAppSelector((state) => state.userInformation.value)
     const isLoadingData = useAppSelector((state) => state.userInformation.statusQuery === 'loading')
     const error = useAppSelector((state) => state.userInformation.error);
@@ -59,7 +61,7 @@ export default function Home() {
                     <View style={styles.recentContainer}>
                         <Text style={globalStyles.headerTitle}>Recente</Text>
                         {currentInformation?.mostRecentService !== null && (
-                            <TouchableOpacity style={{ alignItems: 'flex-end' }}>
+                            <TouchableOpacity style={{ alignItems: 'flex-end' }} onPress={() => navigator.navigate('services')}>
                                 <Text style={styles.seeAll}>Ver todos</Text>
                             </TouchableOpacity>
                         )}
