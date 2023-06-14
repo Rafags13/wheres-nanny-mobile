@@ -56,12 +56,12 @@ export default function Services() {
                         </>
                     );
                     return (
-                        <TouchableOpacity id={index.toString()} style={{ backgroundColor: '#c5e2f9', padding: 15, marginVertical: 10, borderRadius: 10, gap: 10 }}>
+                        <TouchableOpacity id={index.toString()} style={styles.commonServiceCardContainer}>
                             <View style={{ flexDirection: 'row' }}>
                                 <Image style={styles.personPhoto} source={{ uri: `data:image/png;base64,${item.imageUri}` }} />
                                 <View>
-                                    <Text style={[globalStyles.commonText, { fontFamily: 'Gellix-Bold' }]}>{item.personName}</Text>
-                                    <Text style={[globalStyles.commonText, { fontSize: 14 }]}>Babá</Text>
+                                    <Text style={styles.commonServiceCardPersonNameText}>{item.personName}</Text>
+                                    <Text style={styles.commonServiceWorkText}>Babá</Text>
                                 </View>
                             </View>
                             <View style={styles.dataContainer}>
