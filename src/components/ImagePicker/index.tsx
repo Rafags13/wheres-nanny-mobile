@@ -4,18 +4,20 @@ import { TouchableOpacity } from "react-native";
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { getPhotoByBase64 } from "../../assets/util/functions";
+import { getCurrentUser } from "../../storage";
 import { common, styles } from "./style";
 
 type Props = {
     control: Control<FieldValues, string>,
+    defaultValue?: string,
     hasError?: boolean,
     label: string,
 }
 
-export default function ImagePicker({ control, label, hasError = false }: Props) {
+export default function ImagePicker({ control, label, hasError = false, defaultValue = '' }: Props) {
     const { field } = useController({
         control,
-        defaultValue: '',
+        defaultValue,
         name: 'photo',
     })
 

@@ -7,16 +7,18 @@ import { styles } from "./style";
 type Props = {
     children: ReactNode,
     hasBackIcon?: boolean,
+    scrollviewRef?: any,
     header?: ReactNode,
     isScroll?: boolean
 }
 
-export default function Background({ children, header, hasBackIcon = false, isScroll = false }: Props) {
+export default function Background({ children, header, hasBackIcon = false, isScroll = false, scrollviewRef }: Props) {
     const navigator = useNavigation<any>();
 
     return (
 
         <DefineView isScroll={isScroll}
+            scrollviewRef={scrollviewRef}
         >
             <View>
                 {hasBackIcon ? (
@@ -43,13 +45,15 @@ export default function Background({ children, header, hasBackIcon = false, isSc
 
 type NewViewProps = {
     children: ReactNode,
-    isScroll: boolean
+    isScroll: boolean,
+    scrollviewRef?: any
 }
 
-function DefineView({ children, isScroll }: NewViewProps) {
+function DefineView({ children, isScroll, scrollviewRef = null }: NewViewProps) {
     if (isScroll) {
         return (
             <ScrollView style={styles.background}
+                ref={scrollviewRef}
                 showsVerticalScrollIndicator={false}
                 stickyHeaderIndices={[0]}
             >

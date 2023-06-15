@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { Control, FieldValues, RegisterOptions, useController } from "react-hook-form";
-import { Text, TextInput, TouchableOpacity, View } from "react-native";
+import { StyleProp, Text, TextInput, TextStyle, TouchableOpacity, View } from "react-native";
 import { styles } from "./style";
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 type Props = {
     label: string,
     control: Control<FieldValues, string>,
+    style?: StyleProp<TextStyle>,
+    disabled?: boolean,
     displayNameLabel?: string,
     isPasswordInput?: boolean,
     placeholder?: string,
@@ -14,7 +16,7 @@ type Props = {
     rules?: Omit<RegisterOptions<FieldValues, string>, "disabled" | "setValueAs" | "valueAsNumber" | "valueAsDate"> | undefined
 }
 
-export default function Input({ label, control, displayNameLabel = '', isPasswordInput = false, hasError = false, rules = undefined, placeholder = '' }: Props) {
+export default function Input({ label, control, disabled = false, displayNameLabel = '', isPasswordInput = false, hasError = false, rules = undefined, placeholder = '', style }: Props) {
     const { field } = useController({
         control,
         defaultValue: '',
@@ -32,7 +34,7 @@ export default function Input({ label, control, displayNameLabel = '', isPasswor
                         {displayNameLabel}
                     </Text>
                 )}
-                <View style={[styles.input, hasError ? styles.inputError : {}]}>
+                <View style={[styles.commonInput, hasError ? styles.inputError : {}, style]}>
                     <TextInput
                         value={field.value}
                         onChangeText={field.onChange}
@@ -57,7 +59,8 @@ export default function Input({ label, control, displayNameLabel = '', isPasswor
             <TextInput
                 value={field.value}
                 onChangeText={field.onChange}
-                style={[styles.input, styles.inputNonPassword, hasError ? styles.inputError : {}]}
+                editable={!disabled}
+                style={[styles.inputNonPassword, hasError ? styles.inputError : {}, disabled ? styles.inputDisabled : {}, style]}
                 placeholder={placeholder}
             />
         </View>

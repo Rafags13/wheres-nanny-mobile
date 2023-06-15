@@ -1,7 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { getFocusedRouteNameFromRoute, } from '@react-navigation/native';
 import Favorites from '../../pages/Favorites';
@@ -52,7 +51,7 @@ export default function CommonUserTab() {
                 }} />
                 <Tab.Screen name="profile" component={Profile} options={{
                     tabBarIcon: (props) => (
-                        <Ionicons name="person" size={24} color={props.color} />
+                        <AntDesign name="idcard" size={24} color={props.color} />
                     )
                 }} />
             </Tab.Navigator>
