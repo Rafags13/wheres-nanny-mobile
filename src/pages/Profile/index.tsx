@@ -1,6 +1,6 @@
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import { useForm } from "react-hook-form";
-import { Image, Text, View } from "react-native";
+import { Image, Text, View, } from "react-native";
 import Background from "../../components/Background";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
@@ -10,14 +10,38 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { styles } from "./style";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
+import { useQuery } from "react-query";
+import { getData, viaCepRequestGetByCep } from "../../services/apiRequests";
+import { LoadingContext, LoadingContextType } from "../../context/LoadingContext";
+import { ProfileUpdateDataDto } from "../../dto/Person/ProfileUpdateDataDto";
 
 export default function Profile() {
+    const currentUser = getCurrentUser();
     const navigation = useNavigation<any>();
     const scrollViewRef = useRef<any>(null);
     const [inputsDisabled, setInputDisabled] = useState<boolean>(true);
+    const { setLoading } = useContext(LoadingContext) as LoadingContextType
     const { control } = useForm();
-    const currentUser = getCurrentUser();
+    const { data, isLoading } = useQuery('getProfileInformation', async () => {
+        const response = await getData(`Person/GetProfileInformation/${currentUser.id}`);
+        const viacepResponse = await viaCepRequestGetByCep(currentUser.cep);
+        const profileData: ProfileUpdateDataDto = {
+            ...response.data,
+            addressFromUpdateInformation: {
+                cep: viacepResponse.data.cep,
+                bairro: viacepResponse.data.bairro,
+                cidade: viacepResponse.data.localidade,
+                logradouro: viacepResponse.data.logradouro,
+                estado: viacepResponse.data.uf
+            },
+        };
+        return profileData;
+    });
+
+    if (isLoading) {
+        return (<></>)
+    }
 
     function scrollToTop() {
         scrollViewRef.current.scrollTo({ y: 0, animated: true });
@@ -43,31 +67,31 @@ export default function Profile() {
             <View style={{ padding: 15 }}>
                 <Text style={styles.personalInformationsTitle}>Informações Pessoais</Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Input disabled={inputsDisabled} label={"fullname"} control={control} displayNameLabel="Nome Completo" style={{ minWidth: '60%' }} />
-                    <Input disabled={inputsDisabled} label={"cpf"} control={control} displayNameLabel="Cpf" style={{ minWidth: '30%' }} />
+                    <Input defaultValue={data?.personInformation.fullname} disabled={inputsDisabled} label={"fullname"} control={control} displayNameLabel="Nome Completo" style={{ minWidth: '60%' }} />
+                    <Input defaultValue={data?.personInformation.cpf} disabled={inputsDisabled} label={"cpf"} control={control} displayNameLabel="Cpf" style={{ minWidth: '30%' }} />
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Input disabled={inputsDisabled} label={"email"} control={control} displayNameLabel="E-mail" style={{ minWidth: '55%' }} />
-                    <Input disabled={inputsDisabled} label={"cellphone"} control={control} displayNameLabel="telefone" style={{ minWidth: '35%' }} />
+                    <Input defaultValue={data?.personInformation.email} disabled={inputsDisabled} label={"email"} control={control} displayNameLabel="E-mail" style={{ minWidth: '55%' }} />
+                    <Input defaultValue={data?.personInformation.cellphone} disabled={inputsDisabled} label={"cellphone"} control={control} displayNameLabel="Telefone" style={{ minWidth: '35%' }} />
                 </View>
 
                 <Text style={[styles.personalInformationsTitle, { marginTop: 20 }]}>Endereço</Text>
 
-                <Input disabled={inputsDisabled} label={"publicPlace"} control={control} displayNameLabel="Logradouro" style={{ minWidth: '100%' }} />
-
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Input disabled={inputsDisabled} label={"cep"} control={control} displayNameLabel="Cep" style={{ minWidth: '55%' }} />
-                    <Input disabled label={"neighborhood"} control={control} displayNameLabel="Bairro" style={{ minWidth: '35%' }} />
+                    <Input defaultValue={data?.addressFromUpdateInformation.cep} disabled={inputsDisabled} label={"cep"} control={control} displayNameLabel="Cep" style={{ minWidth: '55%' }} />
+                    <Input defaultValue={data?.addressFromUpdateInformation.bairro} disabled label={"neighborhood"} control={control} displayNameLabel="Bairro" style={{ minWidth: '35%' }} />
                 </View>
 
+                <Input defaultValue={data?.addressFromUpdateInformation.logradouro} disabled={inputsDisabled} label={"publicPlace"} control={control} displayNameLabel="Logradouro" style={{ minWidth: '100%' }} />
+
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Input disabled label={"city"} control={control} displayNameLabel="Cidade" style={{ minWidth: '55%' }} />
-                    <Input disabled label={"state"} control={control} displayNameLabel="Estado" style={{ minWidth: '35%' }} />
+                    <Input defaultValue={data?.addressFromUpdateInformation.cidade} disabled label={"city"} control={control} displayNameLabel="Cidade" style={{ minWidth: '55%' }} />
+                    <Input defaultValue={data?.addressFromUpdateInformation.estado} disabled label={"state"} control={control} displayNameLabel="Estado" style={{ minWidth: '35%' }} />
                 </View>
 
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
-                    <Input disabled={inputsDisabled} label={"complement"} control={control} displayNameLabel="Complemento" style={{ minWidth: '75%' }} />
-                    <Input disabled={inputsDisabled} label={"number"} control={control} displayNameLabel="Número" style={{ minWidth: '15%' }} />
+                    <Input defaultValue={data?.addressFromUpdateInformation.complement} disabled={inputsDisabled} label={"complement"} control={control} displayNameLabel="Complemento" style={{ minWidth: '75%' }} />
+                    <Input defaultValue={data?.addressFromUpdateInformation.number} disabled={inputsDisabled} label={"number"} control={control} displayNameLabel="Número" style={{ minWidth: '15%' }} />
                 </View>
                 {inputsDisabled ? (
                     <Button

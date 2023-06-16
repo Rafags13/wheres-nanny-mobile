@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 type Props = {
     label: string,
     control: Control<FieldValues, string>,
+    defaultValue?: string,
     style?: StyleProp<TextStyle>,
     disabled?: boolean,
     displayNameLabel?: string,
@@ -16,10 +17,10 @@ type Props = {
     rules?: Omit<RegisterOptions<FieldValues, string>, "disabled" | "setValueAs" | "valueAsNumber" | "valueAsDate"> | undefined
 }
 
-export default function Input({ label, control, disabled = false, displayNameLabel = '', isPasswordInput = false, hasError = false, rules = undefined, placeholder = '', style }: Props) {
+export default function Input({ label, control, defaultValue = '', disabled = false, displayNameLabel = '', isPasswordInput = false, hasError = false, rules = undefined, placeholder = '', style }: Props) {
     const { field } = useController({
         control,
-        defaultValue: '',
+        defaultValue,
         rules,
         name: label,
     })
