@@ -3,6 +3,8 @@ import { createContext, ReactNode, useState } from "react";
 export type ModalContextType = {
     isVisible: boolean,
     showModal: (modalInfo: ModalInfo) => void,
+    questionStatus: (value: boolean) => void,
+    modalQuestionResponse: boolean,
     closeModal: () => void,
     modalInfo: ModalInfo
 }
@@ -13,7 +15,7 @@ type Props = {
     children: ReactNode
 }
 
-type ModalType = 'error' | 'success';
+type ModalType = 'error' | 'success' | 'question';
 
 type ModalInfo = {
     message: string,
@@ -23,6 +25,7 @@ type ModalInfo = {
 export default function ModalProvider({ children }: Props) {
     const [isVisible, setOpenModal] = useState<boolean>(false);
     const [modalInfo, setModalInfo] = useState<ModalInfo>({ message: '', modalType: 'success' });
+    const [modalQuestionResponse, setModalQuestionResponse] = useState<boolean>(true);
 
     function showModal(modalInfo: ModalInfo) {
         setOpenModal(true);
@@ -33,8 +36,14 @@ export default function ModalProvider({ children }: Props) {
         setOpenModal(false);
     }
 
+    function questionStatus(value: boolean) {
+        setModalQuestionResponse(value);
+        setOpenModal(false);
+    }
+
+
     return (
-        <ModalContext.Provider value={{ isVisible, showModal, closeModal, modalInfo }}>{children}</ModalContext.Provider>
+        <ModalContext.Provider value={{ isVisible, showModal, closeModal, modalInfo, questionStatus, modalQuestionResponse }}>{children}</ModalContext.Provider>
     )
 
 }

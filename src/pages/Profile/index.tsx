@@ -15,14 +15,17 @@ import { useQuery } from "react-query";
 import { getData, viaCepRequestGetByCep } from "../../services/apiRequests";
 import { LoadingContext, LoadingContextType } from "../../context/LoadingContext";
 import { ProfileUpdateDataDto } from "../../dto/Person/ProfileUpdateDataDto";
+import { ModalContextType, ModalContext } from "../../context/ModalContext";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { updatePersonValidationSchema } from "../../assets/util/yupValidations";
 
 export default function Profile() {
     const currentUser = getCurrentUser();
     const navigation = useNavigation<any>();
     const scrollViewRef = useRef<any>(null);
-    const [inputsDisabled, setInputDisabled] = useState<boolean>(true);
-    const { setLoading } = useContext(LoadingContext) as LoadingContextType
-    const { control } = useForm();
+    const { showModal, modalQuestionResponse, questionStatus } = useContext(ModalContext) as ModalContextType;
+    const { setLoading } = useContext(LoadingContext) as LoadingContextType;
+    const { control, handleSubmit } = useForm({ resolver: yupResolver(updatePersonValidationSchema) });
     const { data, isLoading } = useQuery('getProfileInformation', async () => {
         const response = await getData(`Person/GetProfileInformation/${currentUser.id}`);
         const viacepResponse = await viaCepRequestGetByCep(currentUser.cep);
@@ -39,8 +42,21 @@ export default function Profile() {
         return profileData;
     });
 
+    useEffect(() => {
+        setLoading(isLoading);
+    }, [isLoading]);
+
     if (isLoading) {
         return (<></>)
+    }
+
+    function updateInformations(data: any) {
+        console.log(data);
+        // TODO: get this data and send to backend to update the user information
+    }
+
+    function onInvalid(data: any) {
+        showModal({ modalType: 'error', message: JSON.stringify(data) }) // TODO: make a message factor to display correctly the message
     }
 
     function scrollToTop() {
@@ -67,22 +83,22 @@ export default function Profile() {
             <View style={{ padding: 15 }}>
                 <Text style={styles.personalInformationsTitle}>Informações Pessoais</Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Input defaultValue={data?.personInformation.fullname} disabled={inputsDisabled} label={"fullname"} control={control} displayNameLabel="Nome Completo" style={{ minWidth: '60%' }} />
-                    <Input defaultValue={data?.personInformation.cpf} disabled={inputsDisabled} label={"cpf"} control={control} displayNameLabel="Cpf" style={{ minWidth: '30%' }} />
+                    <Input defaultValue={data?.personInformation.fullname} disabled={modalQuestionResponse} label={"fullname"} control={control} displayNameLabel="Nome Completo" style={{ minWidth: '60%' }} />
+                    <Input defaultValue={data?.personInformation.cpf} disabled={modalQuestionResponse} label={"cpf"} control={control} displayNameLabel="Cpf" style={{ minWidth: '30%' }} />
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Input defaultValue={data?.personInformation.email} disabled={inputsDisabled} label={"email"} control={control} displayNameLabel="E-mail" style={{ minWidth: '55%' }} />
-                    <Input defaultValue={data?.personInformation.cellphone} disabled={inputsDisabled} label={"cellphone"} control={control} displayNameLabel="Telefone" style={{ minWidth: '35%' }} />
+                    <Input defaultValue={data?.personInformation.email} disabled={modalQuestionResponse} label={"email"} control={control} displayNameLabel="E-mail" style={{ minWidth: '55%' }} />
+                    <Input defaultValue={data?.personInformation.cellphone} disabled={modalQuestionResponse} label={"cellphone"} control={control} displayNameLabel="Telefone" style={{ minWidth: '35%' }} />
                 </View>
 
                 <Text style={[styles.personalInformationsTitle, { marginTop: 20 }]}>Endereço</Text>
 
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                    <Input defaultValue={data?.addressFromUpdateInformation.cep} disabled={inputsDisabled} label={"cep"} control={control} displayNameLabel="Cep" style={{ minWidth: '55%' }} />
+                    <Input defaultValue={data?.addressFromUpdateInformation.cep} disabled={modalQuestionResponse} label={"cep"} control={control} displayNameLabel="Cep" style={{ minWidth: '55%' }} />
                     <Input defaultValue={data?.addressFromUpdateInformation.bairro} disabled label={"neighborhood"} control={control} displayNameLabel="Bairro" style={{ minWidth: '35%' }} />
                 </View>
 
-                <Input defaultValue={data?.addressFromUpdateInformation.logradouro} disabled={inputsDisabled} label={"publicPlace"} control={control} displayNameLabel="Logradouro" style={{ minWidth: '100%' }} />
+                <Input defaultValue={data?.addressFromUpdateInformation.logradouro} disabled={modalQuestionResponse} label={"publicPlace"} control={control} displayNameLabel="Logradouro" style={{ minWidth: '100%' }} />
 
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <Input defaultValue={data?.addressFromUpdateInformation.cidade} disabled label={"city"} control={control} displayNameLabel="Cidade" style={{ minWidth: '55%' }} />
@@ -90,14 +106,14 @@ export default function Profile() {
                 </View>
 
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
-                    <Input defaultValue={data?.addressFromUpdateInformation.complement} disabled={inputsDisabled} label={"complement"} control={control} displayNameLabel="Complemento" style={{ minWidth: '75%' }} />
-                    <Input defaultValue={data?.addressFromUpdateInformation.number} disabled={inputsDisabled} label={"number"} control={control} displayNameLabel="Número" style={{ minWidth: '15%' }} />
+                    <Input defaultValue={data?.addressFromUpdateInformation.complement} disabled={modalQuestionResponse} label={"complement"} control={control} displayNameLabel="Complemento" style={{ minWidth: '75%' }} />
+                    <Input defaultValue={data?.addressFromUpdateInformation.number} disabled={modalQuestionResponse} label={"number"} control={control} displayNameLabel="Número" style={{ minWidth: '15%' }} />
                 </View>
-                {inputsDisabled ? (
+                {modalQuestionResponse ? (
                     <Button
                         label={"Alterar"}
                         onClick={() => {
-                            setInputDisabled(false);
+                            questionStatus(false);
                             scrollToTop();
                         }}
                         icon={
@@ -108,10 +124,7 @@ export default function Profile() {
                     <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginVertical: 10 }}>
                         <Button
                             label={"Salvar"}
-                            onClick={() => {
-                                setInputDisabled(true);
-                                scrollToTop();
-                            }}
+                            onClick={handleSubmit(updateInformations, onInvalid)}
                             containerStyle={{ backgroundColor: '#218838', width: '45%' }}
                             icon={
                                 <FontAwesome name="check" size={16} color={'white'} />
@@ -119,7 +132,9 @@ export default function Profile() {
                         />
                         <Button
                             label={"Cancelar"}
-                            onClick={() => console.log('')}
+                            onClick={() => {
+                                showModal({ modalType: 'question', message: 'Deseja sair sem salvar as alterações?' })
+                            }}
                             containerStyle={{ backgroundColor: '#C82333', width: '45%' }}
                             icon={
                                 <FontAwesome name="remove" size={16} color="white" />

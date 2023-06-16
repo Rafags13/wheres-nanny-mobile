@@ -21,3 +21,11 @@ export const registerValidationSchemaNanny =
         criminalRecord: yup.string().required('é necessário que você insira os seus antecedentes criminais.'),
         servicePrice: yup.string().required('é necessário informar um preço para o seu serviço.'),
     })
+
+export const updatePersonValidationSchema = yup.object().shape({
+    fullname: yup.string().required("O Nome é obrigatório."),
+    cpf: yup.string().required("O CPF é obrigatório").matches(REGEX_CPF, 'Informe um CPF válido.'),
+    email: yup.string().required("o E-mail é obrigatório.").email("Informe um E-mail válido."),
+    cellphone: yup.string().required("O Telefone é obrigatório.").matches(REGEX_CELLPHONE, 'Informe um Telefone válido.'),
+    cep: yup.string().required('o CEP é obrigatório.').matches(REGEX_CEP, 'Informe um CEP válido.'),
+});
