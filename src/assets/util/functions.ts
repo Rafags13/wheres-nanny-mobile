@@ -105,7 +105,17 @@ export function createModelRegisterNanny(data: any): RegisterNannyDto {
 }
 
 export function formatCellphoneNumber(cellphone: string) {
-    const formatedCellphone = cellphone.toString().replace(/(\d{2})(\d{1})(\d{4})(\d{4})/, "($1) $2 $3-$4");
+    const formatedCellphone = cellphone.toString().replace(/(\d{2})(\d{1})(\d{4})(\d{4})/, "($1) $2$3-$4");
 
     return formatedCellphone;
+}
+
+export function formatCpf(cpf: string) {
+    const formatedCpf = cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+
+    return formatedCpf;
+}
+
+export function removeSpecialCharacter(value: string) {
+    return value.replace(/[^\w\s]/gi, '').replace(/\s/g, '');
 }

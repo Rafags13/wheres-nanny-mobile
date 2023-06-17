@@ -37,6 +37,7 @@ export default function Input({ label, control, defaultValue = '', disabled = fa
                 )}
                 <View style={[styles.commonInput, hasError ? styles.inputError : {}, style]}>
                     <TextInput
+                        numberOfLines={1}
                         value={field.value}
                         onChangeText={field.onChange}
                         style={styles.inputPassword}

@@ -1,5 +1,6 @@
 export class ProfileUpdateDataDto {
     personInformation!: {
+        id: number,
         fullname: string,
         cpf: string,
         email: string,

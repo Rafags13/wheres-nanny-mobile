@@ -38,7 +38,6 @@ export default function ModalProvider({ children }: Props) {
 
     function questionStatus(value: boolean) {
         setModalQuestionResponse(value);
-        setOpenModal(false);
     }
 
 
