@@ -48,12 +48,13 @@ export default function CepInput({ label, control, displayNameLabel = '', defaul
                     {displayNameLabel}
                 </Text>
             )}
-            <View style={[styles.commonInput, hasError ? styles.inputError : {}, style]}>
+            <View style={[styles.commonInput, hasError ? styles.inputError : {}, disabled ? styles.inputDisabled : {}, style]}>
                 <TextInput
                     value={field.value}
                     onChangeText={field.onChange}
                     style={styles.inputPassword}
                     placeholder={placeholder}
+                    editable={!disabled}
                 />
                 <TouchableOpacity onPress={searchAddressByCep}>
                     <FontAwesome name={'search'} color={'#192553'} size={24} />

@@ -29,3 +29,9 @@ export const updatePersonValidationSchema = yup.object().shape({
     cellphone: yup.string().required("O Telefone é obrigatório.").matches(REGEX_CELLPHONE, 'Informe um Telefone válido.'),
     cep: yup.string().required('o CEP é obrigatório.').matches(REGEX_CEP, 'Informe um CEP válido.'),
 });
+
+export const updatePasswordValidationSchema = yup.object().shape({
+    oldPassword: yup.string().required("É necessário informar a senha antiga."),
+    newPassword: yup.string().required("É necessário informar uma nova senha."),
+    repeatNewPassword: yup.string().required("É necessário informar novamente a senha.").oneOf([yup.ref('newPassword')], "As senhas não conferem.")
+})
