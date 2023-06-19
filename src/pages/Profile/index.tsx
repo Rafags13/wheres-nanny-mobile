@@ -20,7 +20,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { updatePasswordValidationSchema, updatePersonValidationSchema } from "../../assets/util/yupValidations";
 import { formatCellphoneNumber, formatCpf, removeSpecialCharacter } from "../../assets/util/functions";
 import CepInput from "../../components/CepInput";
-import { UpdatePasswordDto } from "../../dto/User/updatePasswordDto";
+import { UpdatePasswordDto } from "../../dto/User/UpdatePasswordDto";
 
 export default function Profile() {
     const currentUser = getCurrentUser();
