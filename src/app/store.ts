@@ -1,9 +1,11 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import nannyListReducer, { loadInitialHomeInformation } from '../features/listNannySlice';
+import favoriteListNannySlice from '../features/favoriteListNannySlice';
 
 export const store = configureStore({
     reducer: {
         userInformation: nannyListReducer,
+        favoriteNannies: favoriteListNannySlice
     },
 });
 

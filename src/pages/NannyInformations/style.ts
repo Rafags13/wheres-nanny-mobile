@@ -18,6 +18,7 @@ const styles = StyleSheet.create({
     basicNannyInformationSection: {
         flexDirection: 'row',
         marginTop: 20,
+        justifyContent: 'space-around'
     },
     nameAndRatingContainer: {
         justifyContent: 'space-around',
@@ -49,9 +50,9 @@ const styles = StyleSheet.create({
         fontSize: 20,
     },
     contactNannyContainer: {
-        flexDirection: 'row',
         justifyContent: 'space-between',
-        marginVertical: 20,
+        marginVertical: 10,
+        marginBottom: 10
     },
     dateTimeTitle: {
         ...common.titleLabel,

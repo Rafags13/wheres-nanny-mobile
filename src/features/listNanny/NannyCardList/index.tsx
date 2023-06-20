@@ -2,8 +2,12 @@ import { FlatList, ListRenderItem, ListRenderItemInfo } from "react-native"
 import { useAppSelector } from "../../../app/hooks"
 import NannyCard, { NannyCardProps } from "./NannyCard"
 
-export default function NannyCardList() {
-    const nannyList = useAppSelector((state) => state.userInformation.value.nannyListOrderedByFilter)
+type Props = {
+    nannyList: NannyCardProps[]
+
+}
+
+export default function NannyCardList({ nannyList }: Props) {
     return (
         <FlatList
             data={nannyList}

@@ -1,5 +1,5 @@
 import { CommonActions, RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { useQuery } from "react-query";
 import Background from "../../components/Background";
@@ -11,25 +11,26 @@ import { getData, postData } from "../../services/apiRequests";
 import { globalStyles } from "../../styles/global.styles";
 import { Slider } from '@miblanchard/react-native-slider';
 import Feather from 'react-native-vector-icons/Feather'
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import Octicons from 'react-native-vector-icons/Octicons';
 import styles from "./style";
 import LinearGradient from "react-native-linear-gradient";
-import { getDistance, getPreciseDistance } from 'geolib';
-import { getCurrentUser, storage } from "../../storage";
-import DateTimePicker, { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
+import { getCurrentUser } from "../../storage";
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import { formatCellphoneNumber } from "../../assets/util/functions";
 import moment from "moment";
-import { Alert } from "react-native";
 import { ModalContextType, ModalContext } from "../../context/ModalContext";
-import { useDispatch } from "react-redux";
+import { useDispatch, } from "react-redux";
 import { loadInitialHomeInformation } from "../../features/listNannySlice";
+import { addFavoriteNanny, FavoritedNanny, removingFavoriteFromNanny } from '../../features/favoriteListNannySlice';
+import Heart from "../../components/Heart";
+import { useAppSelector } from "../../app/hooks";
 
 export default function NannyInformations() {
     const { setLoading } = useContext(LoadingContext) as LoadingContextType;
     const dispatch = useDispatch<any>();
     const currentUser = getCurrentUser();
     const { params } = useRoute<RouteProp<{ params: { nannyId: number } }, 'params'>>();
+    const [isFavorited, setIsFavorited] = useState<boolean>(false);
+    const currentNanny = useAppSelector((state) => state.favoriteNannies.listFavoriteNanny.find(x => x.id === params.nannyId));
     const { showModal } = useContext(ModalContext) as ModalContextType;
     const [date, setDate] = useState<Date>(new Date());
     const { data, isLoading } = useQuery('nanny', async () => {
@@ -41,7 +42,6 @@ export default function NannyInformations() {
     const navigation = useNavigation<any>();
 
     function openDatePicker(mode: 'date' | 'time') {
-        console.log(date.toLocaleDateString('pt-PT'))
         DateTimePickerAndroid.open({
             mode,
             value: date,
@@ -93,19 +93,39 @@ export default function NannyInformations() {
     const nannyInformation: NannyContractDto = data?.data;
 
     if (isLoading) return (<></>)
-
     return (
         <Background hasBackIcon>
             <View style={styles.basicNannyInformationSection}>
-                <Image style={styles.nannyProfilePicture} source={{ uri: `data:image/png;base64,${nannyInformation.imageProfileBase64Uri}` }} />
-                <View style={styles.nameAndRatingContainer}>
-                    <Text style={[globalStyles.headerTitle, { fontSize: 18 }]}>{nannyInformation.person.name}</Text>
-                    <Text style={[globalStyles.headerSubtitle, { fontSize: 16, textAlign: 'left' }]}>babá</Text>
-                    <View style={styles.starsRatingContainer}>
-                        <Stars rating={nannyInformation.rankAverageStars} tintBackgroundColorStar={'white'} backgroundColorStars={"#c4c4c4"} />
-                        <Text style={styles.textStarsNumber}>{nannyInformation.rankAverageStars}</Text>
-                        <Text>({nannyInformation.rankCommentCount})</Text>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%', paddingHorizontal: 10 }}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Image style={styles.nannyProfilePicture} source={{ uri: `data:image/png;base64,${nannyInformation.imageProfileBase64Uri}` }} />
+                        <View style={styles.nameAndRatingContainer}>
+
+                            <Text style={[globalStyles.headerTitle, { fontSize: 18 }]}>{nannyInformation.person.name}</Text>
+
+                            <Text style={[globalStyles.headerSubtitle, { fontSize: 16, textAlign: 'left' }]}>babá</Text>
+                            <View style={styles.starsRatingContainer}>
+                                <Stars rating={nannyInformation.rankAverageStars} tintBackgroundColorStar={'white'} backgroundColorStars={"#c4c4c4"} />
+                                <Text style={styles.textStarsNumber}>{nannyInformation.rankAverageStars}</Text>
+                                <Text>({nannyInformation.rankCommentCount})</Text>
+                            </View>
+                        </View>
                     </View>
+                    <Heart isFavorited={currentNanny?.isFavorited ?? false} setIsFavorited={(isFavoriting) => {
+                        if (isFavoriting) {
+                            var newFavoriteNanny: FavoritedNanny = {
+                                id: nannyInformation.nannyId,
+                                fullname: nannyInformation.person.name,
+                                starsCounting: nannyInformation.rankAverageStars,
+                                rankCommentCount: nannyInformation.rankCommentCount.toString(),
+                                imageUri: nannyInformation.imageProfileBase64Uri,
+                                isFavorited: true
+                            }
+                            dispatch(addFavoriteNanny(newFavoriteNanny));
+                        } else {
+                            dispatch(removingFavoriteFromNanny(nannyInformation?.nannyId));
+                        }
+                    }} style={{}} />
                 </View>
             </View>
             <LinearGradient colors={['white', '#F6F6F6']} style={styles.mainContentContainer}>
@@ -171,7 +191,6 @@ export default function NannyInformations() {
                     </View>
                 </View>
                 <Button containerStyle={{ maxWidth: 150, borderRadius: 15, height: 60 }} textStyle={{ fontSize: 16 }} label={"Contratar agora"} onClick={contractNanny} />
-                {/* Add event that sends to api the necessary informations to contract */}
             </View>
 
         </Background >

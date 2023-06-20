@@ -21,6 +21,8 @@ export default function Home() {
     const isLoadingData = useAppSelector((state) => state.userInformation.statusQuery === 'loading')
     const error = useAppSelector((state) => state.userInformation.error);
 
+    const nannyList = useAppSelector((state) => state.userInformation.value.nannyListOrderedByFilter)
+
     useEffect(() => {
         setLoading(isLoadingData)
     }, [isLoadingData])
@@ -92,7 +94,7 @@ export default function Home() {
 
                     <ListFilterNanny />
 
-                    <NannyCardList />
+                    <NannyCardList nannyList={nannyList} />
                 </View>
             </View>
         </Background>
