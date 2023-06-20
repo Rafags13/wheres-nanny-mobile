@@ -14,13 +14,16 @@ const token = getToken();
 export default function StackNavigator() {
     const navigator = useNavigation<any>();
     useEffect(() => {
-        async function findUserLogged() {
+        function findUserLogged() {
             if (token !== '') {
                 const currentUser = getCurrentUser();
                 if (currentUser.isNanny) {
                     navigator.navigate('nannyUser', { screen: 'dashboard' });
+                    return;
                 }
+
                 navigator.navigate('commonUser', { screen: 'homeDerivatedPages' });
+                return;
             }
         }
 

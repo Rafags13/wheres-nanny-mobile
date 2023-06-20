@@ -48,7 +48,7 @@ export default function Profile() {
 
     useEffect(() => {
         setLoading(isLoading)
-    }, [])
+    }, [isLoading])
 
     if (isLoading) {
         return (<></>)
