@@ -30,8 +30,8 @@ export default function CurrentModal() {
                 {modalInfo.modalType === 'question' ?
                     (
                         <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-around' }}>
-                            <Button label={'Sim'} onClick={() => questionStatus(true)} containerStyle={{ backgroundColor: '#218838', width: '45%' }} />
-                            <Button label={'Cancelar'} onClick={() => questionStatus(false)} containerStyle={{ backgroundColor: '#C82333', width: '45%' }} />
+                            <Button label={'Sim'} onClick={() => { questionStatus(true); closeModal() }} containerStyle={{ backgroundColor: '#218838', width: '45%' }} />
+                            <Button label={'Cancelar'} onClick={() => { questionStatus(false); closeModal(); }} containerStyle={{ backgroundColor: '#C82333', width: '45%' }} />
                         </View>
                     ) : (
                         <Button label={"Ok"} onClick={closeModal} />

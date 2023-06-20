@@ -18,7 +18,7 @@ export default function StackNavigator() {
             if (token !== '') {
                 const currentUser = getCurrentUser();
                 if (currentUser.isNanny) {
-                    navigator.navigate('nannyUser', { screen: 'dashboard' })
+                    navigator.navigate('nannyUser', { screen: 'dashboard' });
                 }
                 navigator.navigate('commonUser', { screen: 'homeDerivatedPages' });
             }

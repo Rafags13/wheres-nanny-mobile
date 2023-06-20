@@ -33,12 +33,10 @@ export default function CepInput({ label, control, displayNameLabel = '', defaul
     async function searchAddressByCep() {
         const viacepResponse = await viaCepRequestGetByCep(removeAllSpecialCharacters(field.value));
         const { bairro, localidade, uf, logradouro } = viacepResponse.data;
-        console.log(viacepResponse.data);
         setValue("neighborhood", bairro);
         setValue("publicPlace", logradouro);
         setValue("city", localidade);
         setValue("state", uf);
-        // console.log(neighborhood);
     }
 
     return (

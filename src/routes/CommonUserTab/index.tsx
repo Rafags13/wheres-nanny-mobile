@@ -52,7 +52,7 @@ export default function CommonUserTab() {
                 <Tab.Screen name="profile" component={Profile} options={{
                     tabBarIcon: (props) => (
                         <AntDesign name="idcard" size={24} color={props.color} />
-                    )
+                    ),
                 }} />
             </Tab.Navigator>
         </Provider>

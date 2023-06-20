@@ -8,17 +8,7 @@ export default function Dashboard() {
     return (
         <View>
             <Text>Dashboard works</Text>
-            <Button label={"Sair"} onClick={() => {
-                logOut();
-                navigation.dispatch(
-                    CommonActions.reset({
-                        index: 1,
-                        routes: [
-                            { name: 'login' },
-                        ],
-                    })
-                );
-            }} />
+
         </View>
     )
 }

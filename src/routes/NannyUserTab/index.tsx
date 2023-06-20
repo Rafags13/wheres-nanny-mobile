@@ -2,6 +2,10 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Provider } from "react-redux";
 import Entypo from 'react-native-vector-icons/Entypo';
 import Dashboard from "../../pages/Dashboard";
+import MyServices from "../../pages/MyServices";
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Profile from "../../pages/Profile";
 
 const Tab = createBottomTabNavigator();
 
@@ -21,6 +25,21 @@ export default function NannyUserTab() {
                     <Entypo name="circular-graph" size={24} color={props.color} />
                 )
             }} />
+
+            <Tab.Screen name="myServices" component={MyServices} options={{
+                tabBarIcon: (props) => (
+                    <MaterialCommunityIcons name="human-baby-changing-table" size={24} color={props.color} />
+                )
+            }}
+            />
+
+            <Tab.Screen name="nanny-profile" component={Profile} options={{
+                tabBarIcon: (props) => (
+                    <AntDesign name="idcard" size={24} color={props.color} />
+                ),
+            }}
+            />
+
         </Tab.Navigator>
     )
 }

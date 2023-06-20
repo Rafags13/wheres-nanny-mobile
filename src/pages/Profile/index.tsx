@@ -30,7 +30,7 @@ export default function Profile() {
     const { setLoading } = useContext(LoadingContext) as LoadingContextType;
     const updateProfileForm = useForm({ resolver: yupResolver(updatePersonValidationSchema) });
     const updatePasswordForm = useForm({ resolver: yupResolver(updatePasswordValidationSchema) })
-    const { data, isLoading } = useQuery('getProfileInformation', async () => {
+    const { data, isLoading } = useQuery(['getProfileInformation', currentUser.id], async () => {
         const response = await getData(`Person/GetProfileInformation/${currentUser.id}`);
         const viacepResponse = await viaCepRequestGetByCep(currentUser.cep);
         const profileData: ProfileUpdateDataDto = {
@@ -47,8 +47,8 @@ export default function Profile() {
     });
 
     useEffect(() => {
-        setLoading(isLoading);
-    }, [isLoading]);
+        setLoading(isLoading)
+    }, [])
 
     if (isLoading) {
         return (<></>)
@@ -214,14 +214,7 @@ export default function Profile() {
                         label={"Sair"}
                         onClick={() => {
                             logOut();
-                            navigation.dispatch(
-                                CommonActions.reset({
-                                    index: 1,
-                                    routes: [
-                                        { name: 'login' },
-                                    ],
-                                })
-                            );
+                            navigation.replace("login")
                         }}
                         containerStyle={{ backgroundColor: '#C82333', marginTop: 20 }}
                         icon={

@@ -6,7 +6,6 @@ import { NannyCardProps } from '../features/listNanny/NannyCardList/NannyCard';
 import { FavoritedNanny } from '../features/favoriteListNannySlice';
 
 export const storage = new MMKV({ id: 'WheresNanny' });
-storage.set('favoritedNannies', JSON.stringify([]));
 
 export function getToken() {
     const TOKEN = storage.getString('token') || ''
@@ -21,7 +20,7 @@ export function getCurrentUser() {
 }
 
 export function getAllNannies(): FavoritedNanny[] {
-    const allNannies: FavoritedNanny[] = JSON.parse(storage.getString('favoritedNannies') as string);
+    const allNannies: FavoritedNanny[] = JSON.parse(storage.getString('favoritedNannies') as string || JSON.stringify([]));
 
     return allNannies;
 }
