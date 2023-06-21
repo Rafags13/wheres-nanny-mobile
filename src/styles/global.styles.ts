@@ -18,7 +18,6 @@ export const globalStyles = StyleSheet.create({
     title: {
         ...common.defaultText,
         fontSize: 32,
-        marginTop: 10,
         ...common.title
     },
     subtitle: {

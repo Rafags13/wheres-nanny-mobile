@@ -6,6 +6,8 @@ import MyServices from "../../pages/MyServices";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Profile from "../../pages/Profile";
+import ServicesNavigatorPages from "./ServicesNavigatorPages";
+import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 
 const Tab = createBottomTabNavigator();
 
@@ -26,11 +28,19 @@ export default function NannyUserTab() {
                 )
             }} />
 
-            <Tab.Screen name="myServices" component={MyServices} options={{
+            <Tab.Screen name="myServices" component={ServicesNavigatorPages} options={({ route }) => ({
                 tabBarIcon: (props) => (
                     <MaterialCommunityIcons name="human-baby-changing-table" size={24} color={props.color} />
-                )
-            }}
+                ),
+                tabBarStyle: ((route) => {
+                    const routeName = getFocusedRouteNameFromRoute(route) ?? "";
+
+                    if (routeName === 'serviceInformation') {
+                        return { display: "none" }
+                    }
+                    return
+                })(route),
+            })}
             />
 
             <Tab.Screen name="nanny-profile" component={Profile} options={{
