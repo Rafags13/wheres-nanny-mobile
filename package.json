@@ -28,6 +28,7 @@
     "react-hook-form": "^7.43.9",
     "react-native": "0.71.0",
     "react-native-animated-loader": "^1.0.0",
+    "react-native-chart-kit": "^6.12.0",
     "react-native-document-picker": "^8.2.0",
     "react-native-fs": "^2.20.0",
     "react-native-gesture-handler": "^2.9.0",

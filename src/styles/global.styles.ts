@@ -7,6 +7,7 @@ const common = StyleSheet.create({
     },
     title: {
         fontFamily: 'Gellix-Bold',
+        color: '#192553',
     }
 })
 
@@ -22,9 +23,8 @@ export const globalStyles = StyleSheet.create({
     },
     subtitle: {
         fontSize: 24,
-        fontWeight: 'bold',
         marginTop: 10,
-        ...common.defaultText
+        ...common.title
     },
     shadow: {
         shadowColor: "#000",
