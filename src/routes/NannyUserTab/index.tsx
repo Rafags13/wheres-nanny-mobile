@@ -8,6 +8,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Profile from "../../pages/Profile";
 import ServicesNavigatorPages from "./ServicesNavigatorPages";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
+import DashboardNavigatorPages from "./DashboardNavigatorPages";
 
 const Tab = createBottomTabNavigator();
 
@@ -22,7 +23,7 @@ export default function NannyUserTab() {
             }}
             initialRouteName="dashboard"
         >
-            <Tab.Screen name="dashboard" component={Dashboard} options={{
+            <Tab.Screen name="dashboardNavigator" component={DashboardNavigatorPages} options={{
                 tabBarIcon: (props) => (
                     <Entypo name="circular-graph" size={24} color={props.color} />
                 )
@@ -32,14 +33,6 @@ export default function NannyUserTab() {
                 tabBarIcon: (props) => (
                     <MaterialCommunityIcons name="human-baby-changing-table" size={24} color={props.color} />
                 ),
-                tabBarStyle: ((route) => {
-                    const routeName = getFocusedRouteNameFromRoute(route) ?? "";
-
-                    if (routeName === 'serviceInformation') {
-                        return { display: "none" }
-                    }
-                    return
-                })(route),
             })}
             />
 

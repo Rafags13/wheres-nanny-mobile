@@ -12,9 +12,11 @@ import RecentCard from "../Home/RecentCard";
 import { styles } from "./style";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
+import { useNavigation } from "@react-navigation/native";
 
 export default function Services() {
     const currentUser = getCurrentUser();
+    const navigator = useNavigation<any>();
     const [page, setPage] = useState<number>(0);
     const [loadingFooterActitivity, setLoadingFooterActitivity] = useState<boolean>(false);
     const { setLoading } = useContext(LoadingContext) as LoadingContextType;
@@ -60,7 +62,7 @@ export default function Services() {
                         </>
                     );
                     return (
-                        <TouchableOpacity id={index.toString()} style={styles.commonServiceCardContainer}>
+                        <TouchableOpacity id={index.toString()} style={styles.commonServiceCardContainer} onPress={() => navigator.navigate('serviceInformation', { serviceId: item.serviceId, isCommonUser: true })}>
                             <View style={{ flexDirection: 'row' }}>
                                 <Image style={styles.personPhoto} source={{ uri: `data:image/png;base64,${item.imageUri}` }} />
                                 <View>

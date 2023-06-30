@@ -102,14 +102,6 @@ export default function Login() {
 
                 <Button label={"Entrar"} onClick={handleSubmit(onLogin)} />
 
-                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginVertical: 20 }}>
-                    <Line styles={{ width: '45%' }} />
-                    <Text style={globalStyles.commonText}>
-                        ou
-                    </Text>
-                    <Line styles={{ width: '45%' }} />
-                </View>
-
                 <TouchableOpacity style={{ alignItems: 'center' }}>
                     <LinkNavigator
                         label={"Quero ser uma babá"}

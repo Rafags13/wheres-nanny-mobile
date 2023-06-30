@@ -33,7 +33,7 @@ export default function CommonUserTab() {
                     tabBarStyle: ((route) => {
                         const routeName = getFocusedRouteNameFromRoute(route) ?? "";
 
-                        if (routeName === 'nannyInformation') {
+                        if (routeName === 'nannyInformation' || routeName === 'serviceInformation') {
                             return { display: "none" }
                         }
                         return

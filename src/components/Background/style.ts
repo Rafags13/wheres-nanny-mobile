@@ -11,6 +11,12 @@ export const styles = StyleSheet.create({
         marginHorizontal: 10,
         borderRadius: 10,
         backgroundColor: 'white',
+        zIndex: 2,
         ...globalStyles.shadow
+    },
+    backIconContainer: {
+        flexDirection: 'row',
+        marginVertical: 10,
+        alignItems: 'center',
     }
 })

@@ -4,6 +4,7 @@ import { styles } from "./style";
 import LinearGradient from 'react-native-linear-gradient';
 import { getCurrentUser } from "../../../storage";
 import moment from "moment";
+import { useNavigation } from "@react-navigation/native";
 
 type Props = {
     serviceId: number,
@@ -12,10 +13,10 @@ type Props = {
     imageUri: string
 }
 
-export default function RecentCard({ nannyName, serviceDate, imageUri }: Props) {
-    const currentUser = getCurrentUser();
+export default function RecentCard({ nannyName, serviceDate, imageUri, serviceId }: Props) {
+    const navigator = useNavigation<any>();
     return (
-        <TouchableOpacity style={{ alignItems: 'center' }}>
+        <TouchableOpacity style={{ alignItems: 'center' }} onPress={() => navigator.navigate('serviceInformation', { serviceId, isCommonUser: true })}>
             <LinearGradient colors={['#3E9FEB', '#51a8ed']} style={styles.cardContainerLinearGradient}>
                 <View style={styles.mainInformationContainer}>
                     <Image style={styles.personPhoto} source={{ uri: `data:image/png;base64,${imageUri}` }} />
