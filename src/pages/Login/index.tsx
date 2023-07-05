@@ -13,6 +13,7 @@ import MessageError from "../../components/MessageError";
 import Line from "../../components/Line";
 import { LoadingContextType, LoadingContext } from "../../context/LoadingContext";
 import { ModalContextType, ModalContext } from "../../context/ModalContext";
+import messaging from "@react-native-firebase/messaging";
 
 export default function Login() {
     const { control, handleSubmit, formState: { errors } } = useForm();
@@ -22,33 +23,40 @@ export default function Login() {
 
     async function onLogin(data: any) {
         setLoading(true);
-        const dataToRequest: { username: string, password: string } = {
+        messaging().registerDeviceForRemoteMessages();
+        const deviceId = await messaging()
+            .getToken()
+            .then(token => {
+                return token
+            });
+        const dataToRequest: { username: string, password: string, deviceId: string } = {
             username: data.username,
-            password: data.password
+            password: data.password,
+            deviceId
         }
 
         await postData('Authentication', dataToRequest).then((response) => {
             storage.set('token', response.data);
             const currentUser = getCurrentUser();
-            if (currentUser.isNanny) {
-                navigator.dispatch(
-                    CommonActions.reset({
-                        index: 1,
-                        routes: [
-                            { name: 'nannyUser' },
-                        ],
-                    })
-                );
-            } else {
-                navigator.dispatch(
-                    CommonActions.reset({
-                        index: 1,
-                        routes: [
-                            { name: 'commonUser' },
-                        ],
-                    })
-                );
-            }
+            // if (currentUser.isNanny) {
+            //     navigator.dispatch(
+            //         CommonActions.reset({
+            //             index: 1,
+            //             routes: [
+            //                 { name: 'nannyUser' },
+            //             ],
+            //         })
+            //     );
+            // } else {
+            //     navigator.dispatch(
+            //         CommonActions.reset({
+            //             index: 1,
+            //             routes: [
+            //                 { name: 'commonUser' },
+            //             ],
+            //         })
+            //     );
+            // }
         }).catch((error) => {
             showModal({ modalType: 'error', message: error.response.data });
         }).finally(() => {
