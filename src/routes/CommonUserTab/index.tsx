@@ -2,19 +2,48 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { getFocusedRouteNameFromRoute, } from '@react-navigation/native';
+import { getFocusedRouteNameFromRoute, useNavigation, } from '@react-navigation/native';
 import Favorites from '../../pages/Favorites';
 import Profile from '../../pages/Profile';
 import { Provider } from 'react-redux';
 import { store } from '../../app/store';
 import HomeNavigationPages from './HomeNavigatorPages';
 import Services from '../../pages/Services';
-
+import { useContext, useEffect } from 'react';
+import messaging from "@react-native-firebase/messaging";
+import { ModalContextType, ModalContext } from '../../context/ModalContext';
 
 const Tab = createBottomTabNavigator();
 
 export default function CommonUserTab() {
+    const navigation = useNavigation<any>();
 
+    function redirectUserToNewServiceChat(accepted: boolean) {
+        console.log(accepted)
+        if (accepted) {
+            navigation.navigate('chat')
+        }
+    }
+
+    const { showModal } = useContext(ModalContext) as ModalContextType;
+    useEffect(() => {
+        messaging().onMessage(async remoteMessage => {
+            if (remoteMessage?.data) {
+                redirectUserToNewServiceChat(Boolean(remoteMessage?.data?.accepted))
+                showModal({
+                    modalType: Boolean(remoteMessage?.data.accepted) ? "success" : "error",
+                    message: remoteMessage?.data.message,
+                })
+            }
+        });
+
+        messaging().setBackgroundMessageHandler(async backgroundMessage => {
+            if (backgroundMessage) {
+                redirectUserToNewServiceChat(Boolean(backgroundMessage?.data?.accepted))
+            }
+        })
+
+    }, []);
     return (
         <Provider store={store}>
             <Tab.Navigator

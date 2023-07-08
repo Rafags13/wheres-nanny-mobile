@@ -7,12 +7,56 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Profile from "../../pages/Profile";
 import ServicesNavigatorPages from "./ServicesNavigatorPages";
-import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
+import { getFocusedRouteNameFromRoute, useNavigation } from "@react-navigation/native";
 import DashboardNavigatorPages from "./DashboardNavigatorPages";
+import { useContext, useEffect } from "react";
+import messaging from '@react-native-firebase/messaging';
+import { ModalContextType, ModalContext } from "../../context/ModalContext";
+import { subscribeForegroundNotification } from "../../assets/util/firebaseHooks";
+import { postData } from "../../services/apiRequests";
+import { getCurrentUser } from "../../storage";
+import { AcceptedServiceDto } from "../../dto/Person/AcceptedServiceDto";
 
 const Tab = createBottomTabNavigator();
 
 export default function NannyUserTab() {
+    const { showModal } = useContext(ModalContext) as ModalContextType;
+    const navigator = useNavigation<any>();
+    const currentUser = getCurrentUser();
+
+    async function onModalServiceResponse(serviceAccepted: boolean, serviceId: string) {
+        var acceptedServiceDto: AcceptedServiceDto = {
+            serviceId: Number(serviceId),
+            accepted: serviceAccepted
+        }
+        await postData('Service/ServiceHasBeenAcceptedByNanny', acceptedServiceDto);
+
+        if (serviceAccepted) {
+            navigator.navigate('chat');
+        }
+    }
+
+    useEffect(() => {
+        messaging().onMessage(async remoteMessage => {
+            console.log(remoteMessage?.data);
+            if (remoteMessage?.data) {
+                showModal({
+                    modalType: 'question',
+                    message: remoteMessage?.data.message,
+                    function: (value: any) => onModalServiceResponse(value, remoteMessage?.data?.serviceId as string)
+                });
+            }
+        });
+
+        messaging().getInitialNotification().then(initialMessage => {
+            console.log(initialMessage?.data);
+            if (initialMessage?.data?.mensagem) {
+                showModal({ modalType: 'question', message: initialMessage?.data?.message as string, function: test });
+            }
+        });
+
+    }, []);
+
     return (
         <Tab.Navigator
             screenOptions={{

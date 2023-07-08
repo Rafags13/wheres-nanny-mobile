@@ -5,5 +5,6 @@ export class UserTokenDto {
     imageUri: string = ""
     username: string = ""
     cep: string = ""
+    deviceId: string = ""
     isNanny: boolean = false
 }

@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useEffect } from "react";
+import Chat from "../../pages/Chat";
 import Login from "../../pages/Login";
 import Register from "../../pages/Register";
 import { getCurrentUser, getToken } from "../../storage";
@@ -36,6 +37,7 @@ export default function StackNavigator() {
             <Stack.Screen name="register" component={Register} />
             <Stack.Screen name="commonUser" component={CommonUserTab} />
             <Stack.Screen name="nannyUser" component={NannyUserTab} />
+            <Stack.Screen name="chat" component={Chat} />
         </Stack.Navigator>
     )
 }

@@ -38,25 +38,25 @@ export default function Login() {
         await postData('Authentication', dataToRequest).then((response) => {
             storage.set('token', response.data);
             const currentUser = getCurrentUser();
-            // if (currentUser.isNanny) {
-            //     navigator.dispatch(
-            //         CommonActions.reset({
-            //             index: 1,
-            //             routes: [
-            //                 { name: 'nannyUser' },
-            //             ],
-            //         })
-            //     );
-            // } else {
-            //     navigator.dispatch(
-            //         CommonActions.reset({
-            //             index: 1,
-            //             routes: [
-            //                 { name: 'commonUser' },
-            //             ],
-            //         })
-            //     );
-            // }
+            if (currentUser.isNanny) {
+                navigator.dispatch(
+                    CommonActions.reset({
+                        index: 1,
+                        routes: [
+                            { name: 'nannyUser' },
+                        ],
+                    })
+                );
+            } else {
+                navigator.dispatch(
+                    CommonActions.reset({
+                        index: 1,
+                        routes: [
+                            { name: 'commonUser' },
+                        ],
+                    })
+                );
+            }
         }).catch((error) => {
             showModal({ modalType: 'error', message: error.response.data });
         }).finally(() => {

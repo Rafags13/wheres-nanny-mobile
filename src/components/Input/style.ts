@@ -9,6 +9,7 @@ const common = StyleSheet.create({
         alignItems: 'center',
         borderWidth: 1,
         borderColor: '#3E9FEB',
+        color: 'black'
     },
 })
 
@@ -29,11 +30,13 @@ export const styles = StyleSheet.create({
     inputPassword: {
         width: '90%',
         padding: 10,
+        color: 'black'
     },
     inputError: {
         borderColor: 'red'
     },
     inputDisabled: {
-        backgroundColor: 'rgba(195, 195, 195, 0.25)'
+        backgroundColor: 'rgba(195, 195, 195, 0.25)',
+        color: '#c4c4c4'
     }
 })
