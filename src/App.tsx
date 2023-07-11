@@ -6,6 +6,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { useEffect, useState } from 'react';
 import messaging from '@react-native-firebase/messaging';
 import { Alert } from 'react-native';
+import Splash from './pages/Splash';
 
 export default function App() {
   return (
