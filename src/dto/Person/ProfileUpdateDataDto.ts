@@ -10,7 +10,7 @@ export class ProfileUpdateDataDto {
     addressFromUpdateInformation!: {
         cep: string,
         bairro: string,
-        logradouro: string,
+        logradouro: string
         cidade: string,
         estado: string,
         complement: string,

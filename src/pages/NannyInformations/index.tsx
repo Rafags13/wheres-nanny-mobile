@@ -7,7 +7,6 @@ import Button from "../../components/Button";
 import Stars from "../../components/Stars";
 import { LoadingContextType, LoadingContext } from "../../context/LoadingContext";
 import { NannyContractDto } from "../../dto/Person/NannyContractDto";
-import { getData, postData } from "../../services/apiRequests";
 import { globalStyles } from "../../styles/global.styles";
 import { Slider } from '@miblanchard/react-native-slider';
 import Feather from 'react-native-vector-icons/Feather'
@@ -23,22 +22,25 @@ import { loadInitialHomeInformation } from "../../features/listNannySlice";
 import { addFavoriteNanny, FavoritedNanny, removingFavoriteFromNanny } from '../../features/favoriteListNannySlice';
 import Heart from "../../components/Heart";
 import { useAppSelector } from "../../app/hooks";
+import { getNannyById } from "../../services/requests/NannyRequests";
+import { CreateContractNannyDto } from "../../dto/Nanny/CreateContractNannyDto";
+import { hireNanny } from "../../services/requests/ServiceRequests";
 
 export default function NannyInformations() {
     const { setLoading } = useContext(LoadingContext) as LoadingContextType;
     const dispatch = useDispatch<any>();
     const currentUser = getCurrentUser();
     const { params } = useRoute<RouteProp<{ params: { nannyId: number } }, 'params'>>();
-    const [isFavorited, setIsFavorited] = useState<boolean>(false);
     const currentNanny = useAppSelector((state) => state.favoriteNannies.listFavoriteNanny.find(x => x.id === params.nannyId));
     const { showModal } = useContext(ModalContext) as ModalContextType;
     const [date, setDate] = useState<Date>(new Date());
     const { data, isLoading } = useQuery('nanny', async () => {
         setLoading(true)
-        var data = await getData(`Person/GetNannyById/${params.nannyId}/${currentUser.id}`);
+        var data = await getNannyById(params?.nannyId);
         setLoading(false)
         return data
     });
+    const nannyInformation: NannyContractDto = data?.data;
     const navigation = useNavigation<any>();
 
     function openDatePicker(mode: 'date' | 'time') {
@@ -55,23 +57,11 @@ export default function NannyInformations() {
             },
         });
     }
-
-    type CreateContractNannyDto = {
-        serviceFinishHour: Date,
-        hiringDate: Date,
-        price: number,
-        personId: number,
-        nannyId: number
-    }
     async function contractNanny() {
-        const createContractNanny: CreateContractNannyDto = {
-            serviceFinishHour: date,
-            hiringDate: date,
-            price: nannyInformation.servicePrice,
-            personId: currentUser.id,
-            nannyId: nannyInformation.nannyId
-        }
-        await postData('Service/Create', createContractNanny).then(async response => {
+        const createContractNanny: CreateContractNannyDto = createHireNannyModel();
+
+        const response = hireNanny(createContractNanny);
+        response.then(async response => {
             showModal({ modalType: 'success', message: response.data });
             dispatch(loadInitialHomeInformation());
             navigation.dispatch(
@@ -82,15 +72,23 @@ export default function NannyInformations() {
                     ],
                 })
             );
-            // TODO: redirect this to the new service 
         }).catch((err: Error) => {
-            console.log(err)
             showModal({ modalType: 'error', message: 'Algo de errado deu durante a sua requisição. Tente Novamente.' });
         })
 
     }
 
-    const nannyInformation: NannyContractDto = data?.data;
+    function createHireNannyModel() {
+        const createContractNanny: CreateContractNannyDto = {
+            serviceFinishHour: date,
+            hiringDate: date,
+            price: nannyInformation.servicePrice,
+            personId: currentUser.id,
+            nannyId: nannyInformation.nannyId
+        }
+
+        return createContractNanny;
+    }
 
     if (isLoading) return (<></>)
     return (

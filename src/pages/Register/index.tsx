@@ -13,7 +13,6 @@ import { styles } from "./style";
 
 import { COMMON_USER_SECTION, NANNY_SECTION } from '../../assets/util/contants';
 import { createModelRegisterCommonUser, createModelRegisterNanny } from "../../assets/util/functions";
-import { postData } from "../../services/apiRequests";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerValidationSchema, registerValidationSchemaNanny } from "../../assets/util/yupValidations";
 import ImagePicker from "../../components/ImagePicker";
@@ -21,10 +20,13 @@ import DocumentPick from "../../components/DocumentPick";
 import { useContext } from "react";
 import { ModalContext, ModalContextType } from "../../context/ModalContext";
 import { LoadingContextType, LoadingContext } from "../../context/LoadingContext";
+import { registerUser } from "../../services/requests/UserRequests";
 
 export default function Register() {
     const { setLoading } = useContext(LoadingContext) as LoadingContextType;
+
     const { params } = useRoute<RouteProp<{ params: { isNannyRegister: boolean } }, 'params'>>();
+
     const { control, handleSubmit, formState: { errors } } =
         useForm({
             resolver: yupResolver(params?.isNannyRegister ? registerValidationSchemaNanny : registerValidationSchema)
@@ -40,9 +42,11 @@ export default function Register() {
                 createModelRegisterNanny(data) :
                 createModelRegisterCommonUser(data);
 
-        await postData(`User/${params?.isNannyRegister ? 'RegisterNanny' : 'RegisterUser'}`, userToRegisteSpecified).then((response) => {
+        const response = registerUser(params?.isNannyRegister, userToRegisteSpecified)
+
+        await response.then((response) => {
             setLoading(false);
-            showModal({ message: 'Usuário registrado com sucesso!', modalType: 'success' });
+            showModal({ message: response.data, modalType: 'success' });
         }).catch((error) => {
             setLoading(false);
             showModal({ message: 'Não foi possível registrar o usuário. Tente Novamente mais tarde.', modalType: 'error' });

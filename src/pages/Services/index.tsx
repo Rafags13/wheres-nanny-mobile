@@ -5,24 +5,22 @@ import { useQuery } from "react-query";
 import Background from "../../components/Background";
 import { LoadingContextType, LoadingContext } from "../../context/LoadingContext";
 import { recentCardDto } from "../../dto/Person/DisplayInformationHomeUser";
-import { getData, postData } from "../../services/apiRequests";
-import { getCurrentUser } from "../../storage";
 import { globalStyles } from "../../styles/global.styles";
 import RecentCard from "../Home/RecentCard";
 import { styles } from "./style";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { useNavigation } from "@react-navigation/native";
+import { getAllServices } from "../../services/requests/ServiceRequests";
 
 export default function Services() {
-    const currentUser = getCurrentUser();
     const navigator = useNavigation<any>();
     const [page, setPage] = useState<number>(0);
     const [loadingFooterActitivity, setLoadingFooterActitivity] = useState<boolean>(false);
     const { setLoading } = useContext(LoadingContext) as LoadingContextType;
     const [list, setList] = useState<recentCardDto[]>([]);
     const { data, isLoading } = useQuery("getAllServices", async () => {
-        const { data } = await getData(`Service/GetAll/${currentUser.id}/${page}`);
+        const { data } = await getAllServices(page);
         setList([...list, ...data]);
         setPage(page + 1);
         return data;
@@ -36,7 +34,7 @@ export default function Services() {
         if (loadingFooterActitivity) return;
         setLoadingFooterActitivity(true);
 
-        const { data } = await getData(`Service/GetAll/${currentUser.id}/${page}`);
+        const { data } = await getAllServices(page);
         setList([...list, ...data]);
         setPage(page + 1)
 

@@ -19,15 +19,12 @@ type Props = {
 }
 
 export default function CepInput({ label, control, displayNameLabel = '', defaultValue = '', disabled = false, hasError = false, rules = undefined, placeholder = '', style = {} }: Props) {
-    const currentUser = getCurrentUser();
-    const { field, formState } = useController({
+    const { field } = useController({
         control,
         defaultValue,
         rules,
         name: label,
     });
-
-    const neighborhood = useWatch({ control, name: "neighborhood" });
     const { setValue } = useFormContext();
 
     async function searchAddressByCep() {
@@ -50,12 +47,12 @@ export default function CepInput({ label, control, displayNameLabel = '', defaul
                 <TextInput
                     value={field.value}
                     onChangeText={field.onChange}
-                    style={styles.inputPassword}
+                    style={[styles.inputPassword, disabled ? styles.textInputDisabled : {}]}
                     placeholder={placeholder}
                     editable={!disabled}
                 />
-                <TouchableOpacity onPress={searchAddressByCep}>
-                    <FontAwesome name={'search'} color={'#192553'} size={24} />
+                <TouchableOpacity onPress={searchAddressByCep} disabled={disabled}>
+                    <FontAwesome name={'search'} color={disabled ? '#c4c4c4' : '#192553'} size={24} />
                 </TouchableOpacity>
             </View>
         </View>

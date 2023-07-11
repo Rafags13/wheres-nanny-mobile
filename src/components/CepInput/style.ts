@@ -36,6 +36,9 @@ export const styles = StyleSheet.create({
         borderColor: 'red'
     },
     inputDisabled: {
-        backgroundColor: 'rgba(195, 195, 195, 0.25)'
+        backgroundColor: 'rgba(195, 195, 195, 0.25)',
+    },
+    textInputDisabled: {
+        color: '#c4c4c4'
     }
 })

@@ -1,35 +1,29 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Provider } from "react-redux";
 import Entypo from 'react-native-vector-icons/Entypo';
-import Dashboard from "../../pages/Dashboard";
-import MyServices from "../../pages/MyServices";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Profile from "../../pages/Profile";
 import ServicesNavigatorPages from "./ServicesNavigatorPages";
-import { getFocusedRouteNameFromRoute, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import DashboardNavigatorPages from "./DashboardNavigatorPages";
 import { useContext, useEffect } from "react";
 import messaging from '@react-native-firebase/messaging';
 import { ModalContextType, ModalContext } from "../../context/ModalContext";
-import { subscribeForegroundNotification } from "../../assets/util/firebaseHooks";
-import { postData } from "../../services/apiRequests";
-import { getCurrentUser } from "../../storage";
 import { AcceptedServiceDto } from "../../dto/Person/AcceptedServiceDto";
+import { acceptService } from "../../services/requests/NannyRequests";
 
 const Tab = createBottomTabNavigator();
 
 export default function NannyUserTab() {
     const { showModal } = useContext(ModalContext) as ModalContextType;
     const navigator = useNavigation<any>();
-    const currentUser = getCurrentUser();
 
     async function onModalServiceResponse(serviceAccepted: boolean, serviceId: string) {
         var acceptedServiceDto: AcceptedServiceDto = {
             serviceId: Number(serviceId),
             accepted: serviceAccepted
         }
-        await postData('Service/ServiceHasBeenAcceptedByNanny', acceptedServiceDto);
+        await acceptService(acceptedServiceDto);
 
         if (serviceAccepted) {
             navigator.navigate('chat');
@@ -38,7 +32,6 @@ export default function NannyUserTab() {
 
     useEffect(() => {
         messaging().onMessage(async remoteMessage => {
-            console.log(remoteMessage?.data);
             if (remoteMessage?.data) {
                 showModal({
                     modalType: 'question',
@@ -49,7 +42,6 @@ export default function NannyUserTab() {
         });
 
         messaging().getInitialNotification().then(initialMessage => {
-            console.log(initialMessage?.data);
             if (initialMessage?.data?.mensagem) {
                 showModal({ modalType: 'question', message: initialMessage?.data?.message as string, function: test });
             }

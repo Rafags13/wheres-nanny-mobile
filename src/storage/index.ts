@@ -37,6 +37,6 @@ export function removeFavoriteNannyAsyncStorage(nannyId: number) {
     storage.set('favoritedNannies', JSON.stringify(filteredNannies))
 }
 
-export function logOut() {
+export async function logOut() {
     storage.clearAll();
 }

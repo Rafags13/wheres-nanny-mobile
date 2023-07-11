@@ -13,16 +13,16 @@ import Line from "../../components/Line";
 import moment from "moment";
 import Button from "../../components/Button";
 import { useQuery } from "react-query";
-import { getData } from "../../services/apiRequests";
 import { useContext, useEffect } from "react";
 import { LoadingContext, LoadingContextType } from "../../context/LoadingContext";
 import { NannyServiceInformationDto } from "../../dto/Service/NannyServiceInformationDto";
+import { getNannyServiceInformation } from "../../services/requests/NannyRequests";
 
 export default function ServiceInformation() {
     const navigator = useNavigation<any>();
     const { params } = useRoute<RouteProp<{ params: { serviceId: number, isCommonUser: boolean } }, 'params'>>();
     const { setLoading } = useContext(LoadingContext) as LoadingContextType;
-    const { data, isLoading } = useQuery(['GetServiceInformation', params.serviceId], () => getData(`Service/GetNannyServiceInformation/${params.serviceId}`));
+    const { data, isLoading } = useQuery(['GetServiceInformation', params.serviceId], () => getNannyServiceInformation(params?.serviceId));
     const serviceData: NannyServiceInformationDto = data?.data;
 
     useEffect(() => {

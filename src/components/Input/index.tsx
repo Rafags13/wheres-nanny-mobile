@@ -42,6 +42,7 @@ export default function Input({ label, control, defaultValue = '', disabled = fa
                         onChangeText={field.onChange}
                         style={styles.inputPassword}
                         secureTextEntry={showPassword}
+                        placeholder={placeholder}
                     />
                     <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
                         <Icon name={showPassword ? 'eye' : 'eye-slash'} color={'#192553'} size={24} />

@@ -7,13 +7,13 @@ import Button from '../../components/Button';
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import { globalStyles } from "../../styles/global.styles";
 import { getCurrentUser, storage } from "../../storage";
-import { postData } from "../../services/apiRequests";
 import { useContext } from "react";
 import MessageError from "../../components/MessageError";
-import Line from "../../components/Line";
 import { LoadingContextType, LoadingContext } from "../../context/LoadingContext";
 import { ModalContextType, ModalContext } from "../../context/ModalContext";
 import messaging from "@react-native-firebase/messaging";
+import { LoginDto } from "../../dto/User/LoginDto";
+import { LoginRequest } from "../../services/requests/AutenticationRequests";
 
 export default function Login() {
     const { control, handleSubmit, formState: { errors } } = useForm();
@@ -23,46 +23,49 @@ export default function Login() {
 
     async function onLogin(data: any) {
         setLoading(true);
-        messaging().registerDeviceForRemoteMessages();
-        const deviceId = await messaging()
-            .getToken()
-            .then(token => {
-                return token
-            });
-        const dataToRequest: { username: string, password: string, deviceId: string } = {
+        const deviceId = await getUserDeviceId();
+        const dataToRequest: LoginDto = {
             username: data.username,
             password: data.password,
             deviceId
         }
 
-        await postData('Authentication', dataToRequest).then((response) => {
+        const response = LoginRequest(dataToRequest);
+
+        response.then((response) => {
             storage.set('token', response.data);
             const currentUser = getCurrentUser();
-            if (currentUser.isNanny) {
-                navigator.dispatch(
-                    CommonActions.reset({
-                        index: 1,
-                        routes: [
-                            { name: 'nannyUser' },
-                        ],
-                    })
-                );
-            } else {
-                navigator.dispatch(
-                    CommonActions.reset({
-                        index: 1,
-                        routes: [
-                            { name: 'commonUser' },
-                        ],
-                    })
-                );
-            }
+            sendUserToCorrectRoute(currentUser.isNanny);
         }).catch((error) => {
             showModal({ modalType: 'error', message: error.response.data });
         }).finally(() => {
             setLoading(false);
         });
 
+    }
+
+    async function getUserDeviceId(): Promise<string> {
+        messaging().registerDeviceForRemoteMessages();
+        const deviceId = await messaging()
+            .getToken()
+            .then(token => {
+                return token
+            });
+
+        return deviceId;
+    }
+
+    function sendUserToCorrectRoute(isNanny: boolean) {
+        const route = isNanny ? 'nannyUser' : 'commonUser';
+
+        navigator.dispatch(
+            CommonActions.reset({
+                index: 1,
+                routes: [
+                    { name: route },
+                ],
+            })
+        );
     }
 
     return (

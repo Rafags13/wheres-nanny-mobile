@@ -1,25 +1,19 @@
-import { ActivityIndicator, FlatList, Image, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, FlatList, Text, View } from "react-native";
 import Background from "../../components/Background";
 import { globalStyles } from "../../styles/global.styles";
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Entypo from 'react-native-vector-icons/Entypo';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Line from "../../components/Line";
-import { getCurrentUser } from "../../storage";
 import ServiceNannyCard, { ServiceNannyCardProps } from "../../components/ServiceNannyCard";
 import { useQuery } from "react-query";
-import { getData } from "../../services/apiRequests";
 import { useContext, useEffect, useState } from "react";
 import { LoadingContext, LoadingContextType } from "../../context/LoadingContext";
+import { getAllServicesFromCurrentNanny } from "../../services/requests/NannyRequests";
 
 export default function MyServices() {
-    const currentUser = getCurrentUser();
     const { setLoading } = useContext(LoadingContext) as LoadingContextType;
     const [page, setPage] = useState<number>(0);
     const [loadingFooterActitivity, setLoadingFooterActitivity] = useState<boolean>(false);
     const [list, setList] = useState<ServiceNannyCardProps[]>([]);
     const { data, isLoading } = useQuery('GetAllServices', async () => {
-        var { data } = await getData(`Nanny/GetAllServices/${currentUser.id}/${page}`)
+        var { data } = await getAllServicesFromCurrentNanny(page);
         setList([...list, ...data]);
         setPage(page + 1);
 
@@ -33,7 +27,7 @@ export default function MyServices() {
         if (loadingFooterActitivity) return;
         setLoadingFooterActitivity(true);
 
-        const { data } = await getData(`Nanny/GetAllServices/${currentUser.id}/${page}`);
+        const { data } = await getAllServicesFromCurrentNanny(page);
         setList([...list, ...data]);
         setPage(page + 1)
 
@@ -67,7 +61,6 @@ export default function MyServices() {
                         </View>
                     )
                 }}
-            // TODO: Add pagination informations
             />
         </Background >
     )

@@ -19,7 +19,6 @@ export default function CommonUserTab() {
     const navigation = useNavigation<any>();
 
     function redirectUserToNewServiceChat(accepted: boolean) {
-        console.log(accepted)
         if (accepted) {
             navigation.navigate('chat')
         }

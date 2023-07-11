@@ -1,4 +1,4 @@
-import { CommonActions, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { FormProvider, useForm } from "react-hook-form";
 import { Image, Text, View, } from "react-native";
 import Background from "../../components/Background";
@@ -12,7 +12,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { styles } from "./style";
 import { useEffect, useRef, useState, useContext } from "react";
 import { useQuery } from "react-query";
-import { getData, updateData, viaCepRequestGetByCep } from "../../services/apiRequests";
+import { viaCepRequestGetByCep } from "../../services/apiRequests";
 import { LoadingContext, LoadingContextType } from "../../context/LoadingContext";
 import { ProfileUpdateDataDto } from "../../dto/Person/ProfileUpdateDataDto";
 import { ModalContextType, ModalContext } from "../../context/ModalContext";
@@ -21,6 +21,7 @@ import { updatePasswordValidationSchema, updatePersonValidationSchema } from "..
 import { formatCellphoneNumber, formatCpf, removeSpecialCharacter } from "../../assets/util/functions";
 import CepInput from "../../components/CepInput";
 import { UpdatePasswordDto } from "../../dto/User/UpdatePasswordDto";
+import { getProfileData, updatePassword, updateProfile } from "../../services/requests/PersonRequests";
 
 export default function Profile() {
     const currentUser = getCurrentUser();
@@ -31,7 +32,12 @@ export default function Profile() {
     const updateProfileForm = useForm({ resolver: yupResolver(updatePersonValidationSchema) });
     const updatePasswordForm = useForm({ resolver: yupResolver(updatePasswordValidationSchema) })
     const { data, isLoading } = useQuery(['getProfileInformation', currentUser.id], async () => {
-        const response = await getData(`Person/GetProfileInformation/${currentUser.id}`);
+        const profileData: ProfileUpdateDataDto = await createProfileModel();
+        return profileData;
+    });
+
+    async function createProfileModel() {
+        const response = await getProfileData();
         const viacepResponse = await viaCepRequestGetByCep(currentUser.cep);
         const profileData: ProfileUpdateDataDto = {
             ...response.data,
@@ -43,8 +49,9 @@ export default function Profile() {
                 estado: viacepResponse.data.uf
             },
         };
+
         return profileData;
-    });
+    }
 
     useEffect(() => {
         setLoading(isLoading)
@@ -57,7 +64,7 @@ export default function Profile() {
     async function updateInformations(data: any) {
         const updateDataProfile: ProfileUpdateDataDto = createUpdateProfileModel(data);
 
-        await updateData("Person/UpdatePersonData", updateDataProfile).then((response) => {
+        await updateProfile(updateDataProfile).then((response) => {
             showModal({ modalType: 'success', message: response.data });
             questionStatus(true);
         }).catch((error: Error) => {
@@ -104,7 +111,7 @@ export default function Profile() {
             newPassword: data.newPassword
         }
 
-        await updateData('User/UpdatePassword', updatePasswordDto).then((response) => {
+        await updatePassword(updatePasswordDto).then((response) => {
             showModal({ modalType: 'success', message: response.data });
             updatePasswordForm.setValue('oldPassword', '');
             updatePasswordForm.setValue('newPassword', '');
@@ -205,7 +212,6 @@ export default function Profile() {
                         <Input label={"oldPassword"} control={updatePasswordForm.control} displayNameLabel="Senha Atual" isPasswordInput />
                         <Input label={"newPassword"} control={updatePasswordForm.control} displayNameLabel="Nova Senha" isPasswordInput />
                         <Input label={"repeatNewPassword"} control={updatePasswordForm.control} displayNameLabel="Repetir Nova Senha" isPasswordInput />
-                        {/* TODO: create a new form to manage this fields and update the password */}
 
                         <Button label="Atualizar" onClick={updatePasswordForm.handleSubmit(onPasswordUpdate, onInvalid)} containerStyle={{ marginTop: 15 }} />
 
