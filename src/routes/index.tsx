@@ -14,7 +14,12 @@ export default function Routes() {
     return (
         <QueryClientProvider client={queryClient}>
             <CurrentModal />
-            {finished ? (<StackNavigator />) : (<Splash onComplete={(value: boolean) => setFinished(value)} />)}
+            {
+                finished ?
+                    (
+                        <StackNavigator />
+                    ) :
+                    (<Splash onComplete={(value: boolean) => setFinished(value)} />)}
             <Spinner />
         </QueryClientProvider>
     )

@@ -4,6 +4,7 @@ import { UserTokenDto } from '../dto/User/UserTokenDto';
 import { useNavigation } from '@react-navigation/native';
 import { NannyCardProps } from '../features/listNanny/NannyCardList/NannyCard';
 import { FavoritedNanny } from '../features/favoriteListNannySlice';
+import { LogoutRequest } from '../services/requests/AutenticationRequests';
 
 export const storage = new MMKV({ id: 'WheresNanny' });
 
@@ -38,5 +39,6 @@ export function removeFavoriteNannyAsyncStorage(nannyId: number) {
 }
 
 export async function logOut() {
+    await LogoutRequest();
     storage.clearAll();
 }

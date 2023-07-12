@@ -14,6 +14,8 @@ import { ModalContextType, ModalContext } from "../../context/ModalContext";
 import messaging from "@react-native-firebase/messaging";
 import { LoginDto } from "../../dto/User/LoginDto";
 import { LoginRequest } from "../../services/requests/AutenticationRequests";
+import { returnRouteNameByProfileType } from "../../assets/util/functions";
+import { TypeOfUser } from "../../model/Enums/TypeOfUser";
 
 export default function Login() {
     const { control, handleSubmit, formState: { errors } } = useForm();
@@ -35,7 +37,7 @@ export default function Login() {
         response.then((response) => {
             storage.set('token', response.data);
             const currentUser = getCurrentUser();
-            sendUserToCorrectRoute(currentUser.isNanny);
+            sendUserToCorrectRoute(currentUser.typeOfUser);
         }).catch((error) => {
             showModal({ modalType: 'error', message: error.response.data });
         }).finally(() => {
@@ -55,14 +57,14 @@ export default function Login() {
         return deviceId;
     }
 
-    function sendUserToCorrectRoute(isNanny: boolean) {
-        const route = isNanny ? 'nannyUser' : 'commonUser';
+    function sendUserToCorrectRoute(typeOfUser: TypeOfUser) {
+        const routeName = returnRouteNameByProfileType(typeOfUser);
 
         navigator.dispatch(
             CommonActions.reset({
                 index: 1,
                 routes: [
-                    { name: route },
+                    { name: routeName.mainContainer },
                 ],
             })
         );

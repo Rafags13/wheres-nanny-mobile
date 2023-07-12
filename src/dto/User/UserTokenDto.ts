@@ -1,3 +1,5 @@
+import { TypeOfUser } from "../../model/Enums/TypeOfUser"
+
 export class UserTokenDto {
     constructor() { }
     id!: number
@@ -6,5 +8,5 @@ export class UserTokenDto {
     username: string = ""
     cep: string = ""
     deviceId: string = ""
-    isNanny: boolean = false
+    typeOfUser!: TypeOfUser
 }

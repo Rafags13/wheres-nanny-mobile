@@ -56,6 +56,7 @@ export default function NannyUserTab() {
                 tabBarShowLabel: false,
                 tabBarActiveTintColor: '#3E9FEB',
                 tabBarInactiveTintColor: '#c4c4c4',
+                lazy: false
             }}
             initialRouteName="dashboard"
         >

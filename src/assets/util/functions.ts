@@ -2,6 +2,7 @@ import { Alert } from "react-native";
 import { ImageLibraryOptions, ImagePickerResponse, launchImageLibrary } from "react-native-image-picker";
 import { RegisterNannyDto } from "../../dto/User/RegisterNannyDto";
 import { RegisterUserDto } from "../../dto/User/RegisterUserDto";
+import { TypeOfUser } from "../../model/Enums/TypeOfUser";
 
 export function ConvertDateBrazilFormatToDateType(date: string): Date {
     const dateSplitted = date.split('/');
@@ -118,4 +119,18 @@ export function formatCpf(cpf: string) {
 
 export function removeSpecialCharacter(value: string) {
     return value.replace(/[^\w\s]/gi, '').replace(/\s/g, '');
+}
+
+type EnumDictionary<T extends string | symbol | number, U> = {
+    [K in T]: U;
+};
+
+export function returnRouteNameByProfileType(type: TypeOfUser): { mainContainer: string, screen: string } {
+    const routeNameByProfileType: EnumDictionary<TypeOfUser, { mainContainer: string, screen: string }> = {
+        [TypeOfUser.CommonUser]: { mainContainer: 'commonUser', screen: 'homeDerivatedPages' },
+        [TypeOfUser.Nanny]: { mainContainer: 'nannyUser', screen: 'dashboard' },
+        [TypeOfUser.Admin]: { mainContainer: '', screen: '' },
+    }
+
+    return routeNameByProfileType[type];
 }

@@ -1,6 +1,9 @@
 import { useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { useEffect } from "react";
+import { useEffect, useState, useContext } from "react";
+import { View } from "react-native";
+import { returnRouteNameByProfileType } from "../../assets/util/functions";
+import { TypeOfUser } from "../../model/Enums/TypeOfUser";
 import Chat from "../../pages/Chat";
 import Login from "../../pages/Login";
 import Register from "../../pages/Register";
@@ -14,16 +17,14 @@ const token = getToken();
 
 export default function StackNavigator() {
     const navigator = useNavigation<any>();
+    const currentUser = getCurrentUser();
+
     useEffect(() => {
         function findUserLogged() {
             if (token !== '') {
-                const currentUser = getCurrentUser();
-                if (currentUser.isNanny) {
-                    navigator.navigate('nannyUser', { screen: 'dashboard' });
-                    return;
-                }
-
-                navigator.navigate('commonUser', { screen: 'homeDerivatedPages' });
+                const typeOfUser: TypeOfUser = currentUser.typeOfUser;
+                const routeName = returnRouteNameByProfileType(typeOfUser);
+                navigator.navigate(routeName.mainContainer, { screen: routeName.screen });
                 return;
             }
         }
