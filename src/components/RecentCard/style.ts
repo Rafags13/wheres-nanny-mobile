@@ -1,5 +1,4 @@
 import { StyleSheet } from "react-native";
-import { globalStyles } from "../../../styles/global.styles";
 
 export const styles = StyleSheet.create({
     cardContainerLinearGradient: {
@@ -10,11 +9,6 @@ export const styles = StyleSheet.create({
     mainInformationContainer: {
         flexDirection: 'row',
         marginBottom: 15
-    },
-    personPhoto: {
-        width: 50,
-        height: 50,
-        marginRight: 10
     },
     fullnameText: {
         color: 'white',
@@ -34,7 +28,6 @@ export const styles = StyleSheet.create({
         width: '85%',
         height: 10,
         backgroundColor: '#77bbf1',
-        // borderRadius: 15,
         borderBottomRightRadius: 10,
         borderBottomLeftRadius: 10,
     },

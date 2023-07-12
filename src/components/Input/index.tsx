@@ -3,6 +3,7 @@ import { Control, FieldValues, RegisterOptions, useController } from "react-hook
 import { StyleProp, Text, TextInput, TextStyle, TouchableOpacity, View } from "react-native";
 import { styles } from "./style";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { globalStyles } from "../../styles/global.styles";
 
 type Props = {
     label: string,
@@ -31,16 +32,16 @@ export default function Input({ label, control, defaultValue = '', disabled = fa
         return (
             <View>
                 {displayNameLabel && (
-                    <Text style={styles.label}>
+                    <Text style={globalStyles.label}>
                         {displayNameLabel}
                     </Text>
                 )}
-                <View style={[styles.commonInput, hasError ? styles.inputError : {}, style]}>
+                <View style={[globalStyles.input, hasError ? globalStyles.errorInput : {}, style]}>
                     <TextInput
                         numberOfLines={1}
                         value={field.value}
                         onChangeText={field.onChange}
-                        style={styles.inputPassword}
+                        style={globalStyles.inputWithIcon}
                         secureTextEntry={showPassword}
                         placeholder={placeholder}
                     />
@@ -55,7 +56,7 @@ export default function Input({ label, control, defaultValue = '', disabled = fa
     return (
         <View >
             {displayNameLabel && (
-                <Text style={styles.label}>
+                <Text style={globalStyles.label}>
                     {displayNameLabel}
                 </Text>
             )}
@@ -63,7 +64,7 @@ export default function Input({ label, control, defaultValue = '', disabled = fa
                 value={field.value}
                 onChangeText={field.onChange}
                 editable={!disabled}
-                style={[styles.inputNonPassword, hasError ? styles.inputError : {}, disabled ? styles.inputDisabled : {}, style]}
+                style={[styles.inputNonPassword, hasError ? globalStyles.errorInput : {}, disabled ? globalStyles.disabledInput : {}, style]}
                 placeholder={placeholder}
             />
         </View>

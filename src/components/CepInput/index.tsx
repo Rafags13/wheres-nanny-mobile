@@ -5,6 +5,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { viaCepRequestGetByCep } from "../../services/apiRequests";
 import { getCurrentUser } from "../../storage";
 import { removeAllSpecialCharacters } from "../../assets/util/functions";
+import { globalStyles } from "../../styles/global.styles";
 
 type Props = {
     label: string,
@@ -39,15 +40,15 @@ export default function CepInput({ label, control, displayNameLabel = '', defaul
     return (
         <View >
             {displayNameLabel && (
-                <Text style={styles.label}>
+                <Text style={globalStyles.label}>
                     {displayNameLabel}
                 </Text>
             )}
-            <View style={[styles.commonInput, hasError ? styles.inputError : {}, disabled ? styles.inputDisabled : {}, style]}>
+            <View style={[globalStyles.input, hasError ? globalStyles.errorInput : {}, disabled ? globalStyles.disabledInput : {}, style]}>
                 <TextInput
                     value={field.value}
                     onChangeText={field.onChange}
-                    style={[styles.inputPassword, disabled ? styles.textInputDisabled : {}]}
+                    style={[globalStyles.inputWithIcon, disabled ? styles.textInputDisabled : {}]}
                     placeholder={placeholder}
                     editable={!disabled}
                 />

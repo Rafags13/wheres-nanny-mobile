@@ -1,7 +1,7 @@
 import CheckBox from "@react-native-community/checkbox";
 import { Control, FieldValues, useController } from "react-hook-form";
 import { Text, View } from "react-native";
-import { globalStyles } from "../../styles/global.styles";
+import { globalStyles, text } from "../../styles/global.styles";
 
 type Props = {
     messageContent: string,
@@ -25,7 +25,7 @@ export default function Checkbox({ messageContent, control, label, hasError = fa
                 onValueChange={field.onChange}
                 tintColors={hasError ? { false: 'red' } : { true: 'black' }}
             />
-            <Text style={globalStyles.commonText}>
+            <Text style={text.common}>
                 {messageContent}
             </Text>
         </View>

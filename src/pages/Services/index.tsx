@@ -6,7 +6,7 @@ import Background from "../../components/Background";
 import { LoadingContextType, LoadingContext } from "../../context/LoadingContext";
 import { recentCardDto } from "../../dto/Person/DisplayInformationHomeUser";
 import { globalStyles } from "../../styles/global.styles";
-import RecentCard from "../Home/RecentCard";
+import RecentCard from "../../components/RecentCard";
 import { styles } from "./style";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
@@ -62,7 +62,7 @@ export default function Services() {
                     return (
                         <TouchableOpacity id={index.toString()} style={styles.commonServiceCardContainer} onPress={() => navigator.navigate('serviceInformation', { serviceId: item.serviceId, isCommonUser: true })}>
                             <View style={{ flexDirection: 'row' }}>
-                                <Image style={styles.personPhoto} source={{ uri: `data:image/png;base64,${item.imageUri}` }} />
+                                <Image style={globalStyles.personPhotoSmall} source={{ uri: `data:image/png;base64,${item.imageUri}` }} />
                                 <View>
                                     <Text style={styles.commonServiceCardPersonNameText}>{item.personName}</Text>
                                     <Text style={styles.commonServiceWorkText}>Babá</Text>

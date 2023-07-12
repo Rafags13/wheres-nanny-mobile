@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import { StyleProp, Text, TextStyle, TouchableOpacity, ViewStyle } from "react-native";
+import { globalStyles } from "../../styles/global.styles";
 import { styles } from "./style";
 
 type Props = {
@@ -14,7 +15,7 @@ export default function Button({ label, onClick, containerStyle, textStyle, icon
     return (
         <TouchableOpacity style={[styles.buttonContainer, containerStyle]} onPress={onClick}>
             {icon}
-            <Text style={[styles.labelButton, textStyle]}>{label}</Text>
+            <Text style={[globalStyles.labelButton, textStyle]}>{label}</Text>
         </TouchableOpacity>
     )
 }

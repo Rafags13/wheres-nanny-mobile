@@ -144,31 +144,30 @@ export default function Profile() {
             <FormProvider {...updateProfileForm}>
                 <View style={{ padding: 15 }}>
                     <Text style={styles.personalInformationsTitle}>Informações Pessoais</Text>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Input defaultValue={data?.personInformation.fullname} disabled={modalQuestionResponse} label={"fullname"} control={updateProfileForm.control} displayNameLabel="Nome Completo" style={{ minWidth: 200, maxWidth: '70%' }} />
-                        <Input defaultValue={formatCpf(data?.personInformation.cpf as string)} disabled={modalQuestionResponse} label={"cpf"} control={updateProfileForm.control} displayNameLabel="Cpf" style={{ minWidth: 150, maxWidth: '30%' }} />
-                    </View>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Input defaultValue={data?.personInformation.email} disabled={modalQuestionResponse} label={"email"} control={updateProfileForm.control} displayNameLabel="E-mail" style={{ minWidth: 200, maxWidth: '70%' }} />
-                        <Input defaultValue={formatCellphoneNumber(data?.personInformation.cellphone as string)} disabled={modalQuestionResponse} label={"cellphone"} control={updateProfileForm.control} displayNameLabel="Telefone" style={{ minWidth: 150, maxWidth: '30%' }} />
-                    </View>
+                    <View style={styles.inputsContainer}>
+                        <Input defaultValue={data?.personInformation.fullname} disabled={modalQuestionResponse} label={"fullname"} control={updateProfileForm.control} displayNameLabel="Nome Completo" />
 
+                        <Input defaultValue={formatCpf(data?.personInformation.cpf as string)} disabled={modalQuestionResponse} label={"cpf"} control={updateProfileForm.control} displayNameLabel="Cpf" />
+
+                        <Input defaultValue={data?.personInformation.email} disabled={modalQuestionResponse} label={"email"} control={updateProfileForm.control} displayNameLabel="E-mail" />
+
+                        <Input defaultValue={formatCellphoneNumber(data?.personInformation.cellphone as string)} disabled={modalQuestionResponse} label={"cellphone"} control={updateProfileForm.control} displayNameLabel="Telefone" />
+                    </View>
                     <Text style={[styles.personalInformationsTitle, { marginTop: 20 }]}>Endereço</Text>
+                    <View style={styles.inputsContainer}>
+                        <CepInput placeholder="00000-00" defaultValue={data?.addressFromUpdateInformation.cep} disabled={modalQuestionResponse} label={"cep"} control={updateProfileForm.control} displayNameLabel="Cep" />
 
-                    <CepInput placeholder="00000-00" defaultValue={data?.addressFromUpdateInformation.cep} disabled={modalQuestionResponse} label={"cep"} control={updateProfileForm.control} displayNameLabel="Cep" style={{ minWidth: '55%' }} />
+                        <Input defaultValue={data?.addressFromUpdateInformation.bairro} disabled label={"neighborhood"} control={updateProfileForm.control} displayNameLabel="Bairro" />
 
-                    <Input defaultValue={data?.addressFromUpdateInformation.bairro} disabled label={"neighborhood"} control={updateProfileForm.control} displayNameLabel="Bairro" style={{ maxWidth: '100%' }} />
+                        <Input defaultValue={data?.addressFromUpdateInformation.logradouro} disabled label={"publicPlace"} control={updateProfileForm.control} displayNameLabel="Logradouro" />
 
-                    <Input defaultValue={data?.addressFromUpdateInformation.logradouro} disabled label={"publicPlace"} control={updateProfileForm.control} displayNameLabel="Logradouro" style={{ minWidth: '100%' }} />
+                        <Input defaultValue={data?.addressFromUpdateInformation.cidade} disabled label={"city"} control={updateProfileForm.control} displayNameLabel="Cidade" />
 
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Input defaultValue={data?.addressFromUpdateInformation.cidade} disabled label={"city"} control={updateProfileForm.control} displayNameLabel="Cidade" style={{ minWidth: '55%' }} />
-                        <Input defaultValue={data?.addressFromUpdateInformation.estado} disabled label={"state"} control={updateProfileForm.control} displayNameLabel="Estado" style={{ minWidth: '35%' }} />
-                    </View>
+                        <Input defaultValue={data?.addressFromUpdateInformation.estado} disabled label={"state"} control={updateProfileForm.control} displayNameLabel="Estado" />
 
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
-                        <Input defaultValue={data?.addressFromUpdateInformation.complement} disabled={modalQuestionResponse} label={"complement"} control={updateProfileForm.control} displayNameLabel="Complemento" style={{ minWidth: 250, maxWidth: '70%' }} />
-                        <Input defaultValue={data?.addressFromUpdateInformation.number} disabled={modalQuestionResponse} label={"number"} control={updateProfileForm.control} displayNameLabel="Número" style={{ minWidth: 50, maxWidth: '10%' }} />
+                        <Input defaultValue={data?.addressFromUpdateInformation.complement} disabled={modalQuestionResponse} label={"complement"} control={updateProfileForm.control} displayNameLabel="Complemento" />
+
+                        <Input defaultValue={data?.addressFromUpdateInformation.number} disabled={modalQuestionResponse} label={"number"} control={updateProfileForm.control} displayNameLabel="Número" />
                     </View>
                     {modalQuestionResponse ? (
                         <Button
@@ -177,6 +176,7 @@ export default function Profile() {
                                 questionStatus(false);
                                 scrollToTop();
                             }}
+                            containerStyle={{ marginTop: 20, marginVertical: 20 }}
                             icon={
                                 <FontAwesome5 name="pen" size={16} color={'white'} />
                             }
@@ -205,7 +205,7 @@ export default function Profile() {
                         </View>
                     )}
 
-                    <View style={{ marginTop: 10 }}>
+                    <View style={styles.inputsContainer}>
 
                         <Text style={styles.personalInformationsTitle}>Alterar Senha</Text>
 
@@ -222,7 +222,7 @@ export default function Profile() {
                             logOut();
                             navigation.replace("login")
                         }}
-                        containerStyle={{ backgroundColor: '#C82333', marginTop: 20 }}
+                        containerStyle={{ backgroundColor: '#C82333', marginVertical: 20 }}
                         icon={
                             <MaterialIcons name="logout" size={16} color="white" />
                         }

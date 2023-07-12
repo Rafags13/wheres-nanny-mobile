@@ -2,14 +2,12 @@ import { StyleSheet } from "react-native";
 import { globalStyles } from "../../styles/global.styles";
 
 export const styles = StyleSheet.create({
-    filterContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
+    notFoundServiceContainer: {
+        justifyContent: 'space-between',
         backgroundColor: 'white',
+        borderRadius: 10,
+        padding: 10,
         gap: 10,
-        margin: 5,
-        padding: 15,
-        borderRadius: 20,
         ...globalStyles.shadow
-    },
+    }
 })

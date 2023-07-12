@@ -10,8 +10,7 @@ export const styles = StyleSheet.create({
         alignItems: 'center'
     },
     nannyProfilePicture: {
-        width: 75,
-        height: 75,
+        ...globalStyles.personPhotoSmall,
         borderRadius: 100,
         marginTop: 10,
     },
@@ -21,7 +20,7 @@ export const styles = StyleSheet.create({
         textAlign: 'left',
         marginBottom: 10
     },
-    username: {
-        ...globalStyles.commonText
+    inputsContainer: {
+        gap: 15,
     }
 })

@@ -2,9 +2,10 @@ import { Image, Text, TouchableOpacity, View } from "react-native";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { styles } from "./style";
 import LinearGradient from 'react-native-linear-gradient';
-import { getCurrentUser } from "../../../storage";
+import { getCurrentUser } from "../../storage";
 import moment from "moment";
 import { useNavigation } from "@react-navigation/native";
+import { globalStyles } from "../../styles/global.styles";
 
 type Props = {
     serviceId: number,
@@ -19,7 +20,7 @@ export default function RecentCard({ nannyName, serviceDate, imageUri, serviceId
         <TouchableOpacity style={{ alignItems: 'center' }} onPress={() => navigator.navigate('serviceInformation', { serviceId, isCommonUser: true })}>
             <LinearGradient colors={['#3E9FEB', '#51a8ed']} style={styles.cardContainerLinearGradient}>
                 <View style={styles.mainInformationContainer}>
-                    <Image style={styles.personPhoto} source={{ uri: `data:image/png;base64,${imageUri}` }} />
+                    <Image style={globalStyles.personPhotoTinySmall} source={{ uri: `data:image/png;base64,${imageUri}` }} />
 
                     <View>
                         <Text style={styles.fullnameText}>{nannyName}</Text>

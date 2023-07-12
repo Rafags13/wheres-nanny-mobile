@@ -3,6 +3,7 @@ import { getCurrentUser } from "../../../../storage";
 import Stars from "../../../../components/Stars";
 import { styles } from "./style";
 import { useNavigation } from "@react-navigation/native";
+import { globalStyles } from "../../../../styles/global.styles";
 
 export type NannyCardProps = {
     id: number,
@@ -21,7 +22,7 @@ export default function NannyCard({ fullname, starsCounting, rankCommentCount, i
 
     return (
         <TouchableOpacity style={[styles.labels, { marginBottom: 20 }]} onPress={redirectToNannyProfile}>
-            <Image style={styles.personPhoto} source={{ uri: `data:image/png;base64,${imageUri}` }} />
+            <Image style={globalStyles.personPhotoSmall} source={{ uri: `data:image/png;base64,${imageUri}` }} />
 
             <View>
                 <Text style={styles.fullnameNannyItem}>{fullname}</Text>

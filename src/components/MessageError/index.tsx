@@ -1,4 +1,5 @@
 import { Text } from "react-native";
+import { globalStyles } from "../../styles/global.styles";
 import { styles } from "./style";
 
 type Props = {

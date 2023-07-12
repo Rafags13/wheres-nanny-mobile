@@ -1,4 +1,4 @@
-import { FlatList } from "react-native";
+import { FlatList, View } from "react-native";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -47,6 +47,7 @@ export default function ListFilterNanny() {
             }}
             horizontal
             showsHorizontalScrollIndicator={false}
+            ItemSeparatorComponent={() => <View style={{ marginHorizontal: 10 }} />}
         />
     )
 }

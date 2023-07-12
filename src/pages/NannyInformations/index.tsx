@@ -7,7 +7,7 @@ import Button from "../../components/Button";
 import Stars from "../../components/Stars";
 import { LoadingContextType, LoadingContext } from "../../context/LoadingContext";
 import { NannyContractDto } from "../../dto/Person/NannyContractDto";
-import { globalStyles } from "../../styles/global.styles";
+import { globalStyles, text } from "../../styles/global.styles";
 import { Slider } from '@miblanchard/react-native-slider';
 import Feather from 'react-native-vector-icons/Feather'
 import styles from "./style";
@@ -96,7 +96,7 @@ export default function NannyInformations() {
             <View style={styles.basicNannyInformationSection}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%', paddingHorizontal: 10 }}>
                     <View style={{ flexDirection: 'row' }}>
-                        <Image style={styles.nannyProfilePicture} source={{ uri: `data:image/png;base64,${nannyInformation.imageProfileBase64Uri}` }} />
+                        <Image style={globalStyles.personPhotoSmall} source={{ uri: `data:image/png;base64,${nannyInformation.imageProfileBase64Uri}` }} />
                         <View style={styles.nameAndRatingContainer}>
 
                             <Text style={[globalStyles.headerTitle, { fontSize: 18 }]}>{nannyInformation.person.name}</Text>
@@ -130,10 +130,10 @@ export default function NannyInformations() {
                 <View style={{ padding: 15 }}>
                     <Text style={styles.titleLabels}>Informações de contato</Text>
                     <View style={styles.contactNannyContainer}>
-                        <Text style={globalStyles.commonText}>
+                        <Text style={text.common}>
                             Telefone: {formatCellphoneNumber(nannyInformation.person.cellphone)}
                         </Text>
-                        <Text style={globalStyles.commonText}>
+                        <Text style={text.common}>
                             E-mail: {nannyInformation.person.email}
                         </Text>
                     </View>
@@ -149,7 +149,7 @@ export default function NannyInformations() {
                         renderBelowThumbComponent={
                             () => (
                                 <View style={{ width: 200, left: -100, alignItems: 'center', marginBottom: 20, }}>
-                                    <Text style={globalStyles.commonText}>{nannyInformation.address.distanceBetweenThePeople} m</Text>
+                                    <Text style={text.common}>{nannyInformation.address.distanceBetweenThePeople} m</Text>
                                 </View>
                             )
                         }
@@ -169,13 +169,13 @@ export default function NannyInformations() {
                             <View style={styles.iconContainer}>
                                 <Feather name='calendar' color='white' size={24} />
                             </View>
-                            <Text style={[globalStyles.commonText]}>{moment(date).format('DD/MM/YYYY')}</Text>
+                            <Text style={[text.common]}>{moment(date).format('DD/MM/YYYY')}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.dateTimeComponent} onPress={() => openDatePicker('time')}>
                             <View style={styles.iconContainer}>
                                 <Feather name='clock' color='white' size={24} />
                             </View>
-                            <Text style={[globalStyles.commonText, { alignSelf: 'center', marginHorizontal: 10 }]}>{moment(date).format('HH:mm')}</Text>
+                            <Text style={[text.common, { alignSelf: 'center', marginHorizontal: 10 }]}>{moment(date).format('HH:mm')}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

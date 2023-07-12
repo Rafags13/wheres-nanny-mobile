@@ -11,10 +11,6 @@ const common = StyleSheet.create({
 })
 
 const styles = StyleSheet.create({
-    nannyProfilePicture: {
-        height: 75,
-        width: 75,
-    },
     basicNannyInformationSection: {
         flexDirection: 'row',
         marginTop: 20,
@@ -36,13 +32,7 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 25,
         marginTop: 25,
         justifyContent: 'space-between',
-        shadowRadius: 2,
-        shadowOffset: {
-            width: 0,
-            height: -3,
-        },
-        shadowColor: '#000000',
-        elevation: 4,
+        ...globalStyles.shadow,
         height: '100%',
     },
     titleLabels: {

@@ -4,7 +4,7 @@ import { Text, View } from 'react-native';
 import Button from '../Button';
 import { useContext } from 'react';
 import { ModalContext, ModalContextType } from '../../context/ModalContext';
-import { globalStyles } from '../../styles/global.styles';
+import { text } from '../../styles/global.styles';
 import { styles } from './style';
 
 export default function CurrentModal() {
@@ -25,7 +25,7 @@ export default function CurrentModal() {
                     loop={false}
                 />
 
-                <Text style={[globalStyles.commonText, modalInfo.modalType === 'error' ? { color: 'red' } : {}, { textAlign: 'center' }, { marginBottom: 15 }]}>{modalInfo.message}</Text>
+                <Text style={[text.common, modalInfo.modalType === 'error' ? { color: 'red' } : {}, { textAlign: 'center' }, { marginBottom: 15 }]}>{modalInfo.message}</Text>
 
                 {modalInfo.modalType === 'question' ?
                     (

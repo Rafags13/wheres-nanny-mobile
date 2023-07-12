@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
     },
     createAccountText: {
         marginVertical: 10,
-        ...globalStyles.commonText,
+        ...globalStyles.label,
     },
 
 })

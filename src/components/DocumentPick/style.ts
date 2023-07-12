@@ -3,7 +3,6 @@ import { StyleSheet } from "react-native";
 export const styles = StyleSheet.create({
     labelToDocument: {
         color: '#192553',
-        // marginTop: 10,
     },
     iconContainer: {
         backgroundColor: '#3E9FEB',
@@ -23,6 +22,5 @@ export const styles = StyleSheet.create({
     removeIcon: {
         alignSelf: 'flex-start',
         marginTop: 5,
-        // marginRight: 10
     }
 });

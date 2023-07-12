@@ -5,7 +5,6 @@ export const styles = StyleSheet.create({
     link: {
         textDecorationLine: 'underline',
         textDecorationStyle: 'solid',
-        fontWeight: 'bold',
-        ...globalStyles.commonText
+        ...globalStyles.label
     }
 })

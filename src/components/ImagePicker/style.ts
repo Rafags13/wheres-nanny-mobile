@@ -16,7 +16,6 @@ export const styles = StyleSheet.create({
     imageContainer: {
         flexDirection: 'row',
         ...common.imagePickerContainer,
-
     },
     image: {
         width: 75,

@@ -7,7 +7,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { globalStyles } from "../../styles/global.styles";
+import { globalStyles, text } from "../../styles/global.styles";
 import { styles } from "./style";
 import Line from "../../components/Line";
 import moment from "moment";
@@ -47,22 +47,22 @@ export default function ServiceInformation() {
 
                 <View style={styles.iconContainer}>
                     <Father width={'24px'} height={'30px'} fill="#192553" />
-                    <Text style={globalStyles.commonText}>{serviceData.parentName}</Text>
+                    <Text style={text.common}>{serviceData.parentName}</Text>
                 </View>
 
                 <View style={styles.iconContainer}>
                     <Ionicons name="location" size={24} color="#192553" />
-                    <Text style={globalStyles.commonText}>{serviceData.cep}</Text>
+                    <Text style={text.common}>{serviceData.cep}</Text>
                 </View>
 
                 <View style={styles.iconContainer}>
                     <MaterialIcons name="attach-money" size={24} color="#192553" />
-                    <Text style={globalStyles.commonText}>R$ {serviceData.servicePrice}</Text>
+                    <Text style={text.common}>R$ {serviceData.servicePrice}</Text>
                 </View>
 
                 <View style={styles.iconContainer}>
                     <FontAwesome name="calendar" size={24} color="#192553" />
-                    <Text style={globalStyles.commonText}>{moment(serviceData.hiringDate).format('DD/MM/YYYY [às] HH:mm')}</Text>
+                    <Text style={text.common}>{moment(serviceData.hiringDate).format('DD/MM/YYYY [às] HH:mm')}</Text>
                 </View>
 
                 <View style={{ marginVertical: 10 }}>
@@ -72,13 +72,13 @@ export default function ServiceInformation() {
 
                 <View style={styles.iconContainer}>
                     <MaterialCommunityIcons name="baby-bottle" size={24} color="#192553" />
-                    <Text style={globalStyles.commonText}>{serviceData.nannyName}</Text>
+                    <Text style={text.common}>{serviceData.nannyName}</Text>
                 </View>
 
                 <View style={styles.iconContainer}>
                     <AntDesign name="star" size={24} color="#192553" />
                     <View style={{ flexDirection: 'row', gap: 2, alignItems: 'center' }}>
-                        <Text style={globalStyles.commonText}>Avaliada em {serviceData.nannyCountStars}</Text>
+                        <Text style={text.common}>Avaliada em {serviceData.nannyCountStars}</Text>
                         <AntDesign name="star" size={12} color="#192553" />
                     </View>
                 </View>
