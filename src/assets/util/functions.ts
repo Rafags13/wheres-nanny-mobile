@@ -1,8 +1,11 @@
-import { Alert } from "react-native";
 import { ImageLibraryOptions, ImagePickerResponse, launchImageLibrary } from "react-native-image-picker";
 import { RegisterNannyDto } from "../../dto/User/RegisterNannyDto";
 import { RegisterUserDto } from "../../dto/User/RegisterUserDto";
 import { TypeOfUser } from "../../model/Enums/TypeOfUser";
+import { perPlatformTypes, SupportedPlatforms } from "react-native-document-picker/lib/typescript/fileTypes";
+import DocumentPicker, { DocumentPickerOptions } from 'react-native-document-picker';
+import RNFetchBlob from "rn-fetch-blob";
+import { Platform } from "react-native";
 
 export function ConvertDateBrazilFormatToDateType(date: string): Date {
     const dateSplitted = date.split('/');
@@ -12,16 +15,14 @@ export function ConvertDateBrazilFormatToDateType(date: string): Date {
 
 function photoIsValid(result: ImagePickerResponse) {
     if (result.didCancel) {
-        Alert.alert('Seleção de imagem cancelada');
-        return false;
+        return 'Seleção de imagem cancelada';
     }
 
     if (result.assets?.length as number > 1) {
-        Alert.alert('Selecione apenas uma imagem');
-        return false;
+        return 'Selecione apenas uma imagem';
     }
 
-    return true;
+    return '';
 }
 
 export async function getPhotoByBase64() {
@@ -31,11 +32,23 @@ export async function getPhotoByBase64() {
     }
     const result = await launchImageLibrary(options);
 
-    if (!photoIsValid(result)) return;
+    const errorMessage = photoIsValid(result);
+    if (errorMessage !== '') {
+        throw new Error(errorMessage);
+    };
 
     const base64Uri = result.assets?.find((asset, index) => index === 0)?.base64 as string;
 
     return base64Uri;
+}
+
+export async function getDocumentByBase64() {
+    const isAndroid = Platform.OS === 'android';
+    var options: DocumentPickerOptions<SupportedPlatforms> = {
+        copyTo: 'documentDirectory',
+        type: isAndroid ? DocumentPicker.perPlatformTypes.android.pdf : DocumentPicker.perPlatformTypes.ios.pdf
+    }
+    return DocumentPicker.pickSingle(options);
 }
 
 export function isNullOrUndefinedOrEmpty(value: string) {

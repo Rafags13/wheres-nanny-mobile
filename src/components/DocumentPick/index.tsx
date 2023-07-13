@@ -7,8 +7,9 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Control, FieldValues, useController } from "react-hook-form";
 import { SupportedPlatforms } from "react-native-document-picker/lib/typescript/fileTypes";
 import RNFetchBlob from 'rn-fetch-blob';
-import { replacePdfExtensioNames } from "../../assets/util/functions";
-import { useState } from "react";
+import { getDocumentByBase64, replacePdfExtensioNames } from "../../assets/util/functions";
+import { useContext, useState } from "react";
+import { ModalContext, ModalContextType } from "../../context/ModalContext";
 
 type Props = {
     control: Control<FieldValues, string>,
@@ -18,6 +19,7 @@ type Props = {
 }
 
 export default function DocumentPick({ control, label, documentIdentifier, hasError = false }: Props) {
+    const { showModal } = useContext(ModalContext) as ModalContextType;
     const { field } = useController({
         control,
         defaultValue: '',
@@ -26,16 +28,15 @@ export default function DocumentPick({ control, label, documentIdentifier, hasEr
     const [documentName, setDocumentName] = useState<string>('');
 
     async function getDocument() {
-        var options: DocumentPickerOptions<SupportedPlatforms> = {
-            copyTo: 'documentDirectory'
-        }
-        const document = await DocumentPicker.pickSingle(options).then(async (file) => {
-            return file
-        })
-
-        const result = await RNFetchBlob.fs.readFile(document.fileCopyUri as string, 'base64');
-        setDocumentName(replacePdfExtensioNames(document.name as string));
-        field.onChange(result);
+        await getDocumentByBase64().then(async (file) => {
+            const result = await RNFetchBlob.fs.readFile(file.fileCopyUri as string, 'base64');
+            setDocumentName(replacePdfExtensioNames(file.name as string));
+            field.onChange(result);
+        }).catch((err) => {
+            if (DocumentPicker.isCancel(err)) {
+                showModal({ modalType: 'error', message: 'Seleção de arquivo cancelada.' });
+            }
+        });
     }
 
     function removeDocument() {

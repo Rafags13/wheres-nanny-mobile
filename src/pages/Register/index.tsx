@@ -50,8 +50,9 @@ export default function Register() {
         }).catch((error) => {
             setLoading(false);
             showModal({ message: 'Não foi possível registrar o usuário. Tente Novamente mais tarde.', modalType: 'error' });
-        });
-        navigator.navigate('login')
+        }).finally(() => {
+            navigator.navigate('login');
+        })
     }
 
     const ComponentToReturn = (item: any, index: number): JSX.Element => {

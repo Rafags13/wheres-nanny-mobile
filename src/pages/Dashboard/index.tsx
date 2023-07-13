@@ -12,6 +12,7 @@ import { useContext, useEffect } from "react";
 import { LoadingContext, LoadingContextType } from "../../context/LoadingContext";
 import { NannyDashboardInformationDto } from "../../dto/Person/NannyDashboardInformationDto";
 import { getDashboardInformation } from "../../services/requests/NannyRequests";
+import NotFoundService from "../../components/NotFoundService";
 
 export default function Dashboard() {
     const { setLoading } = useContext(LoadingContext) as LoadingContextType;
@@ -44,15 +45,19 @@ export default function Dashboard() {
             <View style={{ padding: 10 }}>
 
                 <View>
+                    {dashboardInformation.lastService ? (
+                        <>
+                            <Text style={styles.linechartTitle}>Último Serviço</Text>
+                            <ServiceNannyCard
+                                serviceId={data.lastService.serviceId}
+                                clientName={data.lastService.clientName}
+                                servicePrice={data.lastService.servicePrice}
+                                hiringDate={data.lastService.hiringDate}
+                                isFinished={data.lastService.hiringDate > new Date()}
+                            />
+                        </>
+                    ) : (<NotFoundService />)}
 
-                    <Text style={styles.linechartTitle}>Último Serviço</Text>
-                    <ServiceNannyCard
-                        serviceId={data.lastService.serviceId}
-                        clientName={data.lastService.clientName}
-                        servicePrice={data.lastService.servicePrice}
-                        hiringDate={data.lastService.hiringDate}
-                        isFinished={data.lastService.hiringDate > new Date()}
-                    />
                 </View>
 
                 <View>

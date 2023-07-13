@@ -1,9 +1,11 @@
+import { useContext } from "react";
 import { Control, FieldValues, useController } from "react-hook-form";
 import { Image, View } from "react-native";
 import { TouchableOpacity } from "react-native";
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { getPhotoByBase64 } from "../../assets/util/functions";
+import { ModalContextType, ModalContext } from "../../context/ModalContext";
 import { getCurrentUser } from "../../storage";
 import { common, styles } from "./style";
 
@@ -15,6 +17,7 @@ type Props = {
 }
 
 export default function ImagePicker({ control, label, hasError = false, defaultValue = '' }: Props) {
+    const { showModal } = useContext(ModalContext) as ModalContextType;
     const { field } = useController({
         control,
         defaultValue,
@@ -22,8 +25,11 @@ export default function ImagePicker({ control, label, hasError = false, defaultV
     })
 
     async function getSelectedPhoto() {
-        const base64Uri = await getPhotoByBase64() as string;
-        field.onChange(base64Uri);
+        await getPhotoByBase64().then((photo) => {
+            field.onChange(photo);
+        }).catch((error: Error) => {
+            showModal({ modalType: 'error', message: error.message })
+        })
     }
     function removeSelectedPhoto() {
         field.onChange('');
