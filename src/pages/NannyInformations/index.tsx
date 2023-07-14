@@ -94,21 +94,24 @@ export default function NannyInformations() {
     return (
         <Background hasBackIcon>
             <View style={styles.basicNannyInformationSection}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%', paddingHorizontal: 10 }}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <Image style={globalStyles.personPhotoSmall} source={{ uri: `data:image/png;base64,${nannyInformation.imageProfileBase64Uri}` }} />
-                        <View style={styles.nameAndRatingContainer}>
-
-                            <Text style={[globalStyles.headerTitle, { fontSize: 18 }]}>{nannyInformation.person.name}</Text>
-
-                            <Text style={[globalStyles.headerSubtitle, { fontSize: 16, textAlign: 'left' }]}>babá</Text>
-                            <View style={styles.starsRatingContainer}>
-                                <Stars rating={nannyInformation.rankAverageStars} tintBackgroundColorStar={'white'} backgroundColorStars={"#c4c4c4"} />
-                                <Text style={styles.textStarsNumber}>{nannyInformation.rankAverageStars}</Text>
-                                <Text>({nannyInformation.rankCommentCount})</Text>
-                            </View>
+                <Image style={globalStyles.personPhotoSmall} source={{ uri: `data:image/png;base64,${nannyInformation.imageProfileBase64Uri}` }} />
+                <View style={styles.nameAndRatingContainer}>
+                    <Text style={styles.nannyName}>{nannyInformation.person.name}</Text>
+                    <Text style={styles.workAlias}>babá</Text>
+                    <View style={styles.starsRatingContainer}>
+                        <Stars rating={nannyInformation.rankAverageStars} />
+                        <View style={{
+                            marginLeft: 10,
+                            marginRight: 3,
+                            flexDirection: 'row',
+                            gap: 5,
+                        }}>
+                            <Text style={styles.textStarsNumber}>{nannyInformation.rankAverageStars.toString()}</Text>
+                            <Text style={styles.textStarsNumber}>({nannyInformation.rankCommentCount.toString()})</Text>
                         </View>
                     </View>
+                </View>
+                <View style={styles.absoluteHeart}>
                     <Heart isFavorited={currentNanny?.isFavorited ?? false} setIsFavorited={(isFavoriting) => {
                         if (isFavoriting) {
                             var newFavoriteNanny: FavoritedNanny = {
@@ -123,7 +126,7 @@ export default function NannyInformations() {
                         } else {
                             dispatch(removingFavoriteFromNanny(nannyInformation?.nannyId));
                         }
-                    }} style={{}} />
+                    }} />
                 </View>
             </View>
             <LinearGradient colors={['white', '#F6F6F6']} style={styles.mainContentContainer}>

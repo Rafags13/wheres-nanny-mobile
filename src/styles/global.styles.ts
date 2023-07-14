@@ -108,5 +108,6 @@ export const globalStyles = StyleSheet.create({
         width: 75,
         height: 75,
         marginRight: 10,
+        borderRadius: 50,
     }
 })

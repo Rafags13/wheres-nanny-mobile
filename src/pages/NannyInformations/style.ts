@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { globalStyles } from "../../styles/global.styles";
+import { globalStyles, text } from "../../styles/global.styles";
 import { Dimensions } from "react-native";
 const width = Dimensions.get('window').width;
 
@@ -14,18 +14,34 @@ const styles = StyleSheet.create({
     basicNannyInformationSection: {
         flexDirection: 'row',
         marginTop: 20,
-        justifyContent: 'space-around'
+        paddingHorizontal: 10,
     },
     nameAndRatingContainer: {
         justifyContent: 'space-around',
         marginLeft: 15
     },
+    nannyName: {
+        ...globalStyles.headerTitle,
+        fontSize: 18,
+        textAlign: 'left',
+        maxWidth: '90%',
+        backgroundColor: 'red'
+    },
+    workAlias: {
+        ...globalStyles.headerSubtitle,
+        fontSize: 16,
+        textAlign: 'left'
+    },
     starsRatingContainer: {
-        flexDirection: 'row'
+        flexDirection: 'row',
     },
     textStarsNumber: {
-        marginLeft: 10,
-        marginRight: 3,
+        ...text.common
+    },
+    absoluteHeart: {
+        position: 'absolute',
+        right: 0,
+        marginRight: 10,
     },
     mainContentContainer: {
         borderTopLeftRadius: 25,

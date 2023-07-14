@@ -13,12 +13,13 @@ export const styles = StyleSheet.create({
     },
     starsNannyCountingContainer: {
         flexDirection: 'row',
-        marginTop: 5
+        marginTop: 5,
     },
     starsNannyCouting: {
         marginLeft: 10,
         color: '#c4c4c4',
-        fontWeight: '700'
+        fontWeight: '700',
+        alignSelf: 'center'
     },
     labels: {
         flexDirection: 'row',
