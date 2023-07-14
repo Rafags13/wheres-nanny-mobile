@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import { ReactNode } from "react"
 import { View, TouchableOpacity, ScrollView, Text } from "react-native";
 import Entypo from 'react-native-vector-icons/Entypo';
-import { globalStyles } from "../../styles/global.styles";
+import { globalStyles } from "../../assets/styles/global.styles";
 import { styles } from "./style";
 
 type Props = {

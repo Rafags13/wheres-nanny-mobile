@@ -3,14 +3,14 @@ import {
     LineChart,
     BarChart,
 } from 'react-native-chart-kit'
-import { globalStyles } from "../../styles/global.styles";
+import { globalStyles } from "../../assets/styles/global.styles";
 import Background from "../../components/Background";
 import { styles } from "./style";
 import ServiceNannyCard from "../../components/ServiceNannyCard";
 import { useQuery } from "react-query";
 import { useContext, useEffect } from "react";
 import { LoadingContext, LoadingContextType } from "../../context/LoadingContext";
-import { NannyDashboardInformationDto } from "../../dto/Person/NannyDashboardInformationDto";
+import { NannyDashboardInformationDto } from "../../assets/model/dto/Person/NannyDashboardInformationDto";
 import { getDashboardInformation } from "../../services/requests/NannyRequests";
 import NotFoundService from "../../components/NotFoundService";
 

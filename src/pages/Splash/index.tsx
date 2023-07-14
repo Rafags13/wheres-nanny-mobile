@@ -14,7 +14,7 @@ export default function Splash({ onComplete }: Props) {
             autoPlay
             loop={false}
             style={[{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'white' },]}
-            source={require('../../lottie/splash.json')}
+            source={require('../../assets/lottie/splash.json')}
             onAnimationFinish={() => onComplete(true)}
         />
     )

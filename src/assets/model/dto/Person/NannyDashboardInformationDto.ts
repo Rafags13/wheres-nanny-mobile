@@ -1,4 +1,4 @@
-import { ServiceNannyCardProps } from "../../components/ServiceNannyCard";
+import { ServiceNannyCardProps } from "../../../../components/ServiceNannyCard";
 
 export class NannyDashboardInformationDto {
     lastService!: ServiceNannyCardProps

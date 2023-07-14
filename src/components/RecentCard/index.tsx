@@ -2,10 +2,9 @@ import { Image, Text, TouchableOpacity, View } from "react-native";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { styles } from "./style";
 import LinearGradient from 'react-native-linear-gradient';
-import { getCurrentUser } from "../../storage";
 import moment from "moment";
 import { useNavigation } from "@react-navigation/native";
-import { globalStyles } from "../../styles/global.styles";
+import { globalStyles } from "../../assets/styles/global.styles";
 
 type Props = {
     serviceId: number,

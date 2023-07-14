@@ -1,4 +1,4 @@
-import { NannyCardProps } from "../../features/listNanny/NannyCardList/NannyCard"
+import { NannyCardProps } from "../../../../features/listNanny/NannyCardList/NannyCard"
 
 export class DisplayInformationHomeUser {
     mostRecentService!: recentCardDto | null

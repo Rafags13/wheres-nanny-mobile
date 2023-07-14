@@ -1,4 +1,4 @@
-import { CreateContractNannyDto } from "../../dto/Nanny/CreateContractNannyDto";
+import { CreateContractNannyDto } from "../../assets/model/dto/Nanny/CreateContractNannyDto";
 import { getCurrentUser } from "../../storage";
 import { getData, postData } from "../apiRequests";
 

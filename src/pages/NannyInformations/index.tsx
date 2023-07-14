@@ -6,8 +6,8 @@ import Background from "../../components/Background";
 import Button from "../../components/Button";
 import Stars from "../../components/Stars";
 import { LoadingContextType, LoadingContext } from "../../context/LoadingContext";
-import { NannyContractDto } from "../../dto/Person/NannyContractDto";
-import { globalStyles, text } from "../../styles/global.styles";
+import { NannyContractDto } from "../../assets/model/dto/Person/NannyContractDto";
+import { globalStyles, text } from "../../assets/styles/global.styles";
 import { Slider } from '@miblanchard/react-native-slider';
 import Feather from 'react-native-vector-icons/Feather'
 import styles from "./style";
@@ -18,12 +18,12 @@ import { formatCellphoneNumber } from "../../assets/util/functions";
 import moment from "moment";
 import { ModalContextType, ModalContext } from "../../context/ModalContext";
 import { useDispatch, } from "react-redux";
-import { loadInitialHomeInformation } from "../../features/listNannySlice";
-import { addFavoriteNanny, FavoritedNanny, removingFavoriteFromNanny } from '../../features/favoriteListNannySlice';
+import { loadInitialHomeInformation } from "../../features/listNanny/listNannySlice";
+import { addFavoriteNanny, FavoritedNanny, removingFavoriteFromNanny } from '../../features/listNanny/favoriteListNannySlice';
 import Heart from "../../components/Heart";
 import { useAppSelector } from "../../app/hooks";
 import { getNannyById } from "../../services/requests/NannyRequests";
-import { CreateContractNannyDto } from "../../dto/Nanny/CreateContractNannyDto";
+import { CreateContractNannyDto } from "../../assets/model/dto/Nanny/CreateContractNannyDto";
 import { hireNanny } from "../../services/requests/ServiceRequests";
 
 export default function NannyInformations() {

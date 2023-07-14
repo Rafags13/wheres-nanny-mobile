@@ -4,8 +4,8 @@ import { ActivityIndicator, FlatList, Image, Text, TouchableOpacity, View } from
 import { useQuery } from "react-query";
 import Background from "../../components/Background";
 import { LoadingContextType, LoadingContext } from "../../context/LoadingContext";
-import { recentCardDto } from "../../dto/Person/DisplayInformationHomeUser";
-import { globalStyles } from "../../styles/global.styles";
+import { recentCardDto } from "../../assets/model/dto/Person/DisplayInformationHomeUser";
+import { globalStyles } from "../../assets/styles/global.styles";
 import RecentCard from "../../components/RecentCard";
 import { styles } from "./style";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";

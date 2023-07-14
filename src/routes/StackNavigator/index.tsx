@@ -1,9 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { useEffect, useState, useContext } from "react";
-import { View } from "react-native";
+import { useEffect } from "react";
 import { returnRouteNameByProfileType } from "../../assets/util/functions";
-import { TypeOfUser } from "../../model/Enums/TypeOfUser";
+import { TypeOfUser } from "../../assets/enums/TypeOfUser";
 import Chat from "../../pages/Chat";
 import Login from "../../pages/Login";
 import Register from "../../pages/Register";

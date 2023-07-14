@@ -1,5 +1,5 @@
-import { ProfileUpdateDataDto } from "../../dto/Person/ProfileUpdateDataDto";
-import { UpdatePasswordDto } from "../../dto/User/UpdatePasswordDto";
+import { ProfileUpdateDataDto } from "../../assets/model/dto/Person/ProfileUpdateDataDto";
+import { UpdatePasswordDto } from "../../assets/model/dto/User/UpdatePasswordDto";
 import { getCurrentUser } from "../../storage";
 import { getData, updateData } from "../apiRequests";
 

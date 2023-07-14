@@ -14,13 +14,13 @@ import { useEffect, useRef, useState, useContext } from "react";
 import { useQuery } from "react-query";
 import { viaCepRequestGetByCep } from "../../services/apiRequests";
 import { LoadingContext, LoadingContextType } from "../../context/LoadingContext";
-import { ProfileUpdateDataDto } from "../../dto/Person/ProfileUpdateDataDto";
+import { ProfileUpdateDataDto } from "../../assets/model/dto/Person/ProfileUpdateDataDto";
 import { ModalContextType, ModalContext } from "../../context/ModalContext";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { updatePasswordValidationSchema, updatePersonValidationSchema } from "../../assets/util/yupValidations";
 import { formatCellphoneNumber, formatCpf, removeSpecialCharacter } from "../../assets/util/functions";
 import CepInput from "../../components/CepInput";
-import { UpdatePasswordDto } from "../../dto/User/UpdatePasswordDto";
+import { UpdatePasswordDto } from "../../assets/model/dto/User/UpdatePasswordDto";
 import { getProfileData, updatePassword, updateProfile } from "../../services/requests/PersonRequests";
 
 export default function Profile() {

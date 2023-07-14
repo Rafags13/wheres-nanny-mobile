@@ -8,7 +8,7 @@ import Button from "../../components/Button";
 import Checkbox from "../../components/Checkbox";
 import MessageError from "../../components/MessageError";
 
-import { globalStyles } from "../../styles/global.styles";
+import { globalStyles } from "../../assets/styles/global.styles";
 import { styles } from "./style";
 
 import { COMMON_USER_SECTION, NANNY_SECTION } from '../../assets/util/contants';

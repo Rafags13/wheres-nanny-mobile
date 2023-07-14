@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState } from "../app/store";
-import { addFavoriteNannyAsyncStorage, getAllNannies, removeFavoriteNannyAsyncStorage, storage } from "../storage";
-import { NannyCardProps } from "./listNanny/NannyCardList/NannyCard";
+import { RootState } from "../../app/store";
+import { addFavoriteNannyAsyncStorage, getAllNannies, removeFavoriteNannyAsyncStorage, storage } from "../../storage";
+import { NannyCardProps } from "./NannyCardList/NannyCard";
 
 export type FavoritedNanny = NannyCardProps & {
     isFavorited: boolean

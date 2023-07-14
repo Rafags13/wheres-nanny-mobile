@@ -9,7 +9,7 @@ import DashboardNavigatorPages from "./DashboardNavigatorPages";
 import { useContext, useEffect } from "react";
 import messaging from '@react-native-firebase/messaging';
 import { ModalContextType, ModalContext } from "../../context/ModalContext";
-import { AcceptedServiceDto } from "../../dto/Person/AcceptedServiceDto";
+import { AcceptedServiceDto } from "../../assets/model/dto/Person/AcceptedServiceDto";
 import { acceptService } from "../../services/requests/NannyRequests";
 
 const Tab = createBottomTabNavigator();

@@ -1,5 +1,5 @@
 import { Text, View } from "react-native";
-import { globalStyles, text } from "../../styles/global.styles";
+import { globalStyles, text } from "../../assets/styles/global.styles";
 import Button from "../Button";
 import { styles } from "./style";
 

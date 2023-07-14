@@ -1,4 +1,3 @@
-import axios from "axios";
 import api, { apiViaCep } from "./api";
 
 export async function getData(route: string, params?: {}) {

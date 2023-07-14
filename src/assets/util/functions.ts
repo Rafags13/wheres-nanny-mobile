@@ -1,7 +1,7 @@
 import { ImageLibraryOptions, ImagePickerResponse, launchImageLibrary } from "react-native-image-picker";
-import { RegisterNannyDto } from "../../dto/User/RegisterNannyDto";
-import { RegisterUserDto } from "../../dto/User/RegisterUserDto";
-import { TypeOfUser } from "../../model/Enums/TypeOfUser";
+import { RegisterNannyDto } from "../../assets/model/dto/User/RegisterNannyDto";
+import { RegisterUserDto } from "../../assets/model/dto/User/RegisterUserDto";
+import { TypeOfUser } from "../enums/TypeOfUser";
 import { perPlatformTypes, SupportedPlatforms } from "react-native-document-picker/lib/typescript/fileTypes";
 import DocumentPicker, { DocumentPickerOptions } from 'react-native-document-picker';
 import RNFetchBlob from "rn-fetch-blob";

@@ -4,15 +4,15 @@ import { Text, View } from 'react-native';
 import Button from '../Button';
 import { useContext } from 'react';
 import { ModalContext, ModalContextType } from '../../context/ModalContext';
-import { text } from '../../styles/global.styles';
+import { text } from '../../assets/styles/global.styles';
 import { styles } from './style';
 
 export default function CurrentModal() {
     const { isVisible, closeModal, modalInfo, sendResponse } = useContext(ModalContext) as ModalContextType;
     const dictionary = {
-        'success': require('../../lottie/success.json'),
-        'error': require('../../lottie/error.json'),
-        'question': require('../../lottie/question.json'),
+        'success': require('../../assets/lottie/success.json'),
+        'error': require('../../assets/lottie/error.json'),
+        'question': require('../../assets/lottie/question.json'),
     }
 
     return (

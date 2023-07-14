@@ -2,7 +2,7 @@ import { Text, TouchableOpacity, View } from "react-native";
 import Background from "../../components/Background";
 import Feather from 'react-native-vector-icons/Feather';
 import RecentCard from "../../components/RecentCard";
-import { globalStyles } from "../../styles/global.styles";
+import { globalStyles } from "../../assets/styles/global.styles";
 import { styles } from "./style";
 import NannyCardList from "../../features/listNanny/NannyCardList";
 import ListFilterNanny from "../../components/ListFilterNanny";

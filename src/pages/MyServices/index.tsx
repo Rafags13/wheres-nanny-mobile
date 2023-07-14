@@ -1,6 +1,6 @@
 import { ActivityIndicator, FlatList, Text, View } from "react-native";
 import Background from "../../components/Background";
-import { globalStyles } from "../../styles/global.styles";
+import { globalStyles } from "../../assets/styles/global.styles";
 import ServiceNannyCard, { ServiceNannyCardProps } from "../../components/ServiceNannyCard";
 import { useQuery } from "react-query";
 import { useContext, useEffect, useState } from "react";

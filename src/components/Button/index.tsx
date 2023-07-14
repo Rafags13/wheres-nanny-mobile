@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { StyleProp, Text, TextStyle, TouchableOpacity, ViewStyle } from "react-native";
-import { globalStyles } from "../../styles/global.styles";
+import { globalStyles } from "../../assets/styles/global.styles";
 import { styles } from "./style";
 
 type Props = {

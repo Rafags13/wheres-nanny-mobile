@@ -1,4 +1,4 @@
-import { TypeOfUser } from "../../model/Enums/TypeOfUser"
+import { TypeOfUser } from "../../../enums/TypeOfUser"
 
 export class UserTokenDto {
     constructor() { }

@@ -2,7 +2,7 @@ import { Image, Text, TouchableOpacity, View } from "react-native";
 import Stars from "../../../../components/Stars";
 import { styles } from "./style";
 import { useNavigation } from "@react-navigation/native";
-import { globalStyles } from "../../../../styles/global.styles";
+import { globalStyles } from "../../../../assets/styles/global.styles";
 
 export type NannyCardProps = {
     id: number,

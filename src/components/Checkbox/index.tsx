@@ -1,7 +1,7 @@
 import CheckBox from "@react-native-community/checkbox";
 import { Control, FieldValues, useController } from "react-hook-form";
 import { Text, View } from "react-native";
-import { globalStyles, text } from "../../styles/global.styles";
+import { globalStyles, text } from "../../assets/styles/global.styles";
 
 type Props = {
     messageContent: string,

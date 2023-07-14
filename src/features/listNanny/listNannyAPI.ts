@@ -1,7 +1,7 @@
-import { ChangeNannyListByFilterDto } from "../dto/Person/ChangeNannyListByFilterDto";
-import { FindCommonUserServicesDto } from "../dto/Person/FindCommonUserServicesDto";
-import { postData } from "../services/apiRequests";
-import { getCurrentUser } from "../storage";
+import { ChangeNannyListByFilterDto } from "../../assets/model/dto/Person/ChangeNannyListByFilterDto";
+import { FindCommonUserServicesDto } from "../../assets/model/dto/Person/FindCommonUserServicesDto";
+import { postData } from "../../services/apiRequests";
+import { getCurrentUser } from "../../storage";
 
 export async function fetchUserHomeInformation() {
     const currentUser = getCurrentUser();

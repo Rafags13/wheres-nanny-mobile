@@ -5,17 +5,17 @@ import Input from "../../components/Input";
 import LinkNavigator from "../../components/LinkNavigator";
 import Button from '../../components/Button';
 import { CommonActions, useNavigation } from "@react-navigation/native";
-import { globalStyles } from "../../styles/global.styles";
+import { globalStyles } from "../../assets/styles/global.styles";
 import { getCurrentUser, storage } from "../../storage";
 import { useContext } from "react";
 import MessageError from "../../components/MessageError";
 import { LoadingContextType, LoadingContext } from "../../context/LoadingContext";
 import { ModalContextType, ModalContext } from "../../context/ModalContext";
 import messaging from "@react-native-firebase/messaging";
-import { LoginDto } from "../../dto/User/LoginDto";
+import { LoginDto } from "../../assets/model/dto/User/LoginDto";
 import { LoginRequest } from "../../services/requests/AutenticationRequests";
 import { returnRouteNameByProfileType } from "../../assets/util/functions";
-import { TypeOfUser } from "../../model/Enums/TypeOfUser";
+import { TypeOfUser } from "../../assets/enums/TypeOfUser";
 
 export default function Login() {
     const { control, handleSubmit, formState: { errors } } = useForm();

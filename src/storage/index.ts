@@ -1,9 +1,7 @@
 import { MMKV } from 'react-native-mmkv';
 import jwt_decode from "jwt-decode";
-import { UserTokenDto } from '../dto/User/UserTokenDto';
-import { useNavigation } from '@react-navigation/native';
-import { NannyCardProps } from '../features/listNanny/NannyCardList/NannyCard';
-import { FavoritedNanny } from '../features/favoriteListNannySlice';
+import { UserTokenDto } from '../assets/model/dto/User/UserTokenDto';
+import { FavoritedNanny } from '../features/listNanny/favoriteListNannySlice';
 import { LogoutRequest } from '../services/requests/AutenticationRequests';
 
 export const storage = new MMKV({ id: 'WheresNanny' });

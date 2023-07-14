@@ -5,7 +5,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { viaCepRequestGetByCep } from "../../services/apiRequests";
 import { getCurrentUser } from "../../storage";
 import { removeAllSpecialCharacters } from "../../assets/util/functions";
-import { globalStyles } from "../../styles/global.styles";
+import { globalStyles } from "../../assets/styles/global.styles";
 
 type Props = {
     label: string,

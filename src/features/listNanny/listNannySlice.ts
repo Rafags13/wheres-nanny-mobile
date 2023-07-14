@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState, AppThunk } from '../app/store';
-import { DisplayInformationHomeUser } from '../dto/Person/DisplayInformationHomeUser';
+import { RootState, AppThunk } from '../../app/store';
+import { DisplayInformationHomeUser } from '../../assets/model/dto/Person/DisplayInformationHomeUser';
 import { fetchNannyListByFilter, fetchUserHomeInformation } from './listNannyAPI';
 
 export interface UserHomeInformationState {

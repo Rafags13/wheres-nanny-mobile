@@ -1,4 +1,4 @@
-import { AcceptedServiceDto } from "../../dto/Person/AcceptedServiceDto";
+import { AcceptedServiceDto } from "../../assets/model/dto/Person/AcceptedServiceDto";
 import { getCurrentUser } from "../../storage";
 import { getData, postData } from "../apiRequests";
 
