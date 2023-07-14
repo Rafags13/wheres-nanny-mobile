@@ -8,7 +8,7 @@ import { text } from '../../styles/global.styles';
 import { styles } from './style';
 
 export default function CurrentModal() {
-    const { isVisible, closeModal, modalInfo, questionStatus, sendResponse } = useContext(ModalContext) as ModalContextType;
+    const { isVisible, closeModal, modalInfo, sendResponse } = useContext(ModalContext) as ModalContextType;
     const dictionary = {
         'success': require('../../lottie/success.json'),
         'error': require('../../lottie/error.json'),
@@ -30,8 +30,8 @@ export default function CurrentModal() {
                 {modalInfo.modalType === 'question' ?
                     (
                         <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-around' }}>
-                            <Button label={'Sim'} onClick={() => { questionStatus(true); closeModal(); sendResponse(true); }} containerStyle={{ backgroundColor: '#218838', width: '45%' }} />
-                            <Button label={'Cancelar'} onClick={() => { questionStatus(false); closeModal(); sendResponse(false); }} containerStyle={{ backgroundColor: '#C82333', width: '45%' }} />
+                            <Button label={'Sim'} onClick={() => { closeModal(); sendResponse(true); }} containerStyle={{ backgroundColor: '#218838', width: '45%' }} />
+                            <Button label={'Cancelar'} onClick={() => { closeModal(); sendResponse(false); }} containerStyle={{ backgroundColor: '#C82333', width: '45%' }} />
                         </View>
                     ) : (
                         <Button label={"Ok"} onClick={closeModal} />

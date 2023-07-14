@@ -27,7 +27,8 @@ export default function Profile() {
     const currentUser = getCurrentUser();
     const navigation = useNavigation<any>();
     const scrollViewRef = useRef<any>(null);
-    const { showModal, modalQuestionResponse, questionStatus } = useContext(ModalContext) as ModalContextType;
+    const [enabledFields, setEnabledFields] = useState<boolean>(false);
+    const { showModal } = useContext(ModalContext) as ModalContextType;
     const { setLoading } = useContext(LoadingContext) as LoadingContextType;
     const updateProfileForm = useForm({ resolver: yupResolver(updatePersonValidationSchema) });
     const updatePasswordForm = useForm({ resolver: yupResolver(updatePasswordValidationSchema) })
@@ -66,7 +67,7 @@ export default function Profile() {
 
         await updateProfile(updateDataProfile).then((response) => {
             showModal({ modalType: 'success', message: response.data });
-            questionStatus(true);
+            setEnabledFields(false);
         }).catch((error: Error) => {
             showModal({ modalType: "error", message: error.message })
         });
@@ -145,17 +146,17 @@ export default function Profile() {
                 <View style={{ padding: 15 }}>
                     <Text style={styles.personalInformationsTitle}>Informações Pessoais</Text>
                     <View style={styles.inputsContainer}>
-                        <Input defaultValue={data?.personInformation.fullname} disabled={modalQuestionResponse} label={"fullname"} control={updateProfileForm.control} displayNameLabel="Nome Completo" />
+                        <Input defaultValue={data?.personInformation.fullname} disabled={!enabledFields} label={"fullname"} control={updateProfileForm.control} displayNameLabel="Nome Completo" />
 
-                        <Input defaultValue={formatCpf(data?.personInformation.cpf as string)} disabled={modalQuestionResponse} label={"cpf"} control={updateProfileForm.control} displayNameLabel="Cpf" />
+                        <Input defaultValue={formatCpf(data?.personInformation.cpf as string)} disabled={!enabledFields} label={"cpf"} control={updateProfileForm.control} displayNameLabel="Cpf" />
 
-                        <Input defaultValue={data?.personInformation.email} disabled={modalQuestionResponse} label={"email"} control={updateProfileForm.control} displayNameLabel="E-mail" />
+                        <Input defaultValue={data?.personInformation.email} disabled={!enabledFields} label={"email"} control={updateProfileForm.control} displayNameLabel="E-mail" />
 
-                        <Input defaultValue={formatCellphoneNumber(data?.personInformation.cellphone as string)} disabled={modalQuestionResponse} label={"cellphone"} control={updateProfileForm.control} displayNameLabel="Telefone" />
+                        <Input defaultValue={formatCellphoneNumber(data?.personInformation.cellphone as string)} disabled={!enabledFields} label={"cellphone"} control={updateProfileForm.control} displayNameLabel="Telefone" />
                     </View>
                     <Text style={[styles.personalInformationsTitle, { marginTop: 20 }]}>Endereço</Text>
                     <View style={styles.inputsContainer}>
-                        <CepInput placeholder="00000-00" defaultValue={data?.addressFromUpdateInformation.cep} disabled={modalQuestionResponse} label={"cep"} control={updateProfileForm.control} displayNameLabel="Cep" />
+                        <CepInput placeholder="00000-00" defaultValue={data?.addressFromUpdateInformation.cep} disabled={!enabledFields} label={"cep"} control={updateProfileForm.control} displayNameLabel="Cep" />
 
                         <Input defaultValue={data?.addressFromUpdateInformation.bairro} disabled label={"neighborhood"} control={updateProfileForm.control} displayNameLabel="Bairro" />
 
@@ -165,15 +166,15 @@ export default function Profile() {
 
                         <Input defaultValue={data?.addressFromUpdateInformation.estado} disabled label={"state"} control={updateProfileForm.control} displayNameLabel="Estado" />
 
-                        <Input defaultValue={data?.addressFromUpdateInformation.complement} disabled={modalQuestionResponse} label={"complement"} control={updateProfileForm.control} displayNameLabel="Complemento" />
+                        <Input defaultValue={data?.addressFromUpdateInformation.complement} disabled={!enabledFields} label={"complement"} control={updateProfileForm.control} displayNameLabel="Complemento" />
 
-                        <Input defaultValue={data?.addressFromUpdateInformation.number} disabled={modalQuestionResponse} label={"number"} control={updateProfileForm.control} displayNameLabel="Número" />
+                        <Input defaultValue={data?.addressFromUpdateInformation.number} disabled={!enabledFields} label={"number"} control={updateProfileForm.control} displayNameLabel="Número" />
                     </View>
-                    {modalQuestionResponse ? (
+                    {!enabledFields ? (
                         <Button
                             label={"Alterar"}
                             onClick={() => {
-                                questionStatus(false);
+                                setEnabledFields(true);
                                 scrollToTop();
                             }}
                             containerStyle={{ marginTop: 20, marginVertical: 20 }}
@@ -194,7 +195,7 @@ export default function Profile() {
                             <Button
                                 label={"Cancelar"}
                                 onClick={() => {
-                                    showModal({ modalType: 'question', message: 'Deseja sair sem salvar as alterações?' })
+                                    showModal({ modalType: 'question', message: 'Deseja sair sem salvar as alterações?', function: (value: boolean) => { setEnabledFields(value) } })
 
                                 }}
                                 containerStyle={{ backgroundColor: '#C82333', width: '45%' }}
