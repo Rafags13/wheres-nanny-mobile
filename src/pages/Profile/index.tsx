@@ -38,7 +38,7 @@ export default function Profile() {
     });
 
     async function createProfileModel() {
-        const response = await getProfileData();
+        const response = await getProfileData()
         const viacepResponse = await viaCepRequestGetByCep(currentUser.cep);
         const profileData: ProfileUpdateDataDto = {
             ...response.data,

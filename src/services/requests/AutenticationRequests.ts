@@ -1,9 +1,9 @@
 import { LoginDto } from "@dtos/User/LoginDto";
 import { getCurrentUser } from "@storage/index";
-import { postData } from "@services/apiRequests";
+import { postData, postDataAnonymous } from "@services/apiRequests";
 
 export async function LoginRequest(loginDto: LoginDto) {
-    return await postData('Login', loginDto);
+    return await postDataAnonymous('Login', loginDto);
 }
 
 export async function LogoutRequest() {
