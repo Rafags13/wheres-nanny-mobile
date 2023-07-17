@@ -6,7 +6,7 @@ const api = axios.create({
         "Content-Type": "application/json"
     },
     withCredentials: true
-})
+});
 
 export const apiViaCep = axios.create({
     baseURL: 'https://viacep.com.br/ws/',
