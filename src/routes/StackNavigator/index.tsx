@@ -1,11 +1,14 @@
 import { useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useEffect } from "react";
-import Login from "../../pages/Login";
-import Register from "../../pages/Register";
-import { getCurrentUser, getToken } from "../../storage";
-import CommonUserTab from "../CommonUserTab";
-import NannyUserTab from "../NannyUserTab";
+import { returnRouteNameByProfileType } from "@util/functions";
+import { TypeOfUser } from "@enums/TypeOfUser";
+import Chat from "@pages/Chat";
+import Login from "@pages/Login";
+import Register from "@pages/Register";
+import { getCurrentUser, getToken } from "@storage/index";
+import CommonUserTab from "@tabs/CommonUserTab";
+import NannyUserTab from "@tabs/NannyUserTab";
 
 const Stack = createNativeStackNavigator();
 
@@ -13,16 +16,14 @@ const token = getToken();
 
 export default function StackNavigator() {
     const navigator = useNavigation<any>();
+    const currentUser = getCurrentUser();
+
     useEffect(() => {
         function findUserLogged() {
             if (token !== '') {
-                const currentUser = getCurrentUser();
-                if (currentUser.isNanny) {
-                    navigator.navigate('nannyUser', { screen: 'dashboard' });
-                    return;
-                }
-
-                navigator.navigate('commonUser', { screen: 'homeDerivatedPages' });
+                const typeOfUser: TypeOfUser = currentUser.typeOfUser;
+                const routeName = returnRouteNameByProfileType(typeOfUser);
+                navigator.navigate(routeName.mainContainer, { screen: routeName.screen });
                 return;
             }
         }
@@ -36,6 +37,7 @@ export default function StackNavigator() {
             <Stack.Screen name="register" component={Register} />
             <Stack.Screen name="commonUser" component={CommonUserTab} />
             <Stack.Screen name="nannyUser" component={NannyUserTab} />
+            <Stack.Screen name="chat" component={Chat} />
         </Stack.Navigator>
     )
 }

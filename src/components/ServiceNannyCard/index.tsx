@@ -3,7 +3,6 @@ import { Text, TouchableOpacity, View } from "react-native";
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import { styles } from "./style";
-import { globalStyles } from "../../styles/global.styles";
 import { useNavigation } from "@react-navigation/native";
 
 export type ServiceNannyCardProps = {
@@ -25,12 +24,12 @@ export default function ServiceNannyCard({ serviceId, clientName, servicePrice, 
         <TouchableOpacity
             activeOpacity={0.5}
             onPress={onShowServiceInformations}
-            style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginVertical: 10 }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                <View style={{ backgroundColor: 'rgba(51, 51, 51, 0.1)', padding: 10, borderRadius: 5, }}>
+            style={styles.serviceCardContainer}>
+            <View style={styles.dataContainer}>
+                <View style={styles.babyIconContainer}>
                     <MaterialCommunityIcons name="baby-face-outline" size={48} color={"#192553"} />
                 </View>
-                <View style={{ gap: 15, marginLeft: 10 }}>
+                <View style={styles.personDataContainer}>
                     <View style={{ justifyContent: 'space-between' }}>
                         <Text style={styles.personName}>{clientName}</Text>
                         <Text style={styles.commonTextDescription}>R$ {servicePrice.toString()}</Text>

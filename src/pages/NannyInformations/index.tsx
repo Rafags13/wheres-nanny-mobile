@@ -2,43 +2,45 @@ import { CommonActions, RouteProp, useNavigation, useRoute } from "@react-naviga
 import { useContext, useState } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { useQuery } from "react-query";
-import Background from "../../components/Background";
-import Button from "../../components/Button";
-import Stars from "../../components/Stars";
-import { LoadingContextType, LoadingContext } from "../../context/LoadingContext";
-import { NannyContractDto } from "../../dto/Person/NannyContractDto";
-import { getData, postData } from "../../services/apiRequests";
-import { globalStyles } from "../../styles/global.styles";
+import Background from "@components/Background";
+import Button from "@components/Button";
+import Stars from "@components/Stars";
+import { LoadingContextType, LoadingContext } from "@context/LoadingContext";
+import { NannyContractDto } from "@dtos/Person/NannyContractDto";
+import { globalStyles, text } from "@styles/global.styles";
 import { Slider } from '@miblanchard/react-native-slider';
 import Feather from 'react-native-vector-icons/Feather'
 import styles from "./style";
 import LinearGradient from "react-native-linear-gradient";
-import { getCurrentUser } from "../../storage";
+import { getCurrentUser } from "@storage/index";
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
-import { formatCellphoneNumber } from "../../assets/util/functions";
+import { formatCellphoneNumber } from "@util/functions";
 import moment from "moment";
-import { ModalContextType, ModalContext } from "../../context/ModalContext";
+import { ModalContextType, ModalContext } from "@context/ModalContext";
 import { useDispatch, } from "react-redux";
-import { loadInitialHomeInformation } from "../../features/listNannySlice";
-import { addFavoriteNanny, FavoritedNanny, removingFavoriteFromNanny } from '../../features/favoriteListNannySlice';
-import Heart from "../../components/Heart";
-import { useAppSelector } from "../../app/hooks";
+import { loadInitialHomeInformation } from "@features/listNanny/listNannySlice";
+import { addFavoriteNanny, FavoritedNanny, removingFavoriteFromNanny } from '@features/listNanny/favoriteListNannySlice';
+import Heart from "@components/Heart";
+import { useAppSelector } from "@app/hooks";
+import { getNannyById } from "@services/requests/NannyRequests";
+import { CreateContractNannyDto } from "@dtos/Nanny/CreateContractNannyDto";
+import { hireNanny } from "@services/requests/ServiceRequests";
 
 export default function NannyInformations() {
     const { setLoading } = useContext(LoadingContext) as LoadingContextType;
     const dispatch = useDispatch<any>();
     const currentUser = getCurrentUser();
     const { params } = useRoute<RouteProp<{ params: { nannyId: number } }, 'params'>>();
-    const [isFavorited, setIsFavorited] = useState<boolean>(false);
     const currentNanny = useAppSelector((state) => state.favoriteNannies.listFavoriteNanny.find(x => x.id === params.nannyId));
     const { showModal } = useContext(ModalContext) as ModalContextType;
     const [date, setDate] = useState<Date>(new Date());
     const { data, isLoading } = useQuery('nanny', async () => {
         setLoading(true)
-        var data = await getData(`Person/GetNannyById/${params.nannyId}/${currentUser.id}`);
+        var data = await getNannyById(params?.nannyId);
         setLoading(false)
         return data
     });
+    const nannyInformation: NannyContractDto = data?.data;
     const navigation = useNavigation<any>();
 
     function openDatePicker(mode: 'date' | 'time') {
@@ -55,23 +57,11 @@ export default function NannyInformations() {
             },
         });
     }
-
-    type CreateContractNannyDto = {
-        serviceFinishHour: Date,
-        hiringDate: Date,
-        price: number,
-        personId: number,
-        nannyId: number
-    }
     async function contractNanny() {
-        const createContractNanny: CreateContractNannyDto = {
-            serviceFinishHour: date,
-            hiringDate: date,
-            price: nannyInformation.servicePrice,
-            personId: currentUser.id,
-            nannyId: nannyInformation.nannyId
-        }
-        await postData('Service/Create', createContractNanny).then(async response => {
+        const createContractNanny: CreateContractNannyDto = createHireNannyModel();
+
+        const response = hireNanny(createContractNanny);
+        response.then(async response => {
             showModal({ modalType: 'success', message: response.data });
             dispatch(loadInitialHomeInformation());
             navigation.dispatch(
@@ -82,35 +72,46 @@ export default function NannyInformations() {
                     ],
                 })
             );
-            // TODO: redirect this to the new service 
-        }).catch((err: Error) => {
-            console.log(err)
-            showModal({ modalType: 'error', message: 'Algo de errado deu durante a sua requisição. Tente Novamente.' });
+        }).catch((err) => {
+            showModal({ modalType: 'error', message: err.response.data });
         })
 
     }
 
-    const nannyInformation: NannyContractDto = data?.data;
+    function createHireNannyModel() {
+        const createContractNanny: CreateContractNannyDto = {
+            serviceFinishHour: date,
+            hiringDate: date,
+            price: nannyInformation.servicePrice,
+            personId: currentUser.id,
+            nannyId: nannyInformation.nannyId
+        }
+
+        return createContractNanny;
+    }
 
     if (isLoading) return (<></>)
     return (
         <Background hasBackIcon>
             <View style={styles.basicNannyInformationSection}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%', paddingHorizontal: 10 }}>
-                    <View style={{ flexDirection: 'row' }}>
-                        <Image style={styles.nannyProfilePicture} source={{ uri: `data:image/png;base64,${nannyInformation.imageProfileBase64Uri}` }} />
-                        <View style={styles.nameAndRatingContainer}>
-
-                            <Text style={[globalStyles.headerTitle, { fontSize: 18 }]}>{nannyInformation.person.name}</Text>
-
-                            <Text style={[globalStyles.headerSubtitle, { fontSize: 16, textAlign: 'left' }]}>babá</Text>
-                            <View style={styles.starsRatingContainer}>
-                                <Stars rating={nannyInformation.rankAverageStars} tintBackgroundColorStar={'white'} backgroundColorStars={"#c4c4c4"} />
-                                <Text style={styles.textStarsNumber}>{nannyInformation.rankAverageStars}</Text>
-                                <Text>({nannyInformation.rankCommentCount})</Text>
-                            </View>
+                <Image style={globalStyles.personPhotoSmall} source={{ uri: `data:image/png;base64,${nannyInformation.imageProfileBase64Uri}` }} />
+                <View style={styles.nameAndRatingContainer}>
+                    <Text style={styles.nannyName}>{nannyInformation.person.name}</Text>
+                    <Text style={styles.workAlias}>babá</Text>
+                    <View style={styles.starsRatingContainer}>
+                        <Stars rating={nannyInformation.rankAverageStars} />
+                        <View style={{
+                            marginLeft: 10,
+                            marginRight: 3,
+                            flexDirection: 'row',
+                            gap: 5,
+                        }}>
+                            <Text style={styles.textStarsNumber}>{nannyInformation.rankAverageStars.toString()}</Text>
+                            <Text style={styles.textStarsNumber}>({nannyInformation.rankCommentCount.toString()})</Text>
                         </View>
                     </View>
+                </View>
+                <View style={styles.absoluteHeart}>
                     <Heart isFavorited={currentNanny?.isFavorited ?? false} setIsFavorited={(isFavoriting) => {
                         if (isFavoriting) {
                             var newFavoriteNanny: FavoritedNanny = {
@@ -125,17 +126,17 @@ export default function NannyInformations() {
                         } else {
                             dispatch(removingFavoriteFromNanny(nannyInformation?.nannyId));
                         }
-                    }} style={{}} />
+                    }} />
                 </View>
             </View>
             <LinearGradient colors={['white', '#F6F6F6']} style={styles.mainContentContainer}>
                 <View style={{ padding: 15 }}>
                     <Text style={styles.titleLabels}>Informações de contato</Text>
                     <View style={styles.contactNannyContainer}>
-                        <Text style={globalStyles.commonText}>
+                        <Text style={text.common}>
                             Telefone: {formatCellphoneNumber(nannyInformation.person.cellphone)}
                         </Text>
-                        <Text style={globalStyles.commonText}>
+                        <Text style={text.common}>
                             E-mail: {nannyInformation.person.email}
                         </Text>
                     </View>
@@ -151,7 +152,7 @@ export default function NannyInformations() {
                         renderBelowThumbComponent={
                             () => (
                                 <View style={{ width: 200, left: -100, alignItems: 'center', marginBottom: 20, }}>
-                                    <Text style={globalStyles.commonText}>{nannyInformation.address.distanceBetweenThePeople} m</Text>
+                                    <Text style={text.common}>{nannyInformation.address.distanceBetweenThePeople} m</Text>
                                 </View>
                             )
                         }
@@ -171,13 +172,13 @@ export default function NannyInformations() {
                             <View style={styles.iconContainer}>
                                 <Feather name='calendar' color='white' size={24} />
                             </View>
-                            <Text style={[globalStyles.commonText]}>{moment(date).format('DD/MM/YYYY')}</Text>
+                            <Text style={[text.common]}>{moment(date).format('DD/MM/YYYY')}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.dateTimeComponent} onPress={() => openDatePicker('time')}>
                             <View style={styles.iconContainer}>
                                 <Feather name='clock' color='white' size={24} />
                             </View>
-                            <Text style={[globalStyles.commonText, { alignSelf: 'center', marginHorizontal: 10 }]}>{moment(date).format('HH:mm')}</Text>
+                            <Text style={[text.common, { alignSelf: 'center', marginHorizontal: 10 }]}>{moment(date).format('HH:mm')}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

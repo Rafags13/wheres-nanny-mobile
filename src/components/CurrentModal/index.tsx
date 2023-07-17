@@ -1,18 +1,18 @@
 import Modal from 'react-native-modal';
 import Lottie from 'lottie-react-native';
 import { Text, View } from 'react-native';
-import Button from '../Button';
+import Button from '@components/Button';
 import { useContext } from 'react';
-import { ModalContext, ModalContextType } from '../../context/ModalContext';
-import { globalStyles } from '../../styles/global.styles';
+import { ModalContext, ModalContextType } from '@context/ModalContext';
+import { text } from '@styles/global.styles';
 import { styles } from './style';
 
 export default function CurrentModal() {
-    const { isVisible, closeModal, modalInfo, questionStatus } = useContext(ModalContext) as ModalContextType;
+    const { isVisible, closeModal, modalInfo, sendResponse } = useContext(ModalContext) as ModalContextType;
     const dictionary = {
-        'success': require('../../lottie/success.json'),
-        'error': require('../../lottie/error.json'),
-        'question': require('../../lottie/question.json'),
+        'success': require('../../assets/lottie/success.json'),
+        'error': require('../../assets/lottie/error.json'),
+        'question': require('../../assets/lottie/question.json'),
     }
 
     return (
@@ -25,13 +25,13 @@ export default function CurrentModal() {
                     loop={false}
                 />
 
-                <Text style={[globalStyles.commonText, modalInfo.modalType === 'error' ? { color: 'red' } : {}, { textAlign: 'center' }, { marginBottom: 15 }]}>{modalInfo.message}</Text>
+                <Text style={[text.common, modalInfo.modalType === 'error' ? { color: 'red' } : {}, { textAlign: 'center' }, { marginBottom: 15 }]}>{modalInfo.message}</Text>
 
                 {modalInfo.modalType === 'question' ?
                     (
                         <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-around' }}>
-                            <Button label={'Sim'} onClick={() => { questionStatus(true); closeModal() }} containerStyle={{ backgroundColor: '#218838', width: '45%' }} />
-                            <Button label={'Cancelar'} onClick={() => { questionStatus(false); closeModal(); }} containerStyle={{ backgroundColor: '#C82333', width: '45%' }} />
+                            <Button label={'Sim'} onClick={() => { closeModal(); sendResponse(true); }} containerStyle={{ backgroundColor: '#218838', width: '45%' }} />
+                            <Button label={'Cancelar'} onClick={() => { closeModal(); sendResponse(false); }} containerStyle={{ backgroundColor: '#C82333', width: '45%' }} />
                         </View>
                     ) : (
                         <Button label={"Ok"} onClick={closeModal} />

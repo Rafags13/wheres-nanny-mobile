@@ -1,6 +1,7 @@
 import { Text, TouchableOpacity } from "react-native"
-import { useAppDispatch } from "../../app/hooks"
-import { changeNannyListByFilter } from "../../features/listNannySlice"
+import { useAppDispatch } from "@app/hooks"
+import { changeNannyListByFilter } from "@features/listNanny/listNannySlice"
+import { text } from "@styles/global.styles"
 import { styles } from "./style"
 
 type Props = {
@@ -19,9 +20,9 @@ export default function ItemToFilterListNanny({ icon, label, orderBy, setFlatLis
     }
 
     return (
-        <TouchableOpacity style={styles.labels} onPress={filterListerBySelectOrdernation}>
+        <TouchableOpacity style={styles.filterContainer} onPress={filterListerBySelectOrdernation}>
             {icon}
-            <Text style={{ color: '#192553', fontSize: 16, fontFamily: 'Gellix-Regular' }}>{label}</Text>
+            <Text style={text.common}>{label}</Text>
         </TouchableOpacity>
     )
 }

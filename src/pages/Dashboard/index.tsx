@@ -1,52 +1,23 @@
-import { CommonActions, useNavigation } from "@react-navigation/native";
 import { Dimensions, Text, View } from "react-native";
-import Button from "../../components/Button";
-import { getCurrentUser, logOut } from "../../storage";
 import {
     LineChart,
     BarChart,
-    PieChart,
-    ProgressChart,
-    ContributionGraph,
-    StackedBarChart
 } from 'react-native-chart-kit'
-import { globalStyles } from "../../styles/global.styles";
-import Background from "../../components/Background";
+import { globalStyles } from "@styles/global.styles";
+import Background from "@components/Background";
 import { styles } from "./style";
-import RecentCard from "../Home/RecentCard";
-import ServiceNannyCard from "../../components/ServiceNannyCard";
-import { useQueries, useQuery } from "react-query";
-import { getData } from "../../services/apiRequests";
+import ServiceNannyCard from "@components/ServiceNannyCard";
+import { useQuery } from "react-query";
 import { useContext, useEffect } from "react";
-import { LoadingContext, LoadingContextType } from "../../context/LoadingContext";
-import { NannyDashboardInformationDto } from "../../dto/Person/NannyDashboardInformationDto";
-
-const line = {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-    datasets: [
-        {
-            data: [20, 45, 28, 80, 99, 43],
-            strokeWidth: 2, // optional
-        },
-    ],
-};
-
-const bar = {
-    labels: ["January", "February", "March", "April", "May", "June"],
-    datasets: [
-        {
-            data: [20, 45, 28, 80, 99, 43]
-        }
-    ]
-};
+import { LoadingContext, LoadingContextType } from "@context/LoadingContext";
+import { NannyDashboardInformationDto } from "@dtos/Person/NannyDashboardInformationDto";
+import { getDashboardInformation } from "@services/requests/NannyRequests";
+import NotFoundService from "@components/NotFoundService";
 
 export default function Dashboard() {
-    const navigation = useNavigation<any>();
-    const currentUser = getCurrentUser();
     const { setLoading } = useContext(LoadingContext) as LoadingContextType;
     const { data, isLoading } = useQuery('GetDashboardInformation', async () => {
-        const response = await getData(`Nanny/GetDashboardInformation/${currentUser.id}`);
-
+        const response = await getDashboardInformation();
         return response.data;
     });
 
@@ -73,22 +44,26 @@ export default function Dashboard() {
             <View style={{ padding: 10 }}>
 
                 <View>
+                    {dashboardInformation.lastService ? (
+                        <>
+                            <Text style={styles.linechartTitle}>Último Serviço</Text>
+                            <ServiceNannyCard
+                                serviceId={data.lastService.serviceId}
+                                clientName={data.lastService.clientName}
+                                servicePrice={data.lastService.servicePrice}
+                                hiringDate={data.lastService.hiringDate}
+                                isFinished={data.lastService.hiringDate > new Date()}
+                            />
+                        </>
+                    ) : (<NotFoundService />)}
 
-                    <Text style={styles.linechartTitle}>Último Serviço</Text>
-                    <ServiceNannyCard
-                        serviceId={data.lastService.serviceId}
-                        clientName={data.lastService.clientName}
-                        servicePrice={data.lastService.servicePrice}
-                        hiringDate={data.lastService.hiringDate}
-                        isFinished={data.lastService.hiringDate > new Date()}
-                    />
                 </View>
 
                 <View>
                     <Text style={styles.linechartTitle}>Serviços nos últimos 6 meses</Text>
                     <LineChart
                         onDataPointClick={(data) => {
-                            console.log(data);
+                            // TODO: Implement a function that send the user to visualize more this info.
                             if (data.value > 0) {
 
                             }

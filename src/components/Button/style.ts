@@ -1,19 +1,9 @@
 import { StyleSheet } from "react-native";
+import { globalStyles } from "../../assets/styles/global.styles";
 
 export const styles = StyleSheet.create({
     buttonContainer: {
-        height: 42,
-        width: '100%',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 4,
+        ...globalStyles.defaultButton,
         backgroundColor: '#3E9FEB',
-        flexDirection: 'row',
-        gap: 10,
     },
-    labelButton: {
-        color: 'white',
-        // fontWeight: 'bold',
-        fontFamily: 'Gellix-Bold'
-    }
 });

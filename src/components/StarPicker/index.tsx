@@ -10,9 +10,8 @@ export default function StarPicker({ rating, setRating }: Props) {
         <StarRating
             rating={rating}
             onChange={setRating}
+            starSize={24}
             maxStars={5}
-
-            color={'black'}
         />
     )
 }

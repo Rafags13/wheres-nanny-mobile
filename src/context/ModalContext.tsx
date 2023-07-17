@@ -3,8 +3,7 @@ import { createContext, ReactNode, useState } from "react";
 export type ModalContextType = {
     isVisible: boolean,
     showModal: (modalInfo: ModalInfo) => void,
-    questionStatus: (value: boolean) => void,
-    modalQuestionResponse: boolean,
+    sendResponse: (accepted: boolean) => void,
     closeModal: () => void,
     modalInfo: ModalInfo
 }
@@ -20,12 +19,12 @@ type ModalType = 'error' | 'success' | 'question';
 type ModalInfo = {
     message: string,
     modalType: ModalType,
+    function?: (value: any) => void
 }
 
 export default function ModalProvider({ children }: Props) {
     const [isVisible, setOpenModal] = useState<boolean>(false);
-    const [modalInfo, setModalInfo] = useState<ModalInfo>({ message: '', modalType: 'success' });
-    const [modalQuestionResponse, setModalQuestionResponse] = useState<boolean>(true);
+    const [modalInfo, setModalInfo] = useState<ModalInfo>({ message: '', modalType: 'success', function: () => { } });
 
     function showModal(modalInfo: ModalInfo) {
         setOpenModal(true);
@@ -36,13 +35,15 @@ export default function ModalProvider({ children }: Props) {
         setOpenModal(false);
     }
 
-    function questionStatus(value: boolean) {
-        setModalQuestionResponse(value);
+    function sendResponse(accepted: boolean) {
+        if (modalInfo.function) {
+            modalInfo?.function(accepted);
+        }
     }
 
 
     return (
-        <ModalContext.Provider value={{ isVisible, showModal, closeModal, modalInfo, questionStatus, modalQuestionResponse }}>{children}</ModalContext.Provider>
+        <ModalContext.Provider value={{ isVisible, showModal, closeModal, modalInfo, sendResponse }}>{children}</ModalContext.Provider>
     )
 
 }

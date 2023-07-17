@@ -1,5 +1,4 @@
 import { FlatList, ListRenderItem, ListRenderItemInfo } from "react-native"
-import { useAppSelector } from "../../../app/hooks"
 import NannyCard, { NannyCardProps } from "./NannyCard"
 
 type Props = {

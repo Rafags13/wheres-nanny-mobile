@@ -3,28 +3,30 @@ import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { useForm } from "react-hook-form";
 
 import SectionList from 'react-native-tabs-section-list';
-import Input from "../../components/Input";
-import Button from "../../components/Button";
-import Checkbox from "../../components/Checkbox";
-import MessageError from "../../components/MessageError";
+import Input from "@components/Input";
+import Button from "@components/Button";
+import Checkbox from "@components/Checkbox";
+import MessageError from "@components/MessageError";
 
-import { globalStyles } from "../../styles/global.styles";
+import { globalStyles } from "@styles/global.styles";
 import { styles } from "./style";
 
-import { COMMON_USER_SECTION, NANNY_SECTION } from '../../assets/util/contants';
-import { createModelRegisterCommonUser, createModelRegisterNanny } from "../../assets/util/functions";
-import { postData } from "../../services/apiRequests";
+import { COMMON_USER_SECTION, NANNY_SECTION } from '@util/contants';
+import { createModelRegisterCommonUser, createModelRegisterNanny } from "@util/functions";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { registerValidationSchema, registerValidationSchemaNanny } from "../../assets/util/yupValidations";
-import ImagePicker from "../../components/ImagePicker";
-import DocumentPick from "../../components/DocumentPick";
+import { registerValidationSchema, registerValidationSchemaNanny } from "@util/yupValidations";
+import ImagePicker from "@components/ImagePicker";
+import DocumentPick from "@components/DocumentPick";
 import { useContext } from "react";
-import { ModalContext, ModalContextType } from "../../context/ModalContext";
-import { LoadingContextType, LoadingContext } from "../../context/LoadingContext";
+import { ModalContext, ModalContextType } from "@context/ModalContext";
+import { LoadingContextType, LoadingContext } from "@context/LoadingContext";
+import { registerUser } from "@services/requests/UserRequests";
 
 export default function Register() {
     const { setLoading } = useContext(LoadingContext) as LoadingContextType;
+
     const { params } = useRoute<RouteProp<{ params: { isNannyRegister: boolean } }, 'params'>>();
+
     const { control, handleSubmit, formState: { errors } } =
         useForm({
             resolver: yupResolver(params?.isNannyRegister ? registerValidationSchemaNanny : registerValidationSchema)
@@ -40,14 +42,17 @@ export default function Register() {
                 createModelRegisterNanny(data) :
                 createModelRegisterCommonUser(data);
 
-        await postData(`User/${params?.isNannyRegister ? 'RegisterNanny' : 'RegisterUser'}`, userToRegisteSpecified).then((response) => {
+        const response = registerUser(params?.isNannyRegister, userToRegisteSpecified)
+
+        await response.then((response) => {
             setLoading(false);
-            showModal({ message: 'Usuário registrado com sucesso!', modalType: 'success' });
+            showModal({ message: response.data, modalType: 'success' });
         }).catch((error) => {
             setLoading(false);
             showModal({ message: 'Não foi possível registrar o usuário. Tente Novamente mais tarde.', modalType: 'error' });
-        });
-        navigator.navigate('login')
+        }).finally(() => {
+            navigator.navigate('login');
+        })
     }
 
     const ComponentToReturn = (item: any, index: number): JSX.Element => {

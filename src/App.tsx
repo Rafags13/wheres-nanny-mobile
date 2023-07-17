@@ -14,6 +14,6 @@ export default function App() {
           </LoadingProvider>
         </ModalProvider>
       </NavigationContainer>
-    </SafeAreaProvider>
+    </SafeAreaProvider >
   );
 }

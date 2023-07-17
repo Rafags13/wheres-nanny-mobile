@@ -1,7 +1,8 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import nannyListReducer, { loadInitialHomeInformation } from '../features/listNannySlice';
-import favoriteListNannySlice from '../features/favoriteListNannySlice';
-import { getCurrentUser } from '../storage';
+import nannyListReducer, { loadInitialHomeInformation } from '@features/listNanny/listNannySlice';
+import favoriteListNannySlice from '@features/listNanny/favoriteListNannySlice';
+import { getCurrentUser } from '@storage/index';
+import { TypeOfUser } from '@enums/TypeOfUser';
 
 export const store = configureStore({
     reducer: {
@@ -10,7 +11,7 @@ export const store = configureStore({
     },
 });
 
-if (!getCurrentUser().isNanny) {
+if (getCurrentUser().typeOfUser == TypeOfUser.CommonUser) {
     store.dispatch(loadInitialHomeInformation());
 }
 

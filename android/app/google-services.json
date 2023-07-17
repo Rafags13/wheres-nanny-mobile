@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "580657487161",
+    "project_id": "wheresnanny-b0f73",
+    "storage_bucket": "wheresnanny-b0f73.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:580657487161:android:fcbe635b4bd77f97889ce8",
+        "android_client_info": {
+          "package_name": "com.wheresnanny"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "580657487161-tselrj6d3nfmj6udrkop1v8gj7ekbt4r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-Z1vHMjuGkZ6ovkcZwypA9KWzS6qU5Rc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "580657487161-tselrj6d3nfmj6udrkop1v8gj7ekbt4r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

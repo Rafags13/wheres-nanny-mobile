@@ -31,7 +31,7 @@ export default function Heart({ isFavorited, setIsFavorited, style }: Props) {
                 loop={false}
                 style={[{ width: 70 }, style]}
                 ref={(animation) => setAnimation(animation)}
-                source={require('../../lottie/explodingHeart.json')}
+                source={require('../../assets/lottie/explodingHeart.json')}
             />
         </TouchableOpacity>
     )

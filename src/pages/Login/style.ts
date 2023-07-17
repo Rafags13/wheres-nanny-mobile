@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { globalStyles } from "../../styles/global.styles";
+import { globalStyles } from "@styles/global.styles";
 
 export const styles = StyleSheet.create({
     container: {
@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
     },
     createAccountText: {
         marginVertical: 10,
-        ...globalStyles.commonText,
+        ...globalStyles.label,
     },
 
 })

@@ -1,10 +1,10 @@
-import { Control, FieldValues, RegisterOptions, useController, useFormContext, useWatch, } from "react-hook-form"
+import { Control, FieldValues, RegisterOptions, useController, useFormContext } from "react-hook-form"
 import { StyleProp, Text, TextInput, TextStyle, TouchableOpacity, View } from "react-native"
 import { styles } from "./style"
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import { viaCepRequestGetByCep } from "../../services/apiRequests";
-import { getCurrentUser } from "../../storage";
-import { removeAllSpecialCharacters } from "../../assets/util/functions";
+import { viaCepRequestGetByCep } from "@services/apiRequests";
+import { removeAllSpecialCharacters } from "@util/functions";
+import { globalStyles } from "@styles/global.styles";
 
 type Props = {
     label: string,
@@ -19,15 +19,12 @@ type Props = {
 }
 
 export default function CepInput({ label, control, displayNameLabel = '', defaultValue = '', disabled = false, hasError = false, rules = undefined, placeholder = '', style = {} }: Props) {
-    const currentUser = getCurrentUser();
-    const { field, formState } = useController({
+    const { field } = useController({
         control,
         defaultValue,
         rules,
         name: label,
     });
-
-    const neighborhood = useWatch({ control, name: "neighborhood" });
     const { setValue } = useFormContext();
 
     async function searchAddressByCep() {
@@ -42,20 +39,20 @@ export default function CepInput({ label, control, displayNameLabel = '', defaul
     return (
         <View >
             {displayNameLabel && (
-                <Text style={styles.label}>
+                <Text style={globalStyles.label}>
                     {displayNameLabel}
                 </Text>
             )}
-            <View style={[styles.commonInput, hasError ? styles.inputError : {}, disabled ? styles.inputDisabled : {}, style]}>
+            <View style={[globalStyles.input, hasError ? globalStyles.errorInput : {}, disabled ? globalStyles.disabledInput : {}, style]}>
                 <TextInput
                     value={field.value}
                     onChangeText={field.onChange}
-                    style={styles.inputPassword}
+                    style={[globalStyles.inputWithIcon, disabled ? styles.textInputDisabled : {}]}
                     placeholder={placeholder}
                     editable={!disabled}
                 />
-                <TouchableOpacity onPress={searchAddressByCep}>
-                    <FontAwesome name={'search'} color={'#192553'} size={24} />
+                <TouchableOpacity onPress={searchAddressByCep} disabled={disabled}>
+                    <FontAwesome name={'search'} color={disabled ? '#c4c4c4' : '#192553'} size={24} />
                 </TouchableOpacity>
             </View>
         </View>

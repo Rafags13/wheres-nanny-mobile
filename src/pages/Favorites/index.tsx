@@ -1,10 +1,8 @@
 import { Text, View } from "react-native";
-import { useState } from "react";
-import NannyCardList from "../../features/listNanny/NannyCardList";
-import { useAppSelector } from "../../app/hooks";
-import Background from "../../components/Background";
-import { globalStyles } from "../../styles/global.styles";
-import { getAllNannies } from "../../storage";
+import NannyCardList from "@features/listNanny/NannyCardList";
+import { useAppSelector } from "@app/hooks";
+import Background from "@components/Background";
+import { globalStyles } from "@styles/global.styles";
 
 export default function Favorites() {
     const nannyList = useAppSelector((state) => state.favoriteNannies.listFavoriteNanny)

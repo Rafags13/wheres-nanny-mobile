@@ -1,18 +1,21 @@
 import { Text, TouchableOpacity, View } from "react-native";
 import { useForm } from "react-hook-form";
 import { styles } from "./style";
-import Input from "../../components/Input";
-import LinkNavigator from "../../components/LinkNavigator";
-import Button from '../../components/Button';
+import Input from "@components/Input";
+import LinkNavigator from "@components/LinkNavigator";
+import Button from '@components/Button';
 import { CommonActions, useNavigation } from "@react-navigation/native";
-import { globalStyles } from "../../styles/global.styles";
-import { getCurrentUser, storage } from "../../storage";
-import { postData } from "../../services/apiRequests";
+import { globalStyles } from "@styles/global.styles";
+import { getCurrentUser, storage } from "@storage/index";
 import { useContext } from "react";
-import MessageError from "../../components/MessageError";
-import Line from "../../components/Line";
-import { LoadingContextType, LoadingContext } from "../../context/LoadingContext";
-import { ModalContextType, ModalContext } from "../../context/ModalContext";
+import MessageError from "@components/MessageError";
+import { LoadingContextType, LoadingContext } from "@context/LoadingContext";
+import { ModalContextType, ModalContext } from "@context/ModalContext";
+import messaging from "@react-native-firebase/messaging";
+import { LoginDto } from "@dtos/User/LoginDto";
+import { LoginRequest } from "@services/requests/AutenticationRequests";
+import { returnRouteNameByProfileType } from "@util/functions";
+import { TypeOfUser } from "@enums/TypeOfUser";
 
 export default function Login() {
     const { control, handleSubmit, formState: { errors } } = useForm();
@@ -22,39 +25,49 @@ export default function Login() {
 
     async function onLogin(data: any) {
         setLoading(true);
-        const dataToRequest: { username: string, password: string } = {
+        const deviceId = await getUserDeviceId();
+        const dataToRequest: LoginDto = {
             username: data.username,
-            password: data.password
+            password: data.password,
+            deviceId
         }
 
-        await postData('Authentication', dataToRequest).then((response) => {
+        const response = LoginRequest(dataToRequest);
+
+        response.then((response) => {
             storage.set('token', response.data);
             const currentUser = getCurrentUser();
-            if (currentUser.isNanny) {
-                navigator.dispatch(
-                    CommonActions.reset({
-                        index: 1,
-                        routes: [
-                            { name: 'nannyUser' },
-                        ],
-                    })
-                );
-            } else {
-                navigator.dispatch(
-                    CommonActions.reset({
-                        index: 1,
-                        routes: [
-                            { name: 'commonUser' },
-                        ],
-                    })
-                );
-            }
+            sendUserToCorrectRoute(currentUser.typeOfUser);
         }).catch((error) => {
             showModal({ modalType: 'error', message: error.response.data });
         }).finally(() => {
             setLoading(false);
         });
 
+    }
+
+    async function getUserDeviceId(): Promise<string> {
+        messaging().registerDeviceForRemoteMessages();
+        const deviceId = await messaging()
+            .getToken()
+            .then(token => {
+                return token
+            });
+
+        return deviceId;
+    }
+
+    function sendUserToCorrectRoute(typeOfUser: TypeOfUser) {
+        const routeName = returnRouteNameByProfileType(typeOfUser);
+
+        navigator.dispatch(
+            CommonActions.reset({
+                index: 1,
+                routes: [
+                    { name: routeName.mainContainer },
+                ],
+            })
+        );
     }
 
     return (
@@ -101,14 +114,6 @@ export default function Login() {
                 )}
 
                 <Button label={"Entrar"} onClick={handleSubmit(onLogin)} />
-
-                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginVertical: 20 }}>
-                    <Line styles={{ width: '45%' }} />
-                    <Text style={globalStyles.commonText}>
-                        ou
-                    </Text>
-                    <Line styles={{ width: '45%' }} />
-                </View>
 
                 <TouchableOpacity style={{ alignItems: 'center' }}>
                     <LinkNavigator

@@ -1,12 +1,7 @@
 import { StyleSheet } from "react-native";
-import { globalStyles } from "../../styles/global.styles";
+import { text } from "@styles/global.styles";
 
 export const styles = StyleSheet.create({
-    personPhoto: {
-        width: 50,
-        height: 50,
-        marginRight: 10
-    },
     dataContainer: {
         backgroundColor: '#78BCF1',
         flexDirection: 'row',
@@ -23,11 +18,11 @@ export const styles = StyleSheet.create({
         gap: 10
     },
     commonServiceCardPersonNameText: {
-        ...globalStyles.commonText,
+        ...text.common,
         fontFamily: 'Gellix-Bold',
     },
     commonServiceWorkText: {
-        ...globalStyles.commonText,
+        ...text.common,
         fontSize: 14,
     }
 })

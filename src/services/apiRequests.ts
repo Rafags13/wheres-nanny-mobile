@@ -1,4 +1,3 @@
-import axios from "axios";
 import api, { apiViaCep } from "./api";
 
 export async function getData(route: string, params?: {}) {
@@ -15,5 +14,4 @@ export async function updateData(route: string, body: any) {
 
 export async function viaCepRequestGetByCep(cep: string) {
     return await apiViaCep.get(`${cep}/json`);
-    // return await axios.get(`viacep.com.br/ws/${cep}/json/`);
 }

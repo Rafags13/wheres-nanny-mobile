@@ -1,19 +1,11 @@
-import { Rating } from "react-native-ratings";
+import { StarRatingDisplay } from "react-native-star-rating-widget";
 
 type Props = {
     rating: number,
-    backgroundColorStars?: string,
-    tintBackgroundColorStar?: string
 }
 
-export default function Stars({ rating, backgroundColorStars = 'red', tintBackgroundColorStar = "#c4c4c4" }: Props) {
+export default function Stars({ rating }: Props) {
     return (
-        <Rating
-            type="custom"
-            fractions={2}
-            imageSize={20}
-            startingValue={rating}
-            ratingCount={5} readonly
-        />
+        <StarRatingDisplay starStyle={{ marginLeft: 0 }} starSize={24} rating={rating} enableHalfStar />
     );
 }
