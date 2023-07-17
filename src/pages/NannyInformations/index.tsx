@@ -72,8 +72,8 @@ export default function NannyInformations() {
                     ],
                 })
             );
-        }).catch((err: Error) => {
-            showModal({ modalType: 'error', message: 'Algo de errado deu durante a sua requisição. Tente Novamente.' });
+        }).catch((err) => {
+            showModal({ modalType: 'error', message: err.response.data });
         })
 
     }

@@ -18,7 +18,6 @@ export default function Dashboard() {
     const { setLoading } = useContext(LoadingContext) as LoadingContextType;
     const { data, isLoading } = useQuery('GetDashboardInformation', async () => {
         const response = await getDashboardInformation();
-
         return response.data;
     });
 

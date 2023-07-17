@@ -22,7 +22,10 @@ export default function ServiceInformation() {
     const navigator = useNavigation<any>();
     const { params } = useRoute<RouteProp<{ params: { serviceId: number, isCommonUser: boolean } }, 'params'>>();
     const { setLoading } = useContext(LoadingContext) as LoadingContextType;
-    const { data, isLoading } = useQuery(['GetServiceInformation', params.serviceId], () => getNannyServiceInformation(params?.serviceId));
+    const { data, isLoading } = useQuery(['GetServiceInformation', params.serviceId], () => {
+        const response = getNannyServiceInformation(params?.serviceId);
+        return response;
+    });
     const serviceData: NannyServiceInformationDto = data?.data;
 
     useEffect(() => {

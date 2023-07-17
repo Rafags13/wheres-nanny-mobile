@@ -16,7 +16,6 @@ export default function MyServices() {
         var { data } = await getAllServicesFromCurrentNanny(page);
         setList([...list, ...data]);
         setPage(page + 1);
-
         return data;
     });
     useEffect(() => {

@@ -25,7 +25,6 @@ const styles = StyleSheet.create({
         fontSize: 18,
         textAlign: 'left',
         maxWidth: '90%',
-        backgroundColor: 'red'
     },
     workAlias: {
         ...globalStyles.headerSubtitle,
