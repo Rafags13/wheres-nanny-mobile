@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { text } from "../../assets/styles/global.styles";
+import { text } from "@styles/global.styles";
 
 export const styles = StyleSheet.create({
     dataContainer: {

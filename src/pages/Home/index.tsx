@@ -1,19 +1,18 @@
 import { Text, TouchableOpacity, View } from "react-native";
-import Background from "../../components/Background";
+import Background from "@components/Background";
 import Feather from 'react-native-vector-icons/Feather';
-import RecentCard from "../../components/RecentCard";
-import { globalStyles } from "../../assets/styles/global.styles";
+import RecentCard from "@components/RecentCard";
+import { globalStyles } from "@styles/global.styles";
 import { styles } from "./style";
-import NannyCardList from "../../features/listNanny/NannyCardList";
-import ListFilterNanny from "../../components/ListFilterNanny";
+import NannyCardList from "@features/listNanny/NannyCardList";
+import ListFilterNanny from "@components/ListFilterNanny";
 import React, { useContext, useEffect } from "react";
-import Button from "../../components/Button";
-import ErrorModal from "../../components/ErrorModal";
+import ErrorModal from "@components/ErrorModal";
 
-import { useAppSelector } from '../../app/hooks';
-import { LoadingContextType, LoadingContext } from "../../context/LoadingContext";
+import { useAppSelector } from '@app/hooks';
+import { LoadingContextType, LoadingContext } from "@context/LoadingContext";
 import { useNavigation } from "@react-navigation/native";
-import NotFoundService from "../../components/NotFoundService";
+import NotFoundService from "@components/NotFoundService";
 
 export default function Home() {
     const { setLoading } = useContext(LoadingContext) as LoadingContextType;

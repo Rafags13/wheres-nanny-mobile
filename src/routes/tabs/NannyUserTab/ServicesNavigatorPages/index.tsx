@@ -1,6 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import MyServices from "../../../pages/MyServices";
-import ServiceInformation from "../../../pages/ServiceInformation";
+import MyServices from "@pages/MyServices";
+import ServiceInformation from "@pages/ServiceInformation";
 
 const Stack = createNativeStackNavigator();
 

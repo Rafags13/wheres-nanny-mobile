@@ -3,10 +3,10 @@ import React, { useContext, useEffect, useState } from "react";
 import { Text, View } from "react-native";
 import Lottie from 'lottie-react-native';
 import Modal from 'react-native-modal'
-import { globalStyles, text } from "../../assets/styles/global.styles";
-import Button from "../Button";
-import { logOut } from "../../storage";
-import { LoadingContextType, LoadingContext } from "../../context/LoadingContext";
+import { text } from "@styles/global.styles";
+import Button from "@components/Button";
+import { logOut } from "@storage/index";
+import { LoadingContextType, LoadingContext } from "@context/LoadingContext";
 
 export default function ErrorModal() {
     const navigation = useNavigation<any>();

@@ -2,16 +2,16 @@ import moment from "moment";
 import { useContext, useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, Image, Text, TouchableOpacity, View } from "react-native";
 import { useQuery } from "react-query";
-import Background from "../../components/Background";
-import { LoadingContextType, LoadingContext } from "../../context/LoadingContext";
-import { recentCardDto } from "../../assets/model/dto/Person/DisplayInformationHomeUser";
-import { globalStyles } from "../../assets/styles/global.styles";
-import RecentCard from "../../components/RecentCard";
+import Background from "@components/Background";
+import { LoadingContextType, LoadingContext } from "@context/LoadingContext";
+import { recentCardDto } from "@dtos/Person/DisplayInformationHomeUser";
+import { globalStyles } from "@styles/global.styles";
+import RecentCard from "@components/RecentCard";
 import { styles } from "./style";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { useNavigation } from "@react-navigation/native";
-import { getAllServices } from "../../services/requests/ServiceRequests";
+import { getAllServices } from "@services/requests/ServiceRequests";
 
 export default function Services() {
     const navigator = useNavigation<any>();

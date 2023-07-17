@@ -4,9 +4,8 @@ import { Image, View } from "react-native";
 import { TouchableOpacity } from "react-native";
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { getPhotoByBase64 } from "../../assets/util/functions";
-import { ModalContextType, ModalContext } from "../../context/ModalContext";
-import { getCurrentUser } from "../../storage";
+import { getPhotoByBase64 } from "@util/functions";
+import { ModalContextType, ModalContext } from "@context/ModalContext";
 import { common, styles } from "./style";
 
 type Props = {

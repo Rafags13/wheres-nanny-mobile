@@ -1,14 +1,14 @@
 import { useNavigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useEffect } from "react";
-import { returnRouteNameByProfileType } from "../../assets/util/functions";
-import { TypeOfUser } from "../../assets/enums/TypeOfUser";
-import Chat from "../../pages/Chat";
-import Login from "../../pages/Login";
-import Register from "../../pages/Register";
-import { getCurrentUser, getToken } from "../../storage";
-import CommonUserTab from "../CommonUserTab";
-import NannyUserTab from "../NannyUserTab";
+import { returnRouteNameByProfileType } from "@util/functions";
+import { TypeOfUser } from "@enums/TypeOfUser";
+import Chat from "@pages/Chat";
+import Login from "@pages/Login";
+import Register from "@pages/Register";
+import { getCurrentUser, getToken } from "@storage/index";
+import CommonUserTab from "@tabs/CommonUserTab";
+import NannyUserTab from "@tabs/NannyUserTab";
 
 const Stack = createNativeStackNavigator();
 

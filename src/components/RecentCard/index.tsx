@@ -4,7 +4,7 @@ import { styles } from "./style";
 import LinearGradient from 'react-native-linear-gradient';
 import moment from "moment";
 import { useNavigation } from "@react-navigation/native";
-import { globalStyles } from "../../assets/styles/global.styles";
+import { globalStyles } from "@styles/global.styles";
 
 type Props = {
     serviceId: number,

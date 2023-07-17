@@ -2,15 +2,15 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Profile from "../../pages/Profile";
+import Profile from "@pages/Profile";
 import ServicesNavigatorPages from "./ServicesNavigatorPages";
 import { useNavigation } from "@react-navigation/native";
 import DashboardNavigatorPages from "./DashboardNavigatorPages";
 import { useContext, useEffect } from "react";
 import messaging from '@react-native-firebase/messaging';
-import { ModalContextType, ModalContext } from "../../context/ModalContext";
-import { AcceptedServiceDto } from "../../assets/model/dto/Person/AcceptedServiceDto";
-import { acceptService } from "../../services/requests/NannyRequests";
+import { ModalContextType, ModalContext } from "@context/ModalContext";
+import { AcceptedServiceDto } from "@dtos/Person/AcceptedServiceDto";
+import { acceptService } from "@services/requests/NannyRequests";
 
 const Tab = createBottomTabNavigator();
 

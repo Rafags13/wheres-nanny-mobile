@@ -1,21 +1,21 @@
 import { Text, TouchableOpacity, View } from "react-native";
 import { useForm } from "react-hook-form";
 import { styles } from "./style";
-import Input from "../../components/Input";
-import LinkNavigator from "../../components/LinkNavigator";
-import Button from '../../components/Button';
+import Input from "@components/Input";
+import LinkNavigator from "@components/LinkNavigator";
+import Button from '@components/Button';
 import { CommonActions, useNavigation } from "@react-navigation/native";
-import { globalStyles } from "../../assets/styles/global.styles";
-import { getCurrentUser, storage } from "../../storage";
+import { globalStyles } from "@styles/global.styles";
+import { getCurrentUser, storage } from "@storage/index";
 import { useContext } from "react";
-import MessageError from "../../components/MessageError";
-import { LoadingContextType, LoadingContext } from "../../context/LoadingContext";
-import { ModalContextType, ModalContext } from "../../context/ModalContext";
+import MessageError from "@components/MessageError";
+import { LoadingContextType, LoadingContext } from "@context/LoadingContext";
+import { ModalContextType, ModalContext } from "@context/ModalContext";
 import messaging from "@react-native-firebase/messaging";
-import { LoginDto } from "../../assets/model/dto/User/LoginDto";
-import { LoginRequest } from "../../services/requests/AutenticationRequests";
-import { returnRouteNameByProfileType } from "../../assets/util/functions";
-import { TypeOfUser } from "../../assets/enums/TypeOfUser";
+import { LoginDto } from "@dtos/User/LoginDto";
+import { LoginRequest } from "@services/requests/AutenticationRequests";
+import { returnRouteNameByProfileType } from "@util/functions";
+import { TypeOfUser } from "@enums/TypeOfUser";
 
 export default function Login() {
     const { control, handleSubmit, formState: { errors } } = useForm();

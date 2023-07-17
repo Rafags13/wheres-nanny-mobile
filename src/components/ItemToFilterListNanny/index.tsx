@@ -1,7 +1,7 @@
 import { Text, TouchableOpacity } from "react-native"
-import { useAppDispatch } from "../../app/hooks"
-import { changeNannyListByFilter } from "../../features/listNanny/listNannySlice"
-import { globalStyles, text } from "../../assets/styles/global.styles"
+import { useAppDispatch } from "@app/hooks"
+import { changeNannyListByFilter } from "@features/listNanny/listNannySlice"
+import { text } from "@styles/global.styles"
 import { styles } from "./style"
 
 type Props = {

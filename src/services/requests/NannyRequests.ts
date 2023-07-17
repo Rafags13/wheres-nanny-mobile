@@ -1,6 +1,6 @@
-import { AcceptedServiceDto } from "../../assets/model/dto/Person/AcceptedServiceDto";
-import { getCurrentUser } from "../../storage";
-import { getData, postData } from "../apiRequests";
+import { AcceptedServiceDto } from "@dtos/Person/AcceptedServiceDto";
+import { getCurrentUser } from "@storage/index";
+import { getData, postData } from "@services/apiRequests";
 
 export async function getDashboardInformation() {
     const currentUser = getCurrentUser();

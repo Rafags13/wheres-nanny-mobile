@@ -1,10 +1,9 @@
 import { ImageLibraryOptions, ImagePickerResponse, launchImageLibrary } from "react-native-image-picker";
-import { RegisterNannyDto } from "../../assets/model/dto/User/RegisterNannyDto";
-import { RegisterUserDto } from "../../assets/model/dto/User/RegisterUserDto";
-import { TypeOfUser } from "../enums/TypeOfUser";
+import { RegisterNannyDto } from "@dtos/User/RegisterNannyDto";
+import { RegisterUserDto } from "@dtos/User/RegisterUserDto";
+import { TypeOfUser } from "@enums/TypeOfUser";
 import { perPlatformTypes, SupportedPlatforms } from "react-native-document-picker/lib/typescript/fileTypes";
 import DocumentPicker, { DocumentPickerOptions } from 'react-native-document-picker';
-import RNFetchBlob from "rn-fetch-blob";
 import { Platform } from "react-native";
 
 export function ConvertDateBrazilFormatToDateType(date: string): Date {

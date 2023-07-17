@@ -1,6 +1,6 @@
-import { RegisterNannyDto } from "../../assets/model/dto/User/RegisterNannyDto";
-import { RegisterUserDto } from "../../assets/model/dto/User/RegisterUserDto";
-import { postData } from "../apiRequests";
+import { RegisterNannyDto } from "@dtos/User/RegisterNannyDto";
+import { RegisterUserDto } from "@dtos/User/RegisterUserDto";
+import { postData } from "@services/apiRequests";
 
 export async function registerUser(isNanny: boolean, currentUser: RegisterNannyDto | RegisterUserDto) {
     return await postData(`User/${isNanny ? 'RegisterNanny' : 'RegisterUser'}`, currentUser);

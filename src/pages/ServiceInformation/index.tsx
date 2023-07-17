@@ -1,22 +1,22 @@
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { Text, View } from "react-native";
-import Background from "../../components/Background";
-import Father from "../../components/icons/FatherIcon";
+import Background from "@components/Background";
+import Father from "@components/icons/FatherIcon";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { globalStyles, text } from "../../assets/styles/global.styles";
+import { globalStyles, text } from "@styles/global.styles";
 import { styles } from "./style";
-import Line from "../../components/Line";
+import Line from "@components/Line";
 import moment from "moment";
-import Button from "../../components/Button";
+import Button from "@components/Button";
 import { useQuery } from "react-query";
 import { useContext, useEffect } from "react";
-import { LoadingContext, LoadingContextType } from "../../context/LoadingContext";
-import { NannyServiceInformationDto } from "../../assets/model/dto/Service/NannyServiceInformationDto";
-import { getNannyServiceInformation } from "../../services/requests/NannyRequests";
+import { LoadingContext, LoadingContextType } from "@context/LoadingContext";
+import { NannyServiceInformationDto } from "@dtos/Service/NannyServiceInformationDto";
+import { getNannyServiceInformation } from "@services/requests/NannyRequests";
 
 export default function ServiceInformation() {
     const navigator = useNavigation<any>();

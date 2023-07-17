@@ -1,15 +1,14 @@
 import { Text, TouchableOpacity, View } from "react-native";
-import DocumentPicker, { DocumentPickerOptions } from 'react-native-document-picker';
+import DocumentPicker from 'react-native-document-picker';
 import { styles } from "./style";
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Control, FieldValues, useController } from "react-hook-form";
-import { SupportedPlatforms } from "react-native-document-picker/lib/typescript/fileTypes";
 import RNFetchBlob from 'rn-fetch-blob';
-import { getDocumentByBase64, replacePdfExtensioNames } from "../../assets/util/functions";
+import { getDocumentByBase64, replacePdfExtensioNames } from "@util/functions";
 import { useContext, useState } from "react";
-import { ModalContext, ModalContextType } from "../../context/ModalContext";
+import { ModalContext, ModalContextType } from "@context/ModalContext";
 
 type Props = {
     control: Control<FieldValues, string>,

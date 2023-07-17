@@ -1,6 +1,6 @@
-import { CreateContractNannyDto } from "../../assets/model/dto/Nanny/CreateContractNannyDto";
-import { getCurrentUser } from "../../storage";
-import { getData, postData } from "../apiRequests";
+import { CreateContractNannyDto } from "@dtos/Nanny/CreateContractNannyDto";
+import { getCurrentUser } from "@storage/index";
+import { getData, postData } from "@services/apiRequests";
 
 export async function hireNanny(createContractNanny: CreateContractNannyDto) {
     return await postData('Service/Create', createContractNanny);

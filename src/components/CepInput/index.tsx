@@ -1,11 +1,10 @@
-import { Control, FieldValues, RegisterOptions, useController, useFormContext, useWatch, } from "react-hook-form"
+import { Control, FieldValues, RegisterOptions, useController, useFormContext } from "react-hook-form"
 import { StyleProp, Text, TextInput, TextStyle, TouchableOpacity, View } from "react-native"
 import { styles } from "./style"
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import { viaCepRequestGetByCep } from "../../services/apiRequests";
-import { getCurrentUser } from "../../storage";
-import { removeAllSpecialCharacters } from "../../assets/util/functions";
-import { globalStyles } from "../../assets/styles/global.styles";
+import { viaCepRequestGetByCep } from "@services/apiRequests";
+import { removeAllSpecialCharacters } from "@util/functions";
+import { globalStyles } from "@styles/global.styles";
 
 type Props = {
     label: string,

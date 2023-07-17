@@ -1,9 +1,9 @@
 import { QueryClient, QueryClientProvider } from "react-query";
 import StackNavigator from "./StackNavigator";
-import CurrentModal from "../components/CurrentModal";
-import Spinner from "../components/Spinner";
+import CurrentModal from "@components/CurrentModal";
+import Spinner from "@components/Spinner";
 import { useState } from "react";
-import Splash from "../pages/Splash";
+import Splash from "@pages/Splash";
 
 const queryClient = new QueryClient();
 

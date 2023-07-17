@@ -1,7 +1,7 @@
-import { ProfileUpdateDataDto } from "../../assets/model/dto/Person/ProfileUpdateDataDto";
-import { UpdatePasswordDto } from "../../assets/model/dto/User/UpdatePasswordDto";
-import { getCurrentUser } from "../../storage";
-import { getData, updateData } from "../apiRequests";
+import { ProfileUpdateDataDto } from "@dtos/Person/ProfileUpdateDataDto";
+import { UpdatePasswordDto } from "@dtos/User/UpdatePasswordDto";
+import { getCurrentUser } from "@storage/index";
+import { getData, updateData } from "@services/apiRequests";
 
 export async function getProfileData() {
     const currentUser = getCurrentUser();

@@ -3,15 +3,15 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { getFocusedRouteNameFromRoute, useNavigation, } from '@react-navigation/native';
-import Favorites from '../../pages/Favorites';
-import Profile from '../../pages/Profile';
+import Favorites from '@pages/Favorites';
+import Profile from '@pages/Profile';
 import { Provider } from 'react-redux';
-import { store } from '../../app/store';
+import { store } from '@app/store';
 import HomeNavigationPages from './HomeNavigatorPages';
-import Services from '../../pages/Services';
+import Services from '@pages/Services';
 import { useContext, useEffect } from 'react';
 import messaging from "@react-native-firebase/messaging";
-import { ModalContextType, ModalContext } from '../../context/ModalContext';
+import { ModalContextType, ModalContext } from '@context/ModalContext';
 
 const Tab = createBottomTabNavigator();
 

@@ -3,7 +3,7 @@ import { Control, FieldValues, RegisterOptions, useController } from "react-hook
 import { StyleProp, Text, TextInput, TextStyle, TouchableOpacity, View } from "react-native";
 import { styles } from "./style";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { globalStyles } from "../../assets/styles/global.styles";
+import { globalStyles } from "@styles/global.styles";
 
 type Props = {
     label: string,

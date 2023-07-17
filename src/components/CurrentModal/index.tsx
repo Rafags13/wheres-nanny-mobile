@@ -1,10 +1,10 @@
 import Modal from 'react-native-modal';
 import Lottie from 'lottie-react-native';
 import { Text, View } from 'react-native';
-import Button from '../Button';
+import Button from '@components/Button';
 import { useContext } from 'react';
-import { ModalContext, ModalContextType } from '../../context/ModalContext';
-import { text } from '../../assets/styles/global.styles';
+import { ModalContext, ModalContextType } from '@context/ModalContext';
+import { text } from '@styles/global.styles';
 import { styles } from './style';
 
 export default function CurrentModal() {

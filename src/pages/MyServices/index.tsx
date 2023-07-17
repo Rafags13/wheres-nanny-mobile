@@ -1,11 +1,11 @@
 import { ActivityIndicator, FlatList, Text, View } from "react-native";
-import Background from "../../components/Background";
-import { globalStyles } from "../../assets/styles/global.styles";
-import ServiceNannyCard, { ServiceNannyCardProps } from "../../components/ServiceNannyCard";
+import Background from "@components/Background";
+import { globalStyles } from "@styles/global.styles";
+import ServiceNannyCard, { ServiceNannyCardProps } from "@components/ServiceNannyCard";
 import { useQuery } from "react-query";
 import { useContext, useEffect, useState } from "react";
-import { LoadingContext, LoadingContextType } from "../../context/LoadingContext";
-import { getAllServicesFromCurrentNanny } from "../../services/requests/NannyRequests";
+import { LoadingContext, LoadingContextType } from "@context/LoadingContext";
+import { getAllServicesFromCurrentNanny } from "@services/requests/NannyRequests";
 
 export default function MyServices() {
     const { setLoading } = useContext(LoadingContext) as LoadingContextType;
