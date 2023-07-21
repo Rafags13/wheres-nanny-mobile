@@ -80,7 +80,8 @@ export default function Profile() {
                 fullname: data.fullname,
                 cpf: removeSpecialCharacter(data.cpf),
                 email: data.email,
-                cellphone: removeSpecialCharacter(data.cellphone)
+                cellphone: removeSpecialCharacter(data.cellphone),
+                imageBase64: ''
             },
             addressFromUpdateInformation: {
                 cep: removeSpecialCharacter(data.cep),
@@ -135,7 +136,7 @@ export default function Profile() {
                         <Ionicons name="person-circle" size={32} color='#192553' />
                     </View>
                     <View style={styles.imageProfileContainer}>
-                        <Image style={styles.nannyProfilePicture} source={{ uri: `data:image/png;base64,${currentUser.imageUri}` }} />
+                        <Image style={styles.nannyProfilePicture} source={{ uri: `data:image/png;base64,${data?.personInformation.imageBase64}` }} />
                     </View>
                 </View>
             }

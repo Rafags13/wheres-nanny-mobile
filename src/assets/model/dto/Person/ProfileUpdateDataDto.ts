@@ -4,7 +4,8 @@ export class ProfileUpdateDataDto {
         fullname: string,
         cpf: string,
         email: string,
-        cellphone: string
+        cellphone: string,
+        imageBase64: string
     }
 
     addressFromUpdateInformation!: {
