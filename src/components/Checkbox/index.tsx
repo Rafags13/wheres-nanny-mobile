@@ -1,7 +1,7 @@
 import CheckBox from "@react-native-community/checkbox";
 import { Control, FieldValues, useController } from "react-hook-form";
 import { Text, View } from "react-native";
-import { text } from "@styles/global.styles";
+import { styles } from "./style";
 
 type Props = {
     messageContent: string,
@@ -18,14 +18,14 @@ export default function Checkbox({ messageContent, control, label, hasError = fa
     })
 
     return (
-        <View style={{ flexDirection: 'row', marginBottom: 5 }}>
+        <View style={{ flex: 1, flexDirection: 'row', marginBottom: 5, }}>
             <CheckBox
                 disabled={false}
                 value={field.value}
                 onValueChange={field.onChange}
                 tintColors={hasError ? { false: 'red' } : { true: 'black' }}
             />
-            <Text style={text.common}>
+            <Text style={styles.text}>
                 {messageContent}
             </Text>
         </View>
