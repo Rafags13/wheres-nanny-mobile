@@ -14,7 +14,8 @@ export default function NotFoundService() {
                 Clique no botão abaixo e contrate um serviço,
                 ou escolha uma das babás abaixo e as contrate.
             </Text>
-            <Button label={"Contratar"} onClick={() => { }} />
+            <Button label={"Encontrar babá"} onClick={() => { }} />
+            {/* TODO: Implement this in future, if required. */}
         </View>
     )
 }
