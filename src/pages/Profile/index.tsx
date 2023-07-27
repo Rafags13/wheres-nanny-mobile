@@ -147,17 +147,17 @@ export default function Profile() {
                 <View style={{ padding: 15 }}>
                     <Text style={styles.personalInformationsTitle}>Informações Pessoais</Text>
                     <View style={styles.inputsContainer}>
-                        <Input defaultValue={data?.personInformation.fullname} disabled={!enabledFields} label={"fullname"} control={updateProfileForm.control} displayNameLabel="Nome Completo" />
+                        <Input defaultValue={data?.personInformation.fullname} hasError={updateProfileForm.formState.errors.fullname !== undefined} disabled={!enabledFields} label={"fullname"} control={updateProfileForm.control} displayNameLabel="Nome Completo" />
 
-                        <Input defaultValue={formatCpf(data?.personInformation.cpf as string)} disabled={!enabledFields} label={"cpf"} control={updateProfileForm.control} displayNameLabel="Cpf" />
+                        <Input defaultValue={formatCpf(data?.personInformation.cpf as string)} hasError={updateProfileForm.formState.errors.cpf !== undefined} disabled={!enabledFields} label={"cpf"} control={updateProfileForm.control} displayNameLabel="Cpf" />
 
-                        <Input defaultValue={data?.personInformation.email} disabled={!enabledFields} label={"email"} control={updateProfileForm.control} displayNameLabel="E-mail" />
+                        <Input defaultValue={data?.personInformation.email} hasError={updateProfileForm.formState.errors.email !== undefined} disabled={!enabledFields} label={"email"} control={updateProfileForm.control} displayNameLabel="E-mail" />
 
-                        <Input defaultValue={formatCellphoneNumber(data?.personInformation.cellphone as string)} disabled={!enabledFields} label={"cellphone"} control={updateProfileForm.control} displayNameLabel="Telefone" />
+                        <Input defaultValue={formatCellphoneNumber(data?.personInformation.cellphone as string)} hasError={updateProfileForm.formState.errors.cellphone !== undefined} disabled={!enabledFields} label={"cellphone"} control={updateProfileForm.control} displayNameLabel="Telefone" />
                     </View>
                     <Text style={[styles.personalInformationsTitle, { marginTop: 20 }]}>Endereço</Text>
                     <View style={styles.inputsContainer}>
-                        <CepInput placeholder="00000-00" defaultValue={data?.addressFromUpdateInformation.cep} disabled={!enabledFields} label={"cep"} control={updateProfileForm.control} displayNameLabel="Cep" />
+                        <CepInput placeholder="00000-000" hasError={updateProfileForm.formState.errors.cep !== undefined} defaultValue={data?.addressFromUpdateInformation.cep} disabled={!enabledFields} label={"cep"} control={updateProfileForm.control} displayNameLabel="Cep" />
 
                         <Input defaultValue={data?.addressFromUpdateInformation.bairro} disabled label={"neighborhood"} control={updateProfileForm.control} displayNameLabel="Bairro" />
 
