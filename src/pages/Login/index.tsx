@@ -5,7 +5,7 @@ import Input from "@components/Input";
 import LinkNavigator from "@components/LinkNavigator";
 import Button from '@components/Button';
 import { CommonActions, useNavigation } from "@react-navigation/native";
-import { globalStyles } from "@styles/global.styles";
+import { globalStyles, text } from "@styles/global.styles";
 import { getCurrentUser, storage } from "@storage/index";
 import { useContext } from "react";
 import MessageError from "@components/MessageError";
@@ -115,13 +115,13 @@ export default function Login() {
 
                 <Button label={"Entrar"} onClick={handleSubmit(onLogin)} />
 
-                <TouchableOpacity style={{ alignItems: 'center' }}>
-                    <LinkNavigator
-                        label={"Quero ser uma babá"}
-                        navigateTo={"register"}
-                        params={{ isNannyRegister: true }}
-                    />
-                </TouchableOpacity>
+                <Text style={{ ...text.common, textAlign: 'center' }}>
+                    ou
+                </Text>
+
+                <Button label={"Quero ser uma babá"} onClick={() => { navigator.navigate('register', { isNannyRegister: true }) }}
+                    textStyle={{ ...text.common, color: '#3E9FEB' }}
+                    containerStyle={{ backgroundColor: 'transparent', borderWidth: 1, borderColor: '#3E9FEB' }} />
             </View>
 
         </View>

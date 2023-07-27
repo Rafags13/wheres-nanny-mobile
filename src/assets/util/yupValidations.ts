@@ -11,6 +11,7 @@ export const registerValidationSchema = yup.object().shape({
     cep: yup.string().required('o CEP é obrigatório.').matches(REGEX_CEP, 'Informe um CEP válido.'),
     password: yup.string().required('a Senha é obrigatória'),
     repeatPassword: yup.string().required('é necessário repetir a Senha').oneOf([yup.ref('password')], 'as Senhas não conferem.'),
+    checkbox: yup.bool().oneOf([true], 'é necessário aceitar os termos para poder prosseguir.'),
     photo: yup.string().required('é necessário selecionar uma foto para seu perfil.'),
 })
 

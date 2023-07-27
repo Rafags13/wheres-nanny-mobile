@@ -5,6 +5,8 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { viaCepRequestGetByCep } from "@services/apiRequests";
 import { removeAllSpecialCharacters } from "@util/functions";
 import { globalStyles } from "@styles/global.styles";
+import { useContext } from "react";
+import { ModalContext, ModalContextType } from "@context/ModalContext";
 
 type Props = {
     label: string,
@@ -19,16 +21,28 @@ type Props = {
 }
 
 export default function CepInput({ label, control, displayNameLabel = '', defaultValue = '', disabled = false, hasError = false, rules = undefined, placeholder = '', style = {} }: Props) {
+    const { showModal } = useContext(ModalContext) as ModalContextType;
     const { field } = useController({
         control,
         defaultValue,
         rules,
         name: label,
     });
-    const { setValue } = useFormContext();
+    const { setValue, setError } = useFormContext();
 
     async function searchAddressByCep() {
+        if (field.value === '') {
+            showModal({ modalType: 'error', message: 'o CEP é obrigatório.' })
+            return;
+        }
         const viacepResponse = await viaCepRequestGetByCep(removeAllSpecialCharacters(field.value));
+
+        if (viacepResponse.data.erro) {
+            showModal({ modalType: 'error', message: 'o CEP informado não existe.' });
+            field.onChange('');
+            return;
+        }
+
         const { bairro, localidade, uf, logradouro } = viacepResponse.data;
         setValue("neighborhood", bairro);
         setValue("publicPlace", logradouro);
@@ -50,6 +64,7 @@ export default function CepInput({ label, control, displayNameLabel = '', defaul
                     style={[globalStyles.inputWithIcon, disabled ? styles.textInputDisabled : {}]}
                     placeholder={placeholder}
                     editable={!disabled}
+                    placeholderTextColor={'#c4c4c4'}
                 />
                 <TouchableOpacity onPress={searchAddressByCep} disabled={disabled}>
                     <FontAwesome name={'search'} color={disabled ? '#c4c4c4' : '#192553'} size={24} />

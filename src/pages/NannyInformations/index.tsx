@@ -49,14 +49,15 @@ export default function NannyInformations() {
             value: date,
             minimumDate: new Date(),
             onChange: (event, date) => {
-                if ((date as Date) < new Date()) {
-                    showModal({ message: 'Não é possível escolher uma data menor que a data atual. Tente novamente.', modalType: 'error' });
+                if (event.type !== 'dismissed' && (date as Date) < new Date()) {
+                    showModal({ message: 'Não é possível escolher uma data menor ou igual à data atual. Tente novamente.', modalType: 'error' });
                     return;
                 }
                 setDate(date as Date)
             },
         });
     }
+
     async function contractNanny() {
         const createContractNanny: CreateContractNannyDto = createHireNannyModel();
 

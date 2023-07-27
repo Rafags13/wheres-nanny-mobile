@@ -1,14 +1,23 @@
+import { getToken } from "@storage/index";
 import api, { apiViaCep } from "./api";
 
 export async function getData(route: string, params?: {}) {
+    api.defaults.headers.common["Authorization"] = `Bearer ${getToken()}`;
     return await api.get(route, params);
 }
 
 export async function postData(route: string, body: any) {
+    api.defaults.headers.common["Authorization"] = `Bearer ${getToken()}`;
+    return await api.post(route, JSON.stringify(body));
+}
+
+export async function postDataAnonymous(route: string, body: any) {
+    delete api.defaults.headers.common['Authorization'];
     return await api.post(route, JSON.stringify(body));
 }
 
 export async function updateData(route: string, body: any) {
+    api.defaults.headers.common["Authorization"] = `Bearer ${getToken()}`;
     return await api.put(route, JSON.stringify(body));
 }
 

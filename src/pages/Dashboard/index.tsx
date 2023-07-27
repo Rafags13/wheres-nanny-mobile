@@ -15,13 +15,21 @@ import { getDashboardInformation } from "@services/requests/NannyRequests";
 import NotFoundService from "@components/NotFoundService";
 
 export default function Dashboard() {
+
+    async function onRefresh() {
+        setLoading(true);
+        const response = await getDashboardInformation();
+        setLoading(false);
+        dashboardInformation = response.data;
+    }
+
     const { setLoading } = useContext(LoadingContext) as LoadingContextType;
     const { data, isLoading } = useQuery('GetDashboardInformation', async () => {
         const response = await getDashboardInformation();
         return response.data;
     });
 
-    const dashboardInformation: NannyDashboardInformationDto = data;
+    let dashboardInformation: NannyDashboardInformationDto = data;
 
     useEffect(() => {
         setLoading(isLoading);
@@ -40,6 +48,7 @@ export default function Dashboard() {
                 </View>
             }
             isScroll
+            functionIfScrollingToTop={onRefresh}
         >
             <View style={{ padding: 10 }}>
 
