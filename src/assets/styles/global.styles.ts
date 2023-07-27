@@ -20,14 +20,13 @@ export const text = StyleSheet.create({
 
 export const globalStyles = StyleSheet.create({
     title: {
-        ...common.defaultText,
         fontSize: 32,
         ...common.title
     },
     subtitle: {
         fontSize: 24,
         marginTop: 10,
-        ...common.title
+        ...common.defaultText
     },
     shadow: {
         shadowColor: "#000",

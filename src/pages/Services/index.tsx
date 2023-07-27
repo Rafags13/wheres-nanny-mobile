@@ -28,7 +28,7 @@ export default function Services() {
     }, [isLoading])
 
     async function updateListByNewPage() {
-        if (loadingFooterActitivity) return;
+        if (!loadingFooterActitivity) return;
         setLoadingFooterActitivity(true);
 
         const { data } = await getAllServices(page);
