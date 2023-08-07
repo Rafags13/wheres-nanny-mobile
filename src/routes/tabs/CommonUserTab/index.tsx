@@ -12,15 +12,17 @@ import Services from '@pages/Services';
 import { useContext, useEffect } from 'react';
 import messaging from "@react-native-firebase/messaging";
 import { ModalContextType, ModalContext } from '@context/ModalContext';
+import { ServiceConformationUserDto } from '@models/dto/Service/serviceConfirmationUserDto';
 
 const Tab = createBottomTabNavigator();
 
 export default function CommonUserTab() {
     const navigation = useNavigation<any>();
 
-    function redirectUserToNewServiceChat(accepted: boolean) {
+    function redirectUserToNewServiceChat({ accepted, serviceId }: ServiceConformationUserDto) {
         if (accepted) {
-            navigation.navigate('chat')
+            navigation.navigate('chatDerivatedPages', { serviceId })
+            // TODO: Modify to screen to common user
         }
     }
 
@@ -28,7 +30,11 @@ export default function CommonUserTab() {
     useEffect(() => {
         messaging().onMessage(async remoteMessage => {
             if (remoteMessage?.data) {
-                redirectUserToNewServiceChat(Boolean(remoteMessage?.data?.accepted))
+                redirectUserToNewServiceChat({
+                    accepted: Boolean(remoteMessage?.data?.accepted),
+                    serviceId: Number(remoteMessage?.data?.serviceId)
+                })
+
                 showModal({
                     modalType: Boolean(remoteMessage?.data.accepted) ? "success" : "error",
                     message: remoteMessage?.data.message,
@@ -38,7 +44,10 @@ export default function CommonUserTab() {
 
         messaging().setBackgroundMessageHandler(async backgroundMessage => {
             if (backgroundMessage) {
-                redirectUserToNewServiceChat(Boolean(backgroundMessage?.data?.accepted))
+                redirectUserToNewServiceChat({
+                    accepted: Boolean(backgroundMessage?.data?.accepted),
+                    serviceId: Number(backgroundMessage?.data?.serviceId)
+                });
             }
         })
 

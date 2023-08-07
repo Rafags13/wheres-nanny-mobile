@@ -15,10 +15,11 @@ type Props = {
     isPasswordInput?: boolean,
     placeholder?: string,
     hasError?: boolean,
+    multiline?: boolean,
     rules?: Omit<RegisterOptions<FieldValues, string>, "disabled" | "setValueAs" | "valueAsNumber" | "valueAsDate"> | undefined
 }
 
-export default function Input({ label, control, defaultValue = '', disabled = false, displayNameLabel = '', isPasswordInput = false, hasError = false, rules = undefined, placeholder = '', style }: Props) {
+export default function Input({ label, multiline = false, control, defaultValue = '', disabled = false, displayNameLabel = '', isPasswordInput = false, hasError = false, rules = undefined, placeholder = '', style }: Props) {
     const { field } = useController({
         control,
         defaultValue,
@@ -64,6 +65,7 @@ export default function Input({ label, control, defaultValue = '', disabled = fa
             <TextInput
                 value={field.value}
                 onChangeText={field.onChange}
+                multiline={multiline}
                 editable={!disabled}
                 style={[styles.inputNonPassword, hasError ? globalStyles.errorInput : {}, disabled ? globalStyles.disabledInput : {}, style]}
                 placeholder={placeholder}

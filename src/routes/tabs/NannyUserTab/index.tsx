@@ -26,7 +26,8 @@ export default function NannyUserTab() {
         await acceptService(acceptedServiceDto);
 
         if (serviceAccepted) {
-            navigator.navigate('chat');
+            navigator.navigate('chatDerivatedPages', { serviceId: acceptedServiceDto.serviceId });
+            //TODO: Modify to screen to nanny
         }
     }
 

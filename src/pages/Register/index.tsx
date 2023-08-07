@@ -40,7 +40,6 @@ export default function Register() {
 
     async function onRegister(data: any) {
         setLoading(true);
-        console.log(data)
         const userToRegisteSpecified =
             params?.isNannyRegister ?
                 createModelRegisterNanny(data) :
