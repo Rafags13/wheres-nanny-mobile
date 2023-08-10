@@ -5,7 +5,7 @@ import { returnRouteNameByProfileType } from "@util/functions";
 import { TypeOfUser } from "@enums/TypeOfUser";
 import Login from "@pages/Login";
 import Register from "@pages/Register";
-import { getCurrentUser, getToken } from "@storage/index";
+import { getCurrentService, getCurrentUser, getToken, isInSomeService } from "@storage/index";
 import CommonUserTab from "@tabs/CommonUserTab";
 import NannyUserTab from "@tabs/NannyUserTab";
 import ChatDerivatedPages from "./ChatDerivatedPages";
@@ -18,16 +18,33 @@ export default function StackNavigator() {
     const navigator = useNavigation<any>();
     const currentUser = getCurrentUser();
 
+    function redirectIfIsInService() {
+        const currentService = getCurrentService();
+        if (currentService.waitingResponse) {
+            navigator.navigate('chatDerivatedPages', {
+                screen: 'waitingService'
+            });
+            return;
+        }
+
+        navigator.navigate("chatDerivatedPages", {
+            screen: currentUser.typeOfUser === TypeOfUser.CommonUser ? 'currentServiceParent' : 'currentServiceNanny',
+            params: { serviceId: currentService.serviceId }
+        });
+        return;
+    }
     useEffect(() => {
         function findUserLogged() {
             if (token !== '') {
-                const typeOfUser: TypeOfUser = currentUser.typeOfUser;
-                const routeName = returnRouteNameByProfileType(typeOfUser);
-                navigator.navigate(routeName.mainContainer, { screen: routeName.screen });
-                return;
+                if (!isInSomeService()) {
+                    const typeOfUser: TypeOfUser = currentUser.typeOfUser;
+                    const routeName = returnRouteNameByProfileType(typeOfUser);
+                    navigator.navigate(routeName.mainContainer, { screen: routeName.screen });
+                    return;
+                }
+                redirectIfIsInService();
             }
         }
-
         findUserLogged();
     }, []);
 

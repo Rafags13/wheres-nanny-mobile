@@ -47,6 +47,7 @@ export default function NannyInformations() {
         DateTimePickerAndroid.open({
             mode,
             value: date,
+            is24Hour: true,
             minimumDate: new Date(),
             onChange: (event, date) => {
                 if (event.type !== 'dismissed' && (date as Date) < new Date()) {
@@ -63,13 +64,12 @@ export default function NannyInformations() {
 
         const response = hireNanny(createContractNanny);
         response.then(async response => {
-            showModal({ modalType: 'success', message: response.data });
-            dispatch(loadInitialHomeInformation());
+
             navigation.dispatch(
                 CommonActions.reset({
-                    index: 0,
+                    index: 1,
                     routes: [
-                        { name: 'home' },
+                        { name: 'chatDerivatedPages' },
                     ],
                 })
             );

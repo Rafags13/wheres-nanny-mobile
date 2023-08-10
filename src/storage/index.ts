@@ -3,6 +3,7 @@ import jwt_decode from "jwt-decode";
 import { UserTokenDto } from '../assets/model/dto/User/UserTokenDto';
 import { FavoritedNanny } from '../features/listNanny/favoriteListNannySlice';
 import { LogoutRequest } from '../services/requests/AutenticationRequests';
+import { CurrentServiceDto } from '@models/dto/Chat/currentServiceDto';
 
 export const storage = new MMKV({ id: 'WheresNanny' });
 
@@ -39,4 +40,46 @@ export function removeFavoriteNannyAsyncStorage(nannyId: number) {
 export async function logOut() {
     await LogoutRequest();
     storage.clearAll();
+}
+
+export function addCurrentServiceToAsync(currentService: CurrentServiceDto) {
+    storage.set('currentService', JSON.stringify(currentService));
+}
+
+export function clearCurrentService() {
+    storage.delete('currentService');
+}
+
+export function isInSomeService() {
+    const currentServiceExists = storage.getString('currentService') as string;
+
+    return currentServiceExists !== undefined;
+}
+
+export function getCurrentService() {
+    const currentService: CurrentServiceDto = JSON.parse(storage.getString('currentService') as string || '');
+
+    return currentService;
+}
+
+export function onNotWaitingNannyResponseAnymore() {
+    const currentService: CurrentServiceDto = JSON.parse(storage.getString('currentService') as string || '');
+
+    const newCurrentStatus: CurrentServiceDto = {
+        ...currentService,
+        waitingResponse: false,
+    }
+
+    storage.set('currentService', JSON.stringify(newCurrentStatus));
+}
+
+export function onServiceAccept(serviceId: number) {
+    const currentService: CurrentServiceDto = JSON.parse(storage.getString('currentService') as string || '');
+
+    const newCurrentServiceId: CurrentServiceDto = {
+        ...currentService,
+        serviceId
+    }
+
+    storage.set('currentService', JSON.stringify(newCurrentServiceId));
 }
