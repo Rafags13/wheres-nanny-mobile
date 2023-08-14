@@ -19,6 +19,7 @@ export default function CurrentServiceParent() {
                 user: data.user,
                 time: new Date()
             }
+            console.log('mensagem recebida na tela de serviço da mãe')
             addNewMessage(newMessage);
         });
     }, [socket]);

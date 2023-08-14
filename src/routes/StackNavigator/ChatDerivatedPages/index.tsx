@@ -20,9 +20,11 @@ export default function ChatDerivatedPages() {
     useEffect(() => {
         if (isInSomeService()) {
             const currentService = getCurrentService();
-            socket.connect();
-            socket.emit("select_room", { room: currentService.serviceId });
-            console.log('fui chamado')
+            if (!currentService.waitingResponse) {
+                socket.connect();
+                socket.emit("select_room", { room: currentService.serviceId });
+                console.log('fui chamado')
+            }
         }
     }, [])
 

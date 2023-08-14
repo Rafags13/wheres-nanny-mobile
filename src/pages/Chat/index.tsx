@@ -28,6 +28,7 @@ export default function Chat() {
                 user: data.user,
                 time: new Date()
             }
+            console.log('mensagem recebida no chat')
             setMessages(oldMessages => [...oldMessages, newMessage]);
         });
     }, [socket]);

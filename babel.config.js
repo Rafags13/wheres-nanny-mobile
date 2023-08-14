@@ -19,6 +19,7 @@ module.exports = {
         "@services": './src/services',
         "@storage": './src/storage',
       }
-    }]
+    }],
+    'react-native-reanimated/plugin',
   ]
 };
