@@ -47,7 +47,7 @@ export default function CommonUserTab() {
             message: remoteData.message,
         })
 
-        redirectUserIfAccepts({ accepted: response.accepted, serviceId: response.serviceId })
+        redirectUserIfAccepts({ accepted: response.accepted, serviceId: Number(response.serviceId) })
     }
 
     useEffect(() => {

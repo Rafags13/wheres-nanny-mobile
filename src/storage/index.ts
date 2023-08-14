@@ -4,6 +4,7 @@ import { UserTokenDto } from '../assets/model/dto/User/UserTokenDto';
 import { FavoritedNanny } from '../features/listNanny/favoriteListNannySlice';
 import { LogoutRequest } from '../services/requests/AutenticationRequests';
 import { CurrentServiceDto } from '@models/dto/Chat/currentServiceDto';
+import { Message } from '@models/dto/Chat/message';
 
 export const storage = new MMKV({ id: 'WheresNanny' });
 
@@ -82,4 +83,17 @@ export function onServiceAccept(serviceId: number) {
     }
 
     storage.set('currentService', JSON.stringify(newCurrentServiceId));
+}
+
+export function addNewMessage(message: Message) {
+    const currentService = getCurrentService();
+
+    currentService.messages?.push(message);
+
+    storage.set('currentService', JSON.stringify(currentService));
+}
+
+export function getCurrentMessages() {
+    const currentService = getCurrentService();
+    return currentService.messages || [];
 }

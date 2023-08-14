@@ -27,7 +27,7 @@ export default function NannyUserTab() {
         await acceptService(acceptedServiceDto);
 
         if (serviceAccepted) {
-            addCurrentServiceToAsync({ waitingResponse: false, serviceId: acceptedServiceDto.serviceId });
+            addCurrentServiceToAsync({ waitingResponse: false, serviceId: acceptedServiceDto.serviceId, messages: [] });
 
             navigation.navigate('chatDerivatedPages', {
                 screen: 'currentServiceNanny', params: { serviceId: serviceId }

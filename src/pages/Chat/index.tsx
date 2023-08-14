@@ -3,29 +3,23 @@ import { FlatList, Text, View } from "react-native";
 import socket from "@util/socket";
 import { useCallback, useEffect, useState } from "react";
 import Button from "@components/Button";
-import { getCurrentUser } from "@storage/index";
+import { addNewMessage, getCurrentMessages, getCurrentService, getCurrentUser } from "@storage/index";
 import Input from "@components/Input";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useForm } from "react-hook-form";
-import { RouteProp, useRoute } from "@react-navigation/native";
 import { Message } from "@models/dto/Chat/message";
 import ChatListMessages from "@components/ChatListMessages";
 
 import { Dimensions } from "react-native";
+import Background from "@components/Background";
 
 var width = Dimensions.get('window').width;
 
 export default function Chat() {
     const currentUser = getCurrentUser();
+    const currentService = getCurrentService();
     const { control, handleSubmit, setValue } = useForm();
-    const [messages, setMessages] = useState<Message[]>([]);
-
-    const { params } = useRoute<RouteProp<{ params: { serviceId: number } }, 'params'>>();
-
-    useEffect(() => {
-        socket.connect();
-        socket.emit("select_room", { room: params.serviceId });
-    }, []);
+    const [messages, setMessages] = useState<Message[]>(getCurrentMessages());
 
     useEffect(() => {
         socket.on('message', (data) => {
@@ -34,17 +28,19 @@ export default function Chat() {
                 user: data.user,
                 time: new Date()
             }
-            setMessages(state => [...state, newMessage]);
+            setMessages(oldMessages => [...oldMessages, newMessage]);
         });
     }, [socket]);
 
     const onSendMessage = useCallback((data: any) => {
-        setValue('message', '');
-        socket.emit("message", { message: data.message, user: currentUser.username, room: params.serviceId });
-    }, [params.serviceId]);
+        if (data.message !== '') {
+            setValue('message', '');
+            socket.emit("message", { message: data.message, user: currentUser.username, room: currentService.serviceId });
+        }
+    }, [currentService.serviceId]);
 
     return (
-        <View style={{ flex: 1, backgroundColor: '#F8FDFE' }}>
+        <Background hasBackIcon>
             <ChatListMessages messages={messages} />
 
             <View style={{
@@ -60,7 +56,7 @@ export default function Chat() {
                     icon={<Ionicons name={'paper-plane'} color={'white'} size={24} />}
                 />
             </View>
-        </View>
+        </Background>
 
     )
 }

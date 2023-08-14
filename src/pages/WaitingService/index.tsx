@@ -16,10 +16,11 @@ export default function WaitingService() {
 
     useEffect(() => {
         addCurrentServiceToAsync({
-            waitingResponse: true
+            waitingResponse: true,
+            messages: []
         });
 
-        const fiveMinutes = 30000;
+        const fiveMinutes = 300000;
         const timeOut = setTimeout(() => {
             navigator.navigate('commonUser', { screen: 'home', initial: true, });
             showModal({ modalType: 'error', message: 'A babá não aceitou o serviço a tempo, tente novamente.' });

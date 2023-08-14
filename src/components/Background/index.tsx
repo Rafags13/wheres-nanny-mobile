@@ -27,7 +27,7 @@ export default function Background({ children, header, hasBackIcon = false, isSc
             <View>
                 {hasBackIcon ? (
                     <View style={styles.backIconContainer}>
-                        <TouchableOpacity style={styles.backButtonHeader} onPress={() => navigator.goBack()}>
+                        <TouchableOpacity style={styles.backButtonHeader} onPress={() => { navigator.goBack() }}>
                             <Entypo name="chevron-small-left" size={32} color={"#c4c4c4"} />
                         </TouchableOpacity>
 
