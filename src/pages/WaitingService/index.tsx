@@ -12,7 +12,6 @@ import styles from "./style";
 export default function WaitingService() {
     const navigator = useNavigation<any>();
     const { showModal } = useContext(ModalContext) as ModalContextType;
-    const currentDate = useMemo(() => new Date(), [])
 
     useEffect(() => {
         addCurrentServiceToAsync({
@@ -20,7 +19,7 @@ export default function WaitingService() {
             messages: []
         });
 
-        const fiveMinutes = 300000;
+        const fiveMinutes = 30000;
         const timeOut = setTimeout(() => {
             navigator.navigate('commonUser', { screen: 'home', initial: true, });
             showModal({ modalType: 'error', message: 'A babá não aceitou o serviço a tempo, tente novamente.' });

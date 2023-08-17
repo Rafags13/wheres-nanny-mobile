@@ -1,6 +1,5 @@
 import Chat from "@pages/Chat";
-import CurrentServiceNanny from "@pages/CurrentServiceNanny";
-import CurrentServiceParent from "@pages/CurrentServiceParent";
+import CurrentService from "@pages/CurrentService";
 import WaitingServicePage from "@pages/WaitingService";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useEffect } from "react";
@@ -23,10 +22,9 @@ export default function ChatDerivatedPages() {
             if (!currentService.waitingResponse) {
                 socket.connect();
                 socket.emit("select_room", { room: currentService.serviceId });
-                console.log('fui chamado')
             }
         }
-    }, [])
+    }, []);
 
     return (
         <Stack.Navigator screenOptions={{
@@ -34,8 +32,7 @@ export default function ChatDerivatedPages() {
         }}
             initialRouteName='waitingService'
         >
-            <Stack.Screen name="currentServiceNanny" component={CurrentServiceNanny} />
-            <Stack.Screen name="currentServiceParent" component={CurrentServiceParent} />
+            <Stack.Screen name="currentServiceNanny" component={CurrentService} />
             <Stack.Screen name="waitingService" component={WaitingServicePage} />
             <Stack.Screen name="chat" component={Chat} />
         </Stack.Navigator>

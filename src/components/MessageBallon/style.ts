@@ -9,7 +9,6 @@ const styles = ({ isCurrentUserInThisMessage }: StyleProps) => StyleSheet.create
     ballonContainer: {
         alignSelf: isCurrentUserInThisMessage ? 'flex-end' : 'flex-start',
         borderRadius: 10,
-        marginVertical: 10,
         paddingVertical: 10,
         paddingHorizontal: 10,
         paddingLeft: isCurrentUserInThisMessage ? 30 : 10,
@@ -27,7 +26,9 @@ const styles = ({ isCurrentUserInThisMessage }: StyleProps) => StyleSheet.create
     },
     hourText: {
         ...text.common,
-        color: "#D3D3D3",
+        color: "#333",
+        marginRight: isCurrentUserInThisMessage ? 5 : 0,
+        marginLeft: !isCurrentUserInThisMessage ? 5 : 0,
         textAlign: isCurrentUserInThisMessage ? 'right' : 'left',
         fontSize: 12
     }

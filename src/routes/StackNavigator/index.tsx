@@ -28,8 +28,7 @@ export default function StackNavigator() {
         }
 
         navigator.navigate("chatDerivatedPages", {
-            screen: currentUser.typeOfUser === TypeOfUser.CommonUser ? 'currentServiceParent' : 'currentServiceNanny',
-            params: { serviceId: currentService.serviceId }
+            screen: 'currentService',
         });
         return;
     }

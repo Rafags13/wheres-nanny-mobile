@@ -1,7 +1,8 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Dimensions, StyleSheet } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
+import { PermissionsAndroid } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
@@ -16,11 +17,23 @@ type Props = {
     destinationCoordinates: {
         latitude: number
         longitude: number
-    }
+    },
+    distanceHigherThenOneKilometer?: boolean
 }
 
-export default function GoogleMap({ originCoordinates, destinationCoordinates }: Props) {
+export default function GoogleMap({ originCoordinates, destinationCoordinates, distanceHigherThenOneKilometer = false }: Props) {
     const refMap = useRef<any>(null);
+
+    useEffect(() => {
+        async function requestGeolocationPermission() {
+            await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+            )
+        }
+
+        requestGeolocationPermission();
+    }, [])
+
     return (
         <MapView
             style={styles.map}
@@ -29,6 +42,7 @@ export default function GoogleMap({ originCoordinates, destinationCoordinates }:
                 latitudeDelta: LATITUDE_DELTA,
                 longitudeDelta: LONGITUDE_DELTA,
             }}
+            showsUserLocation={true}
             rotateEnabled={false}
             zoomEnabled={false}
             scrollEnabled={false}
@@ -37,24 +51,22 @@ export default function GoogleMap({ originCoordinates, destinationCoordinates }:
             <MapViewDirections
                 origin={originCoordinates}
                 destination={destinationCoordinates}
-                apikey={'AIzaSyB-Z1vHMjuGkZ6ovkcZwypA9KWzS6qU5Rc'}
+                apikey={'AIzaSyB-Z1vHMjuGkZ6ovkcZwypA9KWzS6qU5Rc'} // put this inside env file
                 strokeWidth={4}
                 strokeColor="#999"
                 onReady={result => {
+                    const padding = distanceHigherThenOneKilometer ? 20 : 5;
                     refMap.current.fitToCoordinates(result.coordinates, {
                         edgePadding: {
-                            right: (width / 5),
-                            bottom: (height / 5),
-                            left: (width / 5),
-                            top: (height / 5),
+                            right: (width / padding),
+                            bottom: (height / padding),
+                            left: (width / padding),
+                            top: (height / padding),
                         }
                     });
                 }}
             />
-            <Marker coordinate={originCoordinates}
-                pointerEvents="none"
 
-            />
             <Marker coordinate={destinationCoordinates}
                 pointerEvents="none"
             />

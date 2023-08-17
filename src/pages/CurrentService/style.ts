@@ -6,11 +6,6 @@ export const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         alignItems: 'center',
     },
-    modalContainer: {
-        paddingHorizontal: 20,
-        marginTop: 10,
-        gap: 5,
-    },
     modalContent: {
         marginTop: 10,
         marginBottom: 20,
@@ -20,6 +15,6 @@ export const styles = StyleSheet.create({
         width: '100%',
         alignItems: 'center',
         marginTop: 5,
-        marginBottom: 20,
+        marginBottom: 15,
     }
 })

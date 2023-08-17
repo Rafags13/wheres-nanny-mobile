@@ -1,7 +1,7 @@
 
 import { FlatList, Text, View } from "react-native";
 import socket from "@util/socket";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Button from "@components/Button";
 import { addNewMessage, getCurrentMessages, getCurrentService, getCurrentUser } from "@storage/index";
 import Input from "@components/Input";
@@ -19,7 +19,8 @@ export default function Chat() {
     const currentUser = getCurrentUser();
     const currentService = getCurrentService();
     const { control, handleSubmit, setValue } = useForm();
-    const [messages, setMessages] = useState<Message[]>(getCurrentMessages());
+    const currentMessages = useMemo(() => getCurrentMessages(), []);
+    const [messages, setMessages] = useState<Message[]>(currentMessages);
 
     useEffect(() => {
         socket.on('message', (data) => {

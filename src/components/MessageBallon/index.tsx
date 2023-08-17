@@ -14,12 +14,14 @@ const MessageBallon = memo(({ content, time, user }: Message) => {
     const style = styles({ isCurrentUserInThisMessage })
 
     return (
-        <View style={style.ballonContainer}>
-            <Text style={style.messageText}>{content}</Text>
+        <>
+            <View style={style.ballonContainer}>
+                <Text style={style.messageText}>{content}</Text>
+            </View>
             <Text style={style.hourText}>
                 {moment(time).format('HH:mm:ss')}
             </Text>
-        </View>
+        </>
     )
 });
 

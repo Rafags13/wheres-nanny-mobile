@@ -1,13 +1,13 @@
 import { CepRequestDto } from "../Address/CepRequestDto"
 
-export class DisplayNannyServiceInformationDto {
-    parentName: string = ''
-    parentPictureBase64: string = ''
-    parentCep: string = ''
-    parentCellphone: string = ''
-    parentEmail: string = ''
+export class DisplayServiceInformationDto {
+    name: string = ''
+    pictureBase64: string = ''
+    cep: string = ''
+    cellphone: string = ''
+    email: string = ''
     serviceFinishHour: Date = new Date()
-    parentBirthdayDate: Date = new Date()
+    birthdayDate: Date = new Date()
     originCoordinates!: CepRequestDto
     destinationCoordinates!: CepRequestDto
     servicePrice!: number
