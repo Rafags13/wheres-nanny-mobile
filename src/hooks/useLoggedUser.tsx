@@ -1,9 +1,9 @@
 import { getCurrentUserAsync, getTokenAsync, logOutAsync, setTokenAsync } from "@storage/index";
+import { useMemo } from "react";
 
 export default function useLoggedUser() {
-    function getCurrentUser() {
-        return getCurrentUserAsync();
-    }
+    const token = getTokenAsync();
+    const currentUser = useMemo(() => getCurrentUserAsync(), [token])
 
     function setToken(token: string) {
         setTokenAsync(token);
@@ -17,5 +17,5 @@ export default function useLoggedUser() {
         await logOutAsync();
     }
 
-    return { getCurrentUser, setToken, getToken, logout };
+    return { currentUser, setToken, getToken, logout };
 }

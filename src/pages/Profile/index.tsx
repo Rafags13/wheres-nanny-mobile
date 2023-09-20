@@ -1,4 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import { FormProvider, useForm } from "react-hook-form";
 import { Image, Text, View, } from "react-native";
 import Background from "@components/Background";
@@ -21,9 +21,10 @@ import { formatCellphoneNumber, formatCpf, removeSpecialCharacter } from "@util/
 import CepInput from "@components/CepInput";
 import { UpdatePasswordDto } from "@dtos/User/UpdatePasswordDto";
 import { getProfileData, updatePassword, updateProfile } from "@services/requests/PersonRequests";
+import useLoggedUser from "@hooks/useLoggedUser";
 
 export default function Profile() {
-    const currentUser = useMemo(() => getCurrentUserAsync(), []);
+    const { currentUser, logout } = useLoggedUser();
     const navigation = useNavigation<any>();
     const scrollViewRef = useRef<any>(null);
     const [enabledFields, setEnabledFields] = useState<boolean>(false);
@@ -217,8 +218,15 @@ export default function Profile() {
                     <Button
                         label={"Sair"}
                         onClick={() => {
-                            logOutAsync();
-                            navigation.replace("login")
+                            logout();
+                            navigation.dispatch(
+                                CommonActions.reset({
+                                    index: 1,
+                                    routes: [
+                                        { name: 'login' },
+                                    ],
+                                })
+                            );
                         }}
                         containerStyle={{ backgroundColor: '#C82333', marginVertical: 20 }}
                         icon={
