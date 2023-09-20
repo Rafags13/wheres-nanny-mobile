@@ -4,19 +4,16 @@ import LoadingProvider from './context/LoadingContext';
 import Routes from './routes';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { AppProvider } from './context';
 
 export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <SafeAreaProvider>
-        <NavigationContainer>
-          <ModalProvider>
-            <LoadingProvider>
-              <Routes />
-            </LoadingProvider>
-          </ModalProvider>
-        </NavigationContainer>
-      </SafeAreaProvider >
+      <NavigationContainer>
+        <AppProvider>
+          <Routes />
+        </AppProvider>
+      </NavigationContainer>
     </GestureHandlerRootView>
   );
 }

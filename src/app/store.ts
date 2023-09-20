@@ -11,9 +11,10 @@ export const store = configureStore({
     },
 });
 
-if (getCurrentUser().typeOfUser == TypeOfUser.CommonUser) {
-    store.dispatch(loadInitialHomeInformation());
-}
+// if (getCurrentUser().typeOfUser == TypeOfUser.CommonUser) {
+//     store.dispatch(loadInitialHomeInformation());
+// }
+// Removed this and send responsability to home component
 
 
 export type AppDispatch = typeof store.dispatch;

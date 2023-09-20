@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 
 export type LoadingContextType = {
     isLoading: boolean,
@@ -21,4 +21,13 @@ export default function LoadingProvider({ children }: Props) {
     return (
         <LoadingContext.Provider value={{ isLoading, setLoading }}>{children}</LoadingContext.Provider>
     )
+}
+
+export const useLoading = () => {
+    const context = useContext(LoadingContext);
+
+    if (!context)
+        throw new Error("useLoading must be used within a LoadingProvider");
+
+    return context;
 }

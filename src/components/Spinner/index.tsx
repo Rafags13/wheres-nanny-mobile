@@ -1,9 +1,8 @@
-import { useContext } from "react";
 import AnimatedLoader from "react-native-animated-loader";
-import { LoadingContext, LoadingContextType } from "@context/LoadingContext";
+import { useLoading } from "@context/LoadingContext";
 
 export default function Spinner() {
-    const { isLoading } = useContext(LoadingContext) as LoadingContextType;
+    const { isLoading } = useLoading();
     return (
         <AnimatedLoader
             visible={isLoading}

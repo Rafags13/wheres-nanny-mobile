@@ -6,38 +6,29 @@ import { globalStyles } from "@styles/global.styles";
 import { styles } from "./style";
 import NannyCardList from "@features/listNanny/NannyCardList";
 import ListFilterNanny from "@components/ListFilterNanny";
-import React, { useContext, useEffect } from "react";
 import ErrorModal from "@components/ErrorModal";
-
-import { useAppSelector } from '@app/hooks';
-import { LoadingContextType, LoadingContext } from "@context/LoadingContext";
 import { useNavigation } from "@react-navigation/native";
 import NotFoundService from "@components/NotFoundService";
-
+import useHomeInformation from "../../hooks/useHomeInformation";
 export default function Home() {
-    const { setLoading } = useContext(LoadingContext) as LoadingContextType;
     const navigator = useNavigation<any>();
-    const currentInformation = useAppSelector((state) => state.userInformation.value)
-    const isLoadingData = useAppSelector((state) => state.userInformation.statusQuery === 'loading')
-    const error = useAppSelector((state) => state.userInformation.error);
 
-    const nannyList = useAppSelector((state) => state.userInformation.value.nannyListOrderedByFilter)
-
-    useEffect(() => {
-        setLoading(isLoadingData)
-    }, [isLoadingData])
+    const { currentInformation, error, isLoadingData, nannyList } = useHomeInformation();
 
     if (isLoadingData) {
         return (
             <></>
         )
     }
+    // put a skeleton here
 
     if (error) {
         return (
             <ErrorModal />
         )
     }
+    console.log('render')
+
     return (
         <Background
             isScroll
@@ -62,20 +53,20 @@ export default function Home() {
                 <View style={{ marginTop: 10 }}>
                     <View style={styles.recentContainer}>
                         <Text style={globalStyles.headerTitle}>Recente</Text>
-                        {currentInformation?.mostRecentService !== null && (
+                        {currentInformation.mostRecentService !== null && (
                             <TouchableOpacity style={{ alignItems: 'flex-end' }} onPress={() => navigator.navigate('services')}>
                                 <Text style={styles.seeAll}>Ver todos</Text>
                             </TouchableOpacity>
                         )}
                     </View>
 
-                    {currentInformation?.mostRecentService === null ? (
+                    {currentInformation.mostRecentService === null ? (
                         <NotFoundService />
                     ) : (
                         <RecentCard
-                            nannyName={currentInformation?.mostRecentService.personName}
-                            serviceDate={currentInformation?.mostRecentService.date}
-                            serviceId={currentInformation?.mostRecentService.serviceId}
+                            nannyName={currentInformation.mostRecentService.personName}
+                            serviceDate={currentInformation.mostRecentService.date}
+                            serviceId={currentInformation.mostRecentService.serviceId}
                             imageUri={currentInformation.mostRecentService.imageUri} />
                     )}
 
