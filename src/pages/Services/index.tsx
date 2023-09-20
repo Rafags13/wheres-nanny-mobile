@@ -21,6 +21,8 @@ export default function Services() {
 
     if (isLoading) return (<></>)
 
+    // TODO: change this to skeleton
+
     return (
         <Background
             header={

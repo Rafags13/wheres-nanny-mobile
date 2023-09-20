@@ -44,6 +44,7 @@ export default function CurrentService() {
     }, [socket]);
 
     if (isLoading) return (<></>);
+    // TODO: change this to skeleton
 
     return (
         <View style={styles.container}>

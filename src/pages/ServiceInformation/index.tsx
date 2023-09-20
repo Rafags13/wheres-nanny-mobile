@@ -30,6 +30,9 @@ export default function ServiceInformation() {
             </>
         )
     }
+
+    // TODO: change this to skeleton
+
     return (
         <Background isScroll hasBackIcon label={`Serviço n° #${params.serviceId}`}>
             <View style={{ padding: 10 }}>

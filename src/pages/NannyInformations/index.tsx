@@ -91,6 +91,9 @@ export default function NannyInformations() {
     }
 
     if (isLoading) return (<></>)
+
+    // TODO: change this to skeleton
+
     return (
         <Background hasBackIcon>
             <View style={styles.basicNannyInformationSection}>

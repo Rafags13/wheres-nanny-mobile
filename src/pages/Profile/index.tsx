@@ -56,6 +56,8 @@ export default function Profile() {
         return (<></>)
     }
 
+    // TODO: change this to skeleton
+
     async function updateInformations(data: any) {
         const updateDataProfile: ProfileUpdateDataDto = createUpdateProfileModel(data);
 

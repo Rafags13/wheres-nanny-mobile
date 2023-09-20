@@ -20,7 +20,7 @@ export default function Home() {
             <></>
         )
     }
-    // put a skeleton here
+    // TODO: change this to skeleton
 
     if (error) {
         return (

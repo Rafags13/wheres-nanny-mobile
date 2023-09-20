@@ -31,6 +31,7 @@ export default function Dashboard() {
         return <>
         </>
     }
+    // TODO: change this to skeleton
 
     return (
         <Background
