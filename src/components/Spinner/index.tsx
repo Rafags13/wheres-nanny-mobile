@@ -7,7 +7,7 @@ export default function Spinner() {
         <AnimatedLoader
             visible={isLoading}
             overlayColor="rgba(255,255,255,0.75)"
-            source={require("@lottie/9764-loader.json")}
+            source={require("@lottie/spinner.json")}
             animationStyle={{ width: 150, height: 150 }}
             speed={1}
         >
