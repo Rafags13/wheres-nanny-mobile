@@ -4,13 +4,13 @@ import { Image, Text, View, } from "react-native";
 import Background from "@components/Background";
 import Button from "@components/Button";
 import Input from "@components/Input";
-import { getCurrentUser, logOut } from "@storage/index";
+import { getCurrentUserAsync, logOutAsync } from "@storage/index";
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { styles } from "./style";
-import { useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useQuery } from "react-query";
 import { viaCepRequestGetByCep } from "@services/apiRequests";
 import { ProfileUpdateDataDto } from "@dtos/Person/ProfileUpdateDataDto";
@@ -23,7 +23,7 @@ import { UpdatePasswordDto } from "@dtos/User/UpdatePasswordDto";
 import { getProfileData, updatePassword, updateProfile } from "@services/requests/PersonRequests";
 
 export default function Profile() {
-    const currentUser = getCurrentUser();
+    const currentUser = useMemo(() => getCurrentUserAsync(), []);
     const navigation = useNavigation<any>();
     const scrollViewRef = useRef<any>(null);
     const [enabledFields, setEnabledFields] = useState<boolean>(false);
@@ -217,7 +217,7 @@ export default function Profile() {
                     <Button
                         label={"Sair"}
                         onClick={() => {
-                            logOut();
+                            logOutAsync();
                             navigation.replace("login")
                         }}
                         containerStyle={{ backgroundColor: '#C82333', marginVertical: 20 }}

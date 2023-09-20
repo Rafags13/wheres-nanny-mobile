@@ -27,7 +27,6 @@ export default function Home() {
             <ErrorModal />
         )
     }
-    console.log('render')
 
     return (
         <Background

@@ -24,6 +24,7 @@ export const loadInitialHomeInformation = createAsyncThunk(
     'Person/GetUserHomeInformation',
     async () => {
         const response = await fetchUserHomeInformation();
+        console.log('carreguei')
         return response.data;
     }
 )
