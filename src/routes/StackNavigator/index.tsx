@@ -5,18 +5,18 @@ import { returnRouteNameByProfileType } from "@util/functions";
 import { TypeOfUser } from "@enums/TypeOfUser";
 import Login from "@pages/Login";
 import Register from "@pages/Register";
-import { getCurrentService, getCurrentUser, getToken, isInSomeService } from "@storage/index";
+import { getCurrentService, getCurrentUserAsync, getTokenAsync, isInSomeService } from "@storage/index";
 import CommonUserTab from "@tabs/CommonUserTab";
 import NannyUserTab from "@tabs/NannyUserTab";
 import ChatDerivatedPages from "./ChatDerivatedPages";
 
 const Stack = createNativeStackNavigator();
 
-const token = getToken();
+const token = getTokenAsync();
 
 export default function StackNavigator() {
     const navigator = useNavigation<any>();
-    const currentUser = getCurrentUser();
+    const currentUser = getCurrentUserAsync();
 
     function redirectIfIsInService() {
         const currentService = getCurrentService();

@@ -6,7 +6,6 @@ import LinkNavigator from "@components/LinkNavigator";
 import Button from '@components/Button';
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import { globalStyles, text } from "@styles/global.styles";
-import { getCurrentUser, storage } from "@storage/index";
 import { useContext } from "react";
 import MessageError from "@components/MessageError";
 import { LoadingContextType, LoadingContext, useLoading } from "@context/LoadingContext";
@@ -16,9 +15,11 @@ import { LoginDto } from "@dtos/User/LoginDto";
 import { LoginRequest } from "@services/requests/AutenticationRequests";
 import { returnRouteNameByProfileType } from "@util/functions";
 import { TypeOfUser } from "@enums/TypeOfUser";
+import useLoggedUser from "@hooks/useLoggedUser";
 
 export default function Login() {
     const { control, handleSubmit, formState: { errors } } = useForm();
+    const { getCurrentUser, setToken } = useLoggedUser();
     const { setLoading } = useLoading();
     const { showModal } = useModal();
     const navigator = useNavigation<any>();
@@ -35,7 +36,7 @@ export default function Login() {
         const response = LoginRequest(dataToRequest);
 
         response.then((response) => {
-            storage.set('token', response.data);
+            setToken(response.data);
             const currentUser = getCurrentUser();
             sendUserToCorrectRoute(currentUser.typeOfUser);
         }).catch((error) => {

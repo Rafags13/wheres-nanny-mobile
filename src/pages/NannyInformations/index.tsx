@@ -12,7 +12,7 @@ import { Slider } from '@miblanchard/react-native-slider';
 import Feather from 'react-native-vector-icons/Feather'
 import styles from "./style";
 import LinearGradient from "react-native-linear-gradient";
-import { getCurrentUser } from "@storage/index";
+import { getCurrentUserAsync } from "@storage/index";
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import { formatCellphoneNumber } from "@util/functions";
 import moment from "moment";
@@ -28,7 +28,7 @@ import { hireNanny } from "@services/requests/ServiceRequests";
 export default function NannyInformations() {
     const { setLoading } = useLoading();
     const dispatch = useDispatch<any>();
-    const currentUser = getCurrentUser();
+    const currentUser = getCurrentUserAsync();
     const { params } = useRoute<RouteProp<{ params: { nannyId: number } }, 'params'>>();
     const currentNanny = useAppSelector((state) => state.favoriteNannies.listFavoriteNanny.find(x => x.id === params.nannyId));
     const { showModal } = useModal();

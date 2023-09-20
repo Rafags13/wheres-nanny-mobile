@@ -1,20 +1,20 @@
 import { AcceptedServiceDto } from "@dtos/Person/AcceptedServiceDto";
-import { getCurrentUser } from "@storage/index";
+import { getCurrentUserAsync } from "@storage/index";
 import { getData, postData } from "@services/apiRequests";
 
 export async function getDashboardInformation() {
-    const currentUser = getCurrentUser();
+    const currentUser = getCurrentUserAsync();
     return await getData(`Nanny/GetDashboardInformation/${currentUser.id}`)
 }
 
 export async function getAllServicesFromCurrentNanny(paginationPage: number) {
-    const currentUser = getCurrentUser();
+    const currentUser = getCurrentUserAsync();
 
     return await getData(`Nanny/GetAllServices/${currentUser.id}/${paginationPage}`);
 }
 
 export async function getNannyById(nannyId: number) {
-    const currentUser = getCurrentUser();
+    const currentUser = getCurrentUserAsync();
 
     return await getData(`Person/GetNannyById/${nannyId}/${currentUser.id}`);
 }
