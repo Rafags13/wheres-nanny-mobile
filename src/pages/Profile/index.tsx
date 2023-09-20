@@ -10,12 +10,11 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { styles } from "./style";
-import { useEffect, useRef, useState, useContext } from "react";
+import { useRef, useState } from "react";
 import { useQuery } from "react-query";
 import { viaCepRequestGetByCep } from "@services/apiRequests";
-import { LoadingContext, LoadingContextType } from "@context/LoadingContext";
 import { ProfileUpdateDataDto } from "@dtos/Person/ProfileUpdateDataDto";
-import { ModalContextType, ModalContext } from "@context/ModalContext";
+import { useModal } from "@context/ModalContext";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { updatePasswordValidationSchema, updatePersonValidationSchema } from "@util/yupValidations";
 import { formatCellphoneNumber, formatCpf, removeSpecialCharacter } from "@util/functions";
@@ -28,8 +27,7 @@ export default function Profile() {
     const navigation = useNavigation<any>();
     const scrollViewRef = useRef<any>(null);
     const [enabledFields, setEnabledFields] = useState<boolean>(false);
-    const { showModal } = useContext(ModalContext) as ModalContextType;
-    const { setLoading } = useContext(LoadingContext) as LoadingContextType;
+    const { showModal } = useModal();
     const updateProfileForm = useForm({ resolver: yupResolver(updatePersonValidationSchema) });
     const updatePasswordForm = useForm({ resolver: yupResolver(updatePasswordValidationSchema) })
     const { data, isLoading } = useQuery(['getProfileInformation', currentUser.id], async () => {
@@ -53,10 +51,6 @@ export default function Profile() {
 
         return profileData;
     }
-
-    useEffect(() => {
-        setLoading(isLoading)
-    }, [isLoading])
 
     if (isLoading) {
         return (<></>)

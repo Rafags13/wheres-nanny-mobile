@@ -9,8 +9,8 @@ import { globalStyles, text } from "@styles/global.styles";
 import { getCurrentUser, storage } from "@storage/index";
 import { useContext } from "react";
 import MessageError from "@components/MessageError";
-import { LoadingContextType, LoadingContext } from "@context/LoadingContext";
-import { ModalContextType, ModalContext } from "@context/ModalContext";
+import { LoadingContextType, LoadingContext, useLoading } from "@context/LoadingContext";
+import { ModalContextType, ModalContext, useModal } from "@context/ModalContext";
 import messaging from "@react-native-firebase/messaging";
 import { LoginDto } from "@dtos/User/LoginDto";
 import { LoginRequest } from "@services/requests/AutenticationRequests";
@@ -19,8 +19,8 @@ import { TypeOfUser } from "@enums/TypeOfUser";
 
 export default function Login() {
     const { control, handleSubmit, formState: { errors } } = useForm();
-    const { setLoading } = useContext(LoadingContext) as LoadingContextType;
-    const { showModal } = useContext(ModalContext) as ModalContextType;
+    const { setLoading } = useLoading();
+    const { showModal } = useModal();
     const navigator = useNavigation<any>();
 
     async function onLogin(data: any) {

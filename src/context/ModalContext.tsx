@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
 
 export type ModalContextType = {
     isVisible: boolean,
@@ -46,4 +46,13 @@ export default function ModalProvider({ children }: Props) {
         <ModalContext.Provider value={{ isVisible, showModal, closeModal, modalInfo, sendResponse }}>{children}</ModalContext.Provider>
     )
 
+}
+
+export const useModal = () => {
+    const context = useContext(ModalContext);
+
+    if (!context)
+        throw new Error("useModal must be used within a ModalProvider");
+
+    return context;
 }
