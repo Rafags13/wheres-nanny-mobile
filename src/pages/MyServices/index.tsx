@@ -3,12 +3,10 @@ import { Background } from "@components/Background";
 import { globalStyles } from "@styles/global.styles";
 import ServiceNannyCard, { ServiceNannyCardProps } from "@components/ServiceNannyCard";
 import { useQuery } from "react-query";
-import { useContext, useEffect, useState } from "react";
-import { LoadingContext, LoadingContextType } from "@context/LoadingContext";
+import { useState } from "react";
 import { getAllServicesFromCurrentNanny } from "@services/requests/NannyRequests";
 
 export default function MyServices() {
-    const { setLoading } = useContext(LoadingContext) as LoadingContextType;
     const [page, setPage] = useState<number>(0);
     const [loadingFooterActitivity, setLoadingFooterActitivity] = useState<boolean>(false);
     const [list, setList] = useState<ServiceNannyCardProps[]>([]);
@@ -18,9 +16,6 @@ export default function MyServices() {
         setPage(page + 1);
         return data;
     });
-    useEffect(() => {
-        setLoading(isLoading);
-    }, [isLoading])
 
     async function updateListByNewPage() {
         if (loadingFooterActitivity) return;
