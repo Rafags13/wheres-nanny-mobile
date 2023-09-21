@@ -4,7 +4,7 @@ import socket from "@util/socket";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Button from "@components/Button";
 import { getCurrentMessages, getCurrentService, getCurrentUser } from "@storage/index";
-import Input from "@components/Input";
+import DefaultInput from "@components/Inputs/Default";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useForm } from "react-hook-form";
 import { Message } from "@models/dto/Chat/message";
@@ -51,7 +51,7 @@ export default function Chat() {
                 alignItems: 'center',
                 justifyContent: 'space-around', paddingVertical: 10, flexDirection: 'row', backgroundColor: '#F8FDFE'
             }}>
-                <Input label={"message"} multiline control={control} style={{ width: width - 100 }} />
+                <DefaultInput multiline control={control} style={{ width: width - 100 }} name={"message"} />
                 <Button
                     label={""}
                     onClick={handleSubmit(onSendMessage)}
