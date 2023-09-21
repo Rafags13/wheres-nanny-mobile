@@ -2,7 +2,6 @@ import { Text, View } from "react-native";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { FormProvider, useForm } from "react-hook-form";
 
-import SectionList from 'react-native-tabs-section-list';
 import Input from "@components/Input";
 import Button from "@components/Button";
 import Checkbox from "@components/Checkbox";
@@ -11,22 +10,19 @@ import MessageError from "@components/MessageError";
 import { globalStyles } from "@styles/global.styles";
 import { styles } from "./style";
 
-import { COMMON_USER_SECTION, NANNY_SECTION } from '@util/contants';
 import { createModelRegisterCommonUser, createModelRegisterNanny } from "@util/functions";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerValidationSchema, registerValidationSchemaNanny } from "@util/yupValidations";
 import ImagePicker from "@components/ImagePicker";
 import DocumentPick from "@components/DocumentPick";
-import { useContext } from "react";
-import { ModalContext, ModalContextType } from "@context/ModalContext";
-import { LoadingContextType, LoadingContext } from "@context/LoadingContext";
+import { useModal } from "@context/ModalContext";
+import { useLoading } from "@context/LoadingContext";
 import { registerUser } from "@services/requests/UserRequests";
 import { ScrollView } from "react-native";
 import CepInput from "@components/CepInput";
-import { DeepPartial, FormState, FieldValues, ArrayPath, FieldArray, FieldErrors, Path, RegisterOptions, UseFormRegisterReturn, FieldError } from "react-hook-form/dist/types";
 
 export default function Register() {
-    const { setLoading } = useContext(LoadingContext) as LoadingContextType;
+    const { setLoading } = useLoading();
 
     const { params } = useRoute<RouteProp<{ params: { isNannyRegister: boolean } }, 'params'>>();
 
@@ -36,7 +32,7 @@ export default function Register() {
         });
     const navigator = useNavigation<any>();
 
-    const { showModal } = useContext(ModalContext) as ModalContextType;
+    const { showModal } = useModal();
 
     async function onRegister(data: any) {
         setLoading(true);

@@ -1,35 +1,34 @@
-import { useNavigation } from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import { FormProvider, useForm } from "react-hook-form";
 import { Image, Text, View, } from "react-native";
 import { Background } from "@components/Background";
 import Button from "@components/Button";
 import Input from "@components/Input";
-import { getCurrentUser, logOut } from "@storage/index";
+import { getCurrentUserAsync, logOutAsync } from "@storage/index";
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { styles } from "./style";
-import { useEffect, useRef, useState, useContext } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useQuery } from "react-query";
 import { viaCepRequestGetByCep } from "@services/apiRequests";
-import { LoadingContext, LoadingContextType } from "@context/LoadingContext";
 import { ProfileUpdateDataDto } from "@dtos/Person/ProfileUpdateDataDto";
-import { ModalContextType, ModalContext } from "@context/ModalContext";
+import { useModal } from "@context/ModalContext";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { updatePasswordValidationSchema, updatePersonValidationSchema } from "@util/yupValidations";
 import { formatCellphoneNumber, formatCpf, removeSpecialCharacter } from "@util/functions";
 import CepInput from "@components/CepInput";
 import { UpdatePasswordDto } from "@dtos/User/UpdatePasswordDto";
 import { getProfileData, updatePassword, updateProfile } from "@services/requests/PersonRequests";
+import useLoggedUser from "@hooks/useLoggedUser";
 
 export default function Profile() {
-    const currentUser = getCurrentUser();
+    const { currentUser, logout } = useLoggedUser();
     const navigation = useNavigation<any>();
     const scrollViewRef = useRef<any>(null);
     const [enabledFields, setEnabledFields] = useState<boolean>(false);
-    const { showModal } = useContext(ModalContext) as ModalContextType;
-    const { setLoading } = useContext(LoadingContext) as LoadingContextType;
+    const { showModal } = useModal();
     const updateProfileForm = useForm({ resolver: yupResolver(updatePersonValidationSchema) });
     const updatePasswordForm = useForm({ resolver: yupResolver(updatePasswordValidationSchema) })
     const { data, isLoading } = useQuery(['getProfileInformation', currentUser.id], async () => {
@@ -54,13 +53,11 @@ export default function Profile() {
         return profileData;
     }
 
-    useEffect(() => {
-        setLoading(isLoading)
-    }, [isLoading])
-
     if (isLoading) {
         return (<></>)
     }
+
+    // TODO: change this to skeleton
 
     async function updateInformations(data: any) {
         const updateDataProfile: ProfileUpdateDataDto = createUpdateProfileModel(data);
@@ -220,8 +217,15 @@ export default function Profile() {
                     <Button
                         label={"Sair"}
                         onClick={() => {
-                            logOut();
-                            navigation.replace("login")
+                            logout();
+                            navigation.dispatch(
+                                CommonActions.reset({
+                                    index: 1,
+                                    routes: [
+                                        { name: 'login' },
+                                    ],
+                                })
+                            );
                         }}
                         containerStyle={{ backgroundColor: '#C82333', marginVertical: 20 }}
                         icon={

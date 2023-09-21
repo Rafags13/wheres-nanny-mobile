@@ -16,7 +16,7 @@ import { Background } from "@components/Background";
 var width = Dimensions.get('window').width;
 
 export default function Chat() {
-    const currentUser = getCurrentUser();
+    const currentUser = getCurrentUserAsync();
     const currentService = getCurrentService();
     const { control, handleSubmit, setValue } = useForm();
     const currentMessages = useMemo(() => getCurrentMessages(), []);
