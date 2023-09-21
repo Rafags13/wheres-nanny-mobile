@@ -6,21 +6,22 @@ import LinkNavigator from "@components/LinkNavigator";
 import Button from '@components/Button';
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import { globalStyles, text } from "@styles/global.styles";
-import { getCurrentUser, storage } from "@storage/index";
-import { useContext } from "react";
 import MessageError from "@components/MessageError";
-import { LoadingContextType, LoadingContext } from "@context/LoadingContext";
-import { ModalContextType, ModalContext } from "@context/ModalContext";
+import { useLoading } from "@context/LoadingContext";
+import { useModal } from "@context/ModalContext";
 import messaging from "@react-native-firebase/messaging";
 import { LoginDto } from "@dtos/User/LoginDto";
 import { LoginRequest } from "@services/requests/AutenticationRequests";
 import { returnRouteNameByProfileType } from "@util/functions";
 import { TypeOfUser } from "@enums/TypeOfUser";
+import useLoggedUser from "@hooks/useLoggedUser";
+import { getCurrentUserAsync } from "@storage/index";
 
 export default function Login() {
     const { control, handleSubmit, formState: { errors } } = useForm();
-    const { setLoading } = useContext(LoadingContext) as LoadingContextType;
-    const { showModal } = useContext(ModalContext) as ModalContextType;
+    const { setToken } = useLoggedUser();
+    const { setLoading } = useLoading();
+    const { showModal } = useModal();
     const navigator = useNavigation<any>();
 
     async function onLogin(data: any) {
@@ -35,9 +36,8 @@ export default function Login() {
         const response = LoginRequest(dataToRequest);
 
         response.then((response) => {
-            storage.set('token', response.data);
-            const currentUser = getCurrentUser();
-            sendUserToCorrectRoute(currentUser.typeOfUser);
+            setToken(response.data);
+            sendUserToCorrectRoute(getCurrentUserAsync().typeOfUser);
         }).catch((error) => {
             showModal({ modalType: 'error', message: error.response.data });
         }).finally(() => {

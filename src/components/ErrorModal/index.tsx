@@ -5,14 +5,14 @@ import Lottie from 'lottie-react-native';
 import Modal from 'react-native-modal'
 import Button from "@components/Button";
 import { logOut } from "@storage/index";
-import { LoadingContextType, LoadingContext } from "@context/LoadingContext";
+import { LoadingContextType, LoadingContext, useLoading } from "@context/LoadingContext";
 import BotError from '@lottie/bot-error-no-nanny.json';
 import { styles } from "./style";
 
 export default function ErrorModal() {
     const navigation = useNavigation<any>();
     const [openModal, setOpenModal] = useState<boolean>(true);
-    const { setLoading } = useContext(LoadingContext) as LoadingContextType;
+    const { setLoading } = useLoading();
     useEffect(() => {
         setLoading(false)
     }, []);

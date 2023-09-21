@@ -1,5 +1,5 @@
 import { LoginDto } from "@dtos/User/LoginDto";
-import { getCurrentUser } from "@storage/index";
+import { getCurrentUserAsync } from "@storage/index";
 import { postData, postDataAnonymous } from "@services/apiRequests";
 
 export async function LoginRequest(loginDto: LoginDto) {
@@ -7,6 +7,6 @@ export async function LoginRequest(loginDto: LoginDto) {
 }
 
 export async function LogoutRequest() {
-    const currentUser = getCurrentUser();
+    const currentUser = getCurrentUserAsync();
     return await postData('Logout', currentUser.id);
 }

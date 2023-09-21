@@ -3,7 +3,7 @@ import { FlatList, Text, View } from "react-native";
 import socket from "@util/socket";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Button from "@components/Button";
-import { addNewMessage, getCurrentMessages, getCurrentService, getCurrentUser } from "@storage/index";
+import { addNewMessage, getCurrentMessages, getCurrentService, getCurrentUserAsync } from "@storage/index";
 import Input from "@components/Input";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useForm } from "react-hook-form";
@@ -16,7 +16,7 @@ import Background from "@components/Background";
 var width = Dimensions.get('window').width;
 
 export default function Chat() {
-    const currentUser = getCurrentUser();
+    const currentUser = getCurrentUserAsync();
     const currentService = getCurrentService();
     const { control, handleSubmit, setValue } = useForm();
     const currentMessages = useMemo(() => getCurrentMessages(), []);

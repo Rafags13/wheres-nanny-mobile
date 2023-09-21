@@ -1,24 +1,23 @@
 import { CommonActions, RouteProp, useNavigation, useRoute } from "@react-navigation/native";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { useQuery } from "react-query";
 import Background from "@components/Background";
 import Button from "@components/Button";
 import Stars from "@components/Stars";
-import { LoadingContextType, LoadingContext } from "@context/LoadingContext";
+import { useLoading } from "@context/LoadingContext";
 import { NannyContractDto } from "@dtos/Person/NannyContractDto";
 import { globalStyles, text } from "@styles/global.styles";
 import { Slider } from '@miblanchard/react-native-slider';
 import Feather from 'react-native-vector-icons/Feather'
 import styles from "./style";
 import LinearGradient from "react-native-linear-gradient";
-import { getCurrentUser } from "@storage/index";
+import { getCurrentUserAsync } from "@storage/index";
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import { formatCellphoneNumber } from "@util/functions";
 import moment from "moment";
-import { ModalContextType, ModalContext } from "@context/ModalContext";
+import { useModal } from "@context/ModalContext";
 import { useDispatch, } from "react-redux";
-import { loadInitialHomeInformation } from "@features/listNanny/listNannySlice";
 import { addFavoriteNanny, FavoritedNanny, removingFavoriteFromNanny } from '@features/listNanny/favoriteListNannySlice';
 import Heart from "@components/Heart";
 import { useAppSelector } from "@app/hooks";
@@ -27,12 +26,12 @@ import { CreateContractNannyDto } from "@dtos/Nanny/CreateContractNannyDto";
 import { hireNanny } from "@services/requests/ServiceRequests";
 
 export default function NannyInformations() {
-    const { setLoading } = useContext(LoadingContext) as LoadingContextType;
+    const { setLoading } = useLoading();
     const dispatch = useDispatch<any>();
-    const currentUser = getCurrentUser();
+    const currentUser = getCurrentUserAsync();
     const { params } = useRoute<RouteProp<{ params: { nannyId: number } }, 'params'>>();
     const currentNanny = useAppSelector((state) => state.favoriteNannies.listFavoriteNanny.find(x => x.id === params.nannyId));
-    const { showModal } = useContext(ModalContext) as ModalContextType;
+    const { showModal } = useModal();
     const [date, setDate] = useState<Date>(new Date());
     const { data, isLoading } = useQuery('nanny', async () => {
         setLoading(true)
@@ -92,6 +91,9 @@ export default function NannyInformations() {
     }
 
     if (isLoading) return (<></>)
+
+    // TODO: change this to skeleton
+
     return (
         <Background hasBackIcon>
             <View style={styles.basicNannyInformationSection}>

@@ -5,7 +5,7 @@ import { DisplayServiceInformationDto } from "@models/dto/Chat/displayNannyServi
 import { Message } from "@models/dto/Chat/message";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import { GetServiceInformationsFromNanny, GetServiceInformationsFromPerson } from "@services/requests/ChatResquests";
-import { addNewMessage, clearCurrentService, getCurrentService, getCurrentUser } from "@storage/index";
+import { addNewMessage, clearCurrentService, getCurrentService, getCurrentUserAsync } from "@storage/index";
 import { globalStyles, text } from "@styles/global.styles";
 import { actions } from "@util/fabButtonActions";
 import { aliasToDistance, formatCellphoneNumber, formatCep } from "@util/functions";
@@ -18,7 +18,7 @@ import { useQuery } from "react-query";
 import { styles } from "./style";
 
 export default function CurrentService() {
-    const currentUser = getCurrentUser();
+    const currentUser = getCurrentUserAsync();
     const navigation = useNavigation<any>();
     const buttonRef = useRef<any>(null);
     const isNanny = useMemo(() => currentUser.typeOfUser === TypeOfUser.Nanny, []);
@@ -44,6 +44,7 @@ export default function CurrentService() {
     }, [socket]);
 
     if (isLoading) return (<></>);
+    // TODO: change this to skeleton
 
     return (
         <View style={styles.container}>

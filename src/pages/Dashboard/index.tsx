@@ -8,8 +8,6 @@ import Background from "@components/Background";
 import { styles } from "./style";
 import ServiceNannyCard from "@components/ServiceNannyCard";
 import { useQuery } from "react-query";
-import { useContext, useEffect } from "react";
-import { LoadingContext, LoadingContextType } from "@context/LoadingContext";
 import { NannyDashboardInformationDto } from "@dtos/Person/NannyDashboardInformationDto";
 import { getDashboardInformation } from "@services/requests/NannyRequests";
 import NotFoundService from "@components/NotFoundService";
@@ -17,13 +15,9 @@ import NotFoundService from "@components/NotFoundService";
 export default function Dashboard() {
 
     async function onRefresh() {
-        setLoading(true);
         const response = await getDashboardInformation();
-        setLoading(false);
         dashboardInformation = response.data;
     }
-
-    const { setLoading } = useContext(LoadingContext) as LoadingContextType;
     const { data, isLoading } = useQuery('GetDashboardInformation', async () => {
         const response = await getDashboardInformation();
         return response.data;
@@ -31,14 +25,13 @@ export default function Dashboard() {
 
     let dashboardInformation: NannyDashboardInformationDto = data;
 
-    useEffect(() => {
-        setLoading(isLoading);
-    }, [isLoading]);
+
 
     if (isLoading) {
         return <>
         </>
     }
+    // TODO: change this to skeleton
 
     return (
         <Background
