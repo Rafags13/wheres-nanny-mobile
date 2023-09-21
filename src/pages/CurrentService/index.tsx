@@ -77,6 +77,7 @@ export default function CurrentService() {
                 <Text style={text.common}>E-mail (incomum): <Text style={text.title}>{data.email}</Text></Text>
 
             </Modal>
+            {/* TODO: Change this to better understanding */}
             <FloatingAction
                 ref={ref => buttonRef.current = ref}
                 actions={actions}

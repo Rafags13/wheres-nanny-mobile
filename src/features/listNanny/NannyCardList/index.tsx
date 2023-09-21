@@ -6,6 +6,8 @@ type Props = {
 
 }
 
+// TODO: See if has paths in wrong place
+
 export default function NannyCardList({ nannyList }: Props) {
     return (
         <FlatList

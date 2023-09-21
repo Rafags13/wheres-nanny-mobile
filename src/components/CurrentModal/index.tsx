@@ -24,6 +24,7 @@ export default function CurrentModal() {
                     autoPlay
                     loop={false}
                 />
+                {/* TODO: Refactor this */}
 
                 <Text style={[text.common, modalInfo.modalType === 'error' ? { color: 'red' } : {}, { textAlign: 'center' }, { marginBottom: 15 }]}>{modalInfo.message}</Text>
 

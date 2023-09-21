@@ -50,6 +50,7 @@ export default function CommonUserTab() {
         redirectUserIfAccepts({ accepted: response.accepted, serviceId: Number(response.serviceId) })
     }
 
+    // TODO: See if its possible do a better code then this
     useEffect(() => {
         messaging().onMessage(async remoteMessage => {
             if (remoteMessage?.data) {

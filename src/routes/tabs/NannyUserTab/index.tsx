@@ -35,6 +35,7 @@ export default function NannyUserTab() {
         }
     }
 
+    // TODO: See if its possible do a better code then this
     useEffect(() => {
         messaging().onMessage(async remoteMessage => {
             if (remoteMessage.data) {

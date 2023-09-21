@@ -51,7 +51,7 @@ export default function GoogleMap({ originCoordinates, destinationCoordinates, d
             <MapViewDirections
                 origin={originCoordinates}
                 destination={destinationCoordinates}
-                apikey={'AIzaSyB-Z1vHMjuGkZ6ovkcZwypA9KWzS6qU5Rc'} // put this inside env file
+                apikey={'AIzaSyB-Z1vHMjuGkZ6ovkcZwypA9KWzS6qU5Rc'} // TODO: put this inside env file
                 strokeWidth={4}
                 strokeColor="#999"
                 onReady={result => {
