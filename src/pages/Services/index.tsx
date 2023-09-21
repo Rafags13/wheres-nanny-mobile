@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, Text, View } from "react-native";
 import { useQuery } from "react-query";
-import Background from "@components/Background";
+import { Background } from "@components/Background";
 import { LoadingContextType, LoadingContext } from "@context/LoadingContext";
 import { recentCardDto } from "@dtos/Person/DisplayInformationHomeUser";
 import { globalStyles } from "@styles/global.styles";
@@ -39,14 +39,13 @@ export default function Services() {
     }
 
     return (
-        <Background
-            header={
+        <Background.View>
+            <Background.Header>
                 <View style={{ padding: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 15 }}>
                     <Text style={[globalStyles.headerTitle]}>Meus Serviços</Text>
                     <FontAwesome5 name="baby-carriage" size={24} color="#192553" />
                 </View>
-            }>
-
+            </Background.Header>
             <FlatList
                 data={list}
                 renderItem={({ item, index }) => {
@@ -82,7 +81,6 @@ export default function Services() {
                 }
                 }
             />
-
-        </Background >
+        </Background.View>
     )
 }

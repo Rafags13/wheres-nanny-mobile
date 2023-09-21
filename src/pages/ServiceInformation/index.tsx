@@ -1,6 +1,6 @@
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { Text, View } from "react-native";
-import Background from "@components/Background";
+import { Background } from "@components/Background";
 import Father from "@components/icons/FatherIcon";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -39,7 +39,9 @@ export default function ServiceInformation() {
         )
     }
     return (
-        <Background isScroll hasBackIcon label={`Serviço n° #${params.serviceId}`}>
+
+        <Background.ScrollView>
+            <Background.BackHeader title={`Serviço n° #${params.serviceId}`} />
             <View style={{ padding: 10 }}>
 
 
@@ -89,6 +91,6 @@ export default function ServiceInformation() {
                     <Button label={"Contratar Novamente?"} onClick={() => navigator.navigate('nannyInformation', { nannyId: serviceData.nannyId })} containerStyle={{ marginVertical: 20 }} />
                 )}
             </View>
-        </Background>
+        </Background.ScrollView>
     )
 }

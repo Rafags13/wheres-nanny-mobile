@@ -2,7 +2,7 @@ import { CommonActions, RouteProp, useNavigation, useRoute } from "@react-naviga
 import { useContext, useState } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { useQuery } from "react-query";
-import Background from "@components/Background";
+import { Background } from "@components/Background";
 import Button from "@components/Button";
 import Stars from "@components/Stars";
 import { LoadingContextType, LoadingContext } from "@context/LoadingContext";
@@ -93,7 +93,8 @@ export default function NannyInformations() {
 
     if (isLoading) return (<></>)
     return (
-        <Background hasBackIcon>
+        <Background.View>
+            <Background.BackHeader title="Serviço" />
             <View style={styles.basicNannyInformationSection}>
                 <Image style={globalStyles.personPhotoSmall} source={{ uri: `data:image/png;base64,${nannyInformation.imageProfileBase64Uri}` }} />
                 <View style={styles.nameAndRatingContainer}>
@@ -194,7 +195,6 @@ export default function NannyInformations() {
                 </View>
                 <Button containerStyle={{ maxWidth: 150, borderRadius: 15, height: 60 }} textStyle={{ fontSize: 16 }} label={"Contratar agora"} onClick={contractNanny} />
             </View>
-
-        </Background >
+        </Background.View>
     )
 }

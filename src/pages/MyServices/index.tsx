@@ -1,5 +1,5 @@
 import { ActivityIndicator, FlatList, Text, View } from "react-native";
-import Background from "@components/Background";
+import { Background } from "@components/Background";
 import { globalStyles } from "@styles/global.styles";
 import ServiceNannyCard, { ServiceNannyCardProps } from "@components/ServiceNannyCard";
 import { useQuery } from "react-query";
@@ -34,13 +34,12 @@ export default function MyServices() {
     }
 
     return (
-        <Background
-            header={
+        <Background.View>
+            <Background.Header>
                 <View style={{ padding: 10 }}>
                     <Text style={globalStyles.headerTitle}>Meus Serviços</Text>
                 </View>
-            }
-        >
+            </Background.Header>
             <FlatList
                 data={list}
                 renderItem={({ item, index }) => {
@@ -61,6 +60,6 @@ export default function MyServices() {
                     )
                 }}
             />
-        </Background >
+        </Background.View>
     )
 }

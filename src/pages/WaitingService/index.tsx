@@ -1,4 +1,4 @@
-import Background from "@components/Background";
+import { Background } from "@components/Background";
 import { ModalContext, ModalContextType } from "@context/ModalContext";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { addCurrentServiceToAsync, clearCurrentService } from "@storage/index";
@@ -31,12 +31,13 @@ export default function WaitingService() {
     }, []);
 
     return (
-        <Background header={
-            <View style={{ padding: 10 }}>
-                <Text style={globalStyles.headerTitle}>Aguardando Resposta</Text>
-            </View>
-        }
-        >
+
+        <Background.View>
+            <Background.Header>
+                <View style={{ padding: 10 }}>
+                    <Text style={globalStyles.headerTitle}>Aguardando Resposta</Text>
+                </View>
+            </Background.Header>
             <AnimatedLottieView
                 speed={1.5}
                 autoPlay
@@ -46,6 +47,6 @@ export default function WaitingService() {
             <Text style={styles.titleWithMargin}>Aguarde uma resposta da babá para dar prosseguimento ao serviço.</Text>
 
             <Text style={styles.subTitleWithMargin}> *A babá tem até o horario de {moment().add(5, 'minute').format('HH:mm')} para aceitar o serviço.</Text>
-        </Background>
+        </Background.View>
     )
 }

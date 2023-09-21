@@ -1,5 +1,4 @@
 import { Text, TouchableOpacity, View } from "react-native";
-import Background from "@components/Background";
 import Feather from 'react-native-vector-icons/Feather';
 import RecentCard from "@components/RecentCard";
 import { globalStyles } from "@styles/global.styles";
@@ -13,6 +12,7 @@ import { useAppSelector } from '@app/hooks';
 import { LoadingContextType, LoadingContext } from "@context/LoadingContext";
 import { useNavigation } from "@react-navigation/native";
 import NotFoundService from "@components/NotFoundService";
+import { Background } from "@components/Background";
 
 export default function Home() {
     const { setLoading } = useContext(LoadingContext) as LoadingContextType;
@@ -39,9 +39,8 @@ export default function Home() {
         )
     }
     return (
-        <Background
-            isScroll
-            header={
+        <Background.ScrollView>
+            <Background.Header>
                 <View style={styles.header}>
                     <TouchableOpacity style={styles.headerIcon}>
                         <Feather name="bell" color={"#c4c4c4"} size={24} />
@@ -56,8 +55,8 @@ export default function Home() {
                         <Feather name="search" color={"#c4c4c4"} size={24} />
                     </TouchableOpacity>
                 </View>
-            }
-        >
+            </Background.Header>
+
             <View style={{ padding: 10 }}>
                 <View style={{ marginTop: 10 }}>
                     <View style={styles.recentContainer}>
@@ -89,6 +88,6 @@ export default function Home() {
                     <NannyCardList nannyList={nannyList} />
                 </View>
             </View>
-        </Background>
+        </Background.ScrollView>
     )
 }

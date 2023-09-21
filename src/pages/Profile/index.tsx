@@ -1,7 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { FormProvider, useForm } from "react-hook-form";
 import { Image, Text, View, } from "react-native";
-import Background from "@components/Background";
+import { Background } from "@components/Background";
 import Button from "@components/Button";
 import Input from "@components/Input";
 import { getCurrentUser, logOut } from "@storage/index";
@@ -128,21 +128,20 @@ export default function Profile() {
     }
 
     return (
-        <Background
-            header={
-                <View style={{ padding: 10, backgroundColor: '#F8FDFE' }}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 10, }}>
-                        <Text style={styles.title}>Meu Perfil</Text>
-                        <Ionicons name="person-circle" size={32} color='#192553' />
-                    </View>
-                    <View style={styles.imageProfileContainer}>
-                        <Image style={styles.nannyProfilePicture} source={{ uri: `data:image/png;base64,${data?.personInformation.imageBase64}` }} />
-                    </View>
-                </View>
-            }
-            isScroll
+
+        <Background.ScrollView
             scrollviewRef={scrollViewRef}
         >
+            <Background.Header style={{ padding: 10, backgroundColor: '#F8FDFE' }}>
+                <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 10, }}>
+                    <Text style={styles.title}>Meu Perfil</Text>
+                    <Ionicons name="person-circle" size={32} color='#192553' />
+                </View>
+                <View style={styles.imageProfileContainer}>
+                    <Image style={styles.nannyProfilePicture} source={{ uri: `data:image/png;base64,${data?.personInformation.imageBase64}` }} />
+                </View>
+            </Background.Header>
+
             <FormProvider {...updateProfileForm}>
                 <View style={{ padding: 15 }}>
                     <Text style={styles.personalInformationsTitle}>Informações Pessoais</Text>
@@ -231,6 +230,6 @@ export default function Profile() {
                     />
                 </View>
             </FormProvider>
-        </Background>
+        </Background.ScrollView>
     )
 }

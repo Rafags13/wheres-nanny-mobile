@@ -4,7 +4,7 @@ import {
     BarChart,
 } from 'react-native-chart-kit'
 import { globalStyles } from "@styles/global.styles";
-import Background from "@components/Background";
+import { Background } from "@components/Background";
 import { styles } from "./style";
 import ServiceNannyCard from "@components/ServiceNannyCard";
 import { useQuery } from "react-query";
@@ -41,15 +41,12 @@ export default function Dashboard() {
     }
 
     return (
-        <Background
-            header={
+        <Background.ScrollView scrollToTopFunction={onRefresh}>
+            <Background.Header>
                 <View style={{ padding: 10, backgroundColor: '#F8FDFE' }}>
                     <Text style={globalStyles.headerTitle}>Painel de Controle</Text>
                 </View>
-            }
-            isScroll
-            functionIfScrollingToTop={onRefresh}
-        >
+            </Background.Header>
             <View style={{ padding: 10 }}>
 
                 <View>
@@ -135,6 +132,6 @@ export default function Dashboard() {
                 </View>
 
             </View>
-        </Background>
+        </Background.ScrollView>
     )
 }
