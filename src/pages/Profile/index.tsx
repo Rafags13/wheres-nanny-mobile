@@ -19,7 +19,7 @@ import { ModalContextType, ModalContext } from "@context/ModalContext";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { updatePasswordValidationSchema, updatePersonValidationSchema } from "@util/yupValidations";
 import { formatCellphoneNumber, formatCpf, removeSpecialCharacter } from "@util/functions";
-import CepInput from "@components/CepInput";
+import Cep from "@components/Inputs/Cep";
 import { UpdatePasswordDto } from "@dtos/User/UpdatePasswordDto";
 import { getProfileData, updatePassword, updateProfile } from "@services/requests/PersonRequests";
 import PasswordInput from "@components/Inputs/Password";
@@ -202,7 +202,7 @@ export default function Profile() {
                     </View>
                     <Text style={[styles.personalInformationsTitle, { marginTop: 20 }]}>Endereço</Text>
                     <View style={styles.inputsContainer}>
-                        <CepInput
+                        <Cep
                             placeholder="00000-000"
                             hasError={updateProfileForm.formState.errors.cep !== undefined}
                             defaultValue={data?.addressFromUpdateInformation.cep}

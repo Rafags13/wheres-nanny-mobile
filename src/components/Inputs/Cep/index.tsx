@@ -20,7 +20,7 @@ type Props = {
     rules?: Omit<RegisterOptions<FieldValues, string>, "disabled" | "setValueAs" | "valueAsNumber" | "valueAsDate"> | undefined
 }
 
-export default function CepInput({ label, control, displayNameLabel = '', defaultValue = '', disabled = false, hasError = false, rules = undefined, placeholder = '', style = {} }: Props) {
+export default function Cep({ label, control, displayNameLabel = '', defaultValue = '', disabled = false, hasError = false, rules = undefined, placeholder = '', style = {} }: Props) {
     const { showModal } = useContext(ModalContext) as ModalContextType;
     const { field } = useController({
         control,

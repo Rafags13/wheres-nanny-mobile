@@ -20,7 +20,7 @@ import { ModalContext, ModalContextType } from "@context/ModalContext";
 import { LoadingContextType, LoadingContext } from "@context/LoadingContext";
 import { registerUser } from "@services/requests/UserRequests";
 import { ScrollView } from "react-native";
-import CepInput from "@components/CepInput";
+import Cep from "@components/Inputs/Cep";
 import PasswordInput from "@components/Inputs/Password";
 
 export default function Register() {
@@ -206,7 +206,7 @@ export default function Register() {
                     <Text style={[globalStyles.subtitle, { marginTop: 20, marginBottom: 15 }]}>Endereço</Text>
 
                     <View style={{ marginBottom: 15 }}>
-                        <CepInput
+                        <Cep
                             label={"cep"}
                             control={registerForm.control}
                             displayNameLabel={'Cep'}
