@@ -1,14 +1,13 @@
-import { useContext } from "react";
 import AnimatedLoader from "react-native-animated-loader";
-import { LoadingContext, LoadingContextType } from "@context/LoadingContext";
+import { useLoading } from "@context/LoadingContext";
 
 export default function Spinner() {
-    const { isLoading } = useContext(LoadingContext) as LoadingContextType;
+    const { isLoading } = useLoading();
     return (
         <AnimatedLoader
             visible={isLoading}
             overlayColor="rgba(255,255,255,0.75)"
-            source={require("@lottie/9764-loader.json")}
+            source={require("@lottie/spinner.json")}
             animationStyle={{ width: 150, height: 150 }}
             speed={1}
         >
