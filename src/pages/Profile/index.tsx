@@ -3,7 +3,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { Image, Text, View, } from "react-native";
 import { Background } from "@components/Background";
 import Button from "@components/Button";
-import Input from "@components/Input";
+import DefaultInput from "@components/Inputs/Default";
 import { getCurrentUser, logOut } from "@storage/index";
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -22,6 +22,8 @@ import { formatCellphoneNumber, formatCpf, removeSpecialCharacter } from "@util/
 import CepInput from "@components/CepInput";
 import { UpdatePasswordDto } from "@dtos/User/UpdatePasswordDto";
 import { getProfileData, updatePassword, updateProfile } from "@services/requests/PersonRequests";
+import PasswordInput from "@components/Inputs/Password";
+import { globalStyles } from "@styles/global.styles";
 
 export default function Profile() {
     const currentUser = getCurrentUser();
@@ -146,29 +148,137 @@ export default function Profile() {
                 <View style={{ padding: 15 }}>
                     <Text style={styles.personalInformationsTitle}>Informações Pessoais</Text>
                     <View style={styles.inputsContainer}>
-                        <Input defaultValue={data?.personInformation.fullname} hasError={updateProfileForm.formState.errors.fullname !== undefined} disabled={!enabledFields} label={"fullname"} control={updateProfileForm.control} displayNameLabel="Nome Completo" />
+                        <DefaultInput
+                            defaultValue={data?.personInformation.fullname}
+                            hasError={updateProfileForm.formState.errors.fullname !== undefined}
+                            disabled={!enabledFields}
+                            name={"fullname"}
+                            control={updateProfileForm.control}
+                            label={
+                                <Text style={globalStyles.label}>
+                                    Nome Completo
+                                </Text>
+                            }
+                        />
 
-                        <Input defaultValue={formatCpf(data?.personInformation.cpf as string)} hasError={updateProfileForm.formState.errors.cpf !== undefined} disabled={!enabledFields} label={"cpf"} control={updateProfileForm.control} displayNameLabel="Cpf" />
+                        <DefaultInput
+                            defaultValue={formatCpf(data?.personInformation.cpf as string)}
+                            hasError={updateProfileForm.formState.errors.cpf !== undefined}
+                            disabled={!enabledFields}
+                            name={"cpf"}
+                            control={updateProfileForm.control}
+                            label={
+                                <Text style={globalStyles.label}>
+                                    Cpf
+                                </Text>
+                            }
+                        />
 
-                        <Input defaultValue={data?.personInformation.email} hasError={updateProfileForm.formState.errors.email !== undefined} disabled={!enabledFields} label={"email"} control={updateProfileForm.control} displayNameLabel="E-mail" />
+                        <DefaultInput
+                            defaultValue={data?.personInformation.email}
+                            hasError={updateProfileForm.formState.errors.email !== undefined}
+                            disabled={!enabledFields}
+                            name={"email"}
+                            control={updateProfileForm.control}
+                            label={
+                                <Text style={globalStyles.label}>
+                                    E-mail
+                                </Text>
+                            }
+                        />
 
-                        <Input defaultValue={formatCellphoneNumber(data?.personInformation.cellphone as string)} hasError={updateProfileForm.formState.errors.cellphone !== undefined} disabled={!enabledFields} label={"cellphone"} control={updateProfileForm.control} displayNameLabel="Telefone" />
+                        <DefaultInput
+                            defaultValue={formatCellphoneNumber(data?.personInformation.cellphone as string)}
+                            hasError={updateProfileForm.formState.errors.cellphone !== undefined}
+                            disabled={!enabledFields}
+                            name={"cellphone"}
+                            control={updateProfileForm.control}
+                            label={
+                                <Text style={globalStyles.label}>
+                                    Telefone
+                                </Text>
+                            }
+                        />
                     </View>
                     <Text style={[styles.personalInformationsTitle, { marginTop: 20 }]}>Endereço</Text>
                     <View style={styles.inputsContainer}>
-                        <CepInput placeholder="00000-000" hasError={updateProfileForm.formState.errors.cep !== undefined} defaultValue={data?.addressFromUpdateInformation.cep} disabled={!enabledFields} label={"cep"} control={updateProfileForm.control} displayNameLabel="Cep" />
+                        <CepInput
+                            placeholder="00000-000"
+                            hasError={updateProfileForm.formState.errors.cep !== undefined}
+                            defaultValue={data?.addressFromUpdateInformation.cep}
+                            disabled={!enabledFields} label={"cep"} control={updateProfileForm.control} displayNameLabel="Cep" />
 
-                        <Input defaultValue={data?.addressFromUpdateInformation.bairro} disabled label={"neighborhood"} control={updateProfileForm.control} displayNameLabel="Bairro" />
+                        <DefaultInput
+                            defaultValue={data?.addressFromUpdateInformation.bairro}
+                            disabled
+                            name={"neighborhood"}
+                            control={updateProfileForm.control}
+                            label={
+                                <Text style={globalStyles.label}>
+                                    Bairro
+                                </Text>
+                            }
+                        />
 
-                        <Input defaultValue={data?.addressFromUpdateInformation.logradouro} disabled label={"publicPlace"} control={updateProfileForm.control} displayNameLabel="Logradouro" />
+                        <DefaultInput
+                            defaultValue={data?.addressFromUpdateInformation.logradouro}
+                            disabled
+                            name={"publicPlace"}
+                            control={updateProfileForm.control}
+                            label={
+                                <Text style={globalStyles.label}>
+                                    Logradouro
+                                </Text>
+                            }
+                        />
 
-                        <Input defaultValue={data?.addressFromUpdateInformation.cidade} disabled label={"city"} control={updateProfileForm.control} displayNameLabel="Cidade" />
+                        <DefaultInput
+                            defaultValue={data?.addressFromUpdateInformation.cidade}
+                            disabled
+                            name={"city"}
+                            control={updateProfileForm.control}
+                            label={
+                                <Text style={globalStyles.label}>
+                                    Cidade
+                                </Text>
+                            }
+                        />
 
-                        <Input defaultValue={data?.addressFromUpdateInformation.estado} disabled label={"state"} control={updateProfileForm.control} displayNameLabel="Estado" />
+                        <DefaultInput
+                            defaultValue={data?.addressFromUpdateInformation.estado}
+                            disabled
+                            name={"state"}
+                            control={updateProfileForm.control}
+                            label={
+                                <Text style={globalStyles.label}>
+                                    Estado
+                                </Text>
+                            }
+                        />
 
-                        <Input defaultValue={data?.addressFromUpdateInformation.complement} disabled={!enabledFields} label={"complement"} control={updateProfileForm.control} displayNameLabel="Complemento" />
+                        <DefaultInput
+                            defaultValue={data?.addressFromUpdateInformation.complement}
+                            disabled={!enabledFields}
+                            name={"complement"}
+                            control={updateProfileForm.control}
+                            label={
+                                <Text style={globalStyles.label}>
+                                    Complemento
+                                </Text>
+                            }
+                        />
 
-                        <Input defaultValue={data?.addressFromUpdateInformation.number} disabled={!enabledFields} label={"number"} control={updateProfileForm.control} displayNameLabel="Número" />
+                        <DefaultInput
+                            defaultValue={data?.addressFromUpdateInformation.number}
+                            disabled={!enabledFields}
+                            name={"number"}
+                            control={updateProfileForm.control}
+                            label={
+                                <Text style={globalStyles.label}>
+                                    Número
+                                </Text>
+                            }
+                        />
                     </View>
                     {!enabledFields ? (
                         <Button
@@ -210,9 +320,33 @@ export default function Profile() {
 
                         <Text style={styles.personalInformationsTitle}>Alterar Senha</Text>
 
-                        <Input label={"oldPassword"} control={updatePasswordForm.control} displayNameLabel="Senha Atual" isPasswordInput />
-                        <Input label={"newPassword"} control={updatePasswordForm.control} displayNameLabel="Nova Senha" isPasswordInput />
-                        <Input label={"repeatNewPassword"} control={updatePasswordForm.control} displayNameLabel="Repetir Nova Senha" isPasswordInput />
+                        <PasswordInput
+                            name={"oldPassword"}
+                            control={updatePasswordForm.control}
+                            label={
+                                <Text style={globalStyles.label}>
+                                    Senha Atual
+                                </Text>
+                            }
+                        />
+                        <PasswordInput
+                            name={"newPassword"}
+                            control={updatePasswordForm.control}
+                            label={
+                                <Text style={globalStyles.label}>
+                                    Nova Senha
+                                </Text>
+                            }
+                        />
+                        <PasswordInput
+                            name={"repeatNewPassword"}
+                            control={updatePasswordForm.control}
+                            label={
+                                <Text style={globalStyles.label}>
+                                    Repetir Nova Senha
+                                </Text>
+                            }
+                        />
 
                         <Button label="Atualizar" onClick={updatePasswordForm.handleSubmit(onPasswordUpdate, onInvalid)} containerStyle={{ marginTop: 15 }} />
 
