@@ -29,6 +29,8 @@ export async function logOutAsync() {
     storage.clearAll();
 }
 
+// TODO: Create a hook to nanny state
+
 export function getAllNannies(): FavoritedNanny[] {
     const allNannies: FavoritedNanny[] = JSON.parse(storage.getString('favoritedNannies') as string || JSON.stringify([]));
 
@@ -46,6 +48,8 @@ export function removeFavoriteNannyAsyncStorage(nannyId: number) {
     const filteredNannies = allNannies.filter(nanny => nanny.id !== nannyId);
     storage.set('favoritedNannies', JSON.stringify(filteredNannies))
 }
+
+// TODO: Create a hook to service state
 
 export function addCurrentServiceToAsync(currentService: CurrentServiceDto) {
     storage.set('currentService', JSON.stringify(currentService));
