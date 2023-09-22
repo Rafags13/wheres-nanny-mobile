@@ -10,17 +10,15 @@ import { useNavigation } from "@react-navigation/native";
 import NotFoundService from "@components/NotFoundService";
 import { Background } from "@components/Background";
 import useHomeInformation from "../../hooks/useHomeInformation";
+import { Skeleton } from 'moti/skeleton'
+import Loader from "@components/Loader";
 
 export default function Home() {
     const navigator = useNavigation<any>();
 
     const { currentInformation, error, isLoadingData, nannyList } = useHomeInformation();
 
-    if (isLoadingData) {
-        return (
-            <></>
-        )
-    }
+
     // TODO: change this to skeleton
 
     if (error) {
@@ -31,6 +29,7 @@ export default function Home() {
 
     return (
         <Background.ScrollView>
+
             <Background.Header>
                 <View style={styles.header}>
                     <TouchableOpacity style={styles.headerIcon}>
@@ -48,36 +47,46 @@ export default function Home() {
                 </View>
             </Background.Header>
 
-            <View style={{ padding: 10 }}>
-                <View style={{ marginTop: 10 }}>
-                    <View style={styles.recentContainer}>
-                        <Text style={globalStyles.headerTitle}>Recente</Text>
-                        {currentInformation.mostRecentService !== null && (
-                            <TouchableOpacity style={{ alignItems: 'flex-end' }} onPress={() => navigator.navigate('services')}>
-                                <Text style={styles.seeAll}>Ver todos</Text>
-                            </TouchableOpacity>
-                        )}
+            <View style={{ padding: 10, marginTop: 10, gap: 15 }}>
+                <Skeleton.Group show={isLoadingData}>
+                    <Loader>
+                        <View style={{ gap: 15 }}>
+                            <View style={styles.recentContainer}>
+                                <Text style={globalStyles.headerTitle}>Recente</Text>
+                                {currentInformation.mostRecentService !== null && (
+                                    <TouchableOpacity style={{ alignItems: 'flex-end' }} onPress={() => navigator.navigate('services')}>
+                                        <Text style={styles.seeAll}>Ver todos</Text>
+                                    </TouchableOpacity>
+                                )}
+                            </View>
+
+
+                            {(currentInformation.mostRecentService === null && isLoadingData) ?
+                                (
+                                    <NotFoundService />
+
+                                )
+                                : (<RecentCard
+                                    nannyName={currentInformation?.mostRecentService?.personName as string}
+                                    serviceDate={currentInformation.mostRecentService?.date as Date}
+                                    serviceId={currentInformation.mostRecentService?.serviceId as number}
+                                    imageUri={currentInformation.mostRecentService?.imageUri as string} />)}
+                        </View>
+                    </Loader>
+                    <View style={{ gap: 15 }}>
+                        <Loader>
+                            <>
+                                <Text style={styles.findBetterNannyLabel}>Procurar a melhor babá</Text>
+
+                                <ListFilterNanny />
+                            </>
+                        </Loader>
+                        <Loader width={'100%'} height={200}>
+                            <NannyCardList nannyList={nannyList} />
+                        </Loader>
+
                     </View>
-
-                    {currentInformation.mostRecentService === null ? (
-                        <NotFoundService />
-                    ) : (
-                        <RecentCard
-                            nannyName={currentInformation.mostRecentService.personName}
-                            serviceDate={currentInformation.mostRecentService.date}
-                            serviceId={currentInformation.mostRecentService.serviceId}
-                            imageUri={currentInformation.mostRecentService.imageUri} />
-                    )}
-
-                </View>
-                <View>
-
-                    <Text style={styles.findBetterNannyLabel}>Procurar a melhor babá</Text>
-
-                    <ListFilterNanny />
-
-                    <NannyCardList nannyList={nannyList} />
-                </View>
+                </Skeleton.Group>
             </View>
         </Background.ScrollView>
     )

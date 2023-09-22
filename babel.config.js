@@ -19,6 +19,7 @@ module.exports = {
         "@tabs": './src/routes/tabs',
         "@services": './src/services',
         "@storage": './src/storage',
+        'moti/skeleton': 'moti/skeleton/react-native-linear-gradient'
       }
     }],
     'react-native-reanimated/plugin',
