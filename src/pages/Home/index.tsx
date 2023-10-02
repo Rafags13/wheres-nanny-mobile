@@ -18,9 +18,6 @@ export default function Home() {
 
     const { currentInformation, error, isLoadingData, nannyList } = useHomeInformation();
 
-
-    // TODO: change this to skeleton
-
     if (error) {
         return (
             <ErrorModal />

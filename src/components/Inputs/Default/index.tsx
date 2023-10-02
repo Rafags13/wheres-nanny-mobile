@@ -20,7 +20,7 @@ export default function DefaultInput({ control, defaultValue, rules, name, label
         control,
         defaultValue,
         rules,
-        name,
+        name
     })
 
     return (

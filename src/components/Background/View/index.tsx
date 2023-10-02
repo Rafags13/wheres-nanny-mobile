@@ -1,12 +1,17 @@
 import { ReactNode } from "react";
-import { View } from "react-native";
+import { StyleProp, View, ViewStyle } from "react-native";
 
-export default function BackgroundView({ children }: { children: ReactNode }) {
+type BackgroundViewProps = {
+    children: ReactNode,
+    style?: StyleProp<ViewStyle>
+}
+
+export default function BackgroundView({ children, style }: BackgroundViewProps) {
     return (
-        <View style={{
+        <View style={[{
             flex: 1,
             backgroundColor: '#F8FDFE',
-        }}>
+        }, style]}>
             {children}
         </View>
     )

@@ -3,7 +3,7 @@ import { View } from "react-native";
 import socket from "@util/socket";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Button from "@components/Button";
-import { getCurrentMessages, getCurrentService, getCurrentUser } from "@storage/index";
+import { getCurrentMessages, getCurrentService, getCurrentUserAsync } from "@storage/index";
 import DefaultInput from "@components/Inputs/Default";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useForm } from "react-hook-form";
