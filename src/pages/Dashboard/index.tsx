@@ -62,7 +62,10 @@ export default function Dashboard() {
                     <Text style={styles.linechartTitle}>Serviços nos últimos 6 meses</Text>
                     <LineChart
                         onDataPointClick={(data) => {
-                            // TODO: Implement a function that send the user to visualize more this info.
+                            /* TODO: Add a funcionality to send nanny into new page and visualize her earn
+                             *  based in how person and how much she or he paid to her (display client name
+                             *       and all his payment in that month)
+                             */
                             if (data.value > 0) {
 
                             }
