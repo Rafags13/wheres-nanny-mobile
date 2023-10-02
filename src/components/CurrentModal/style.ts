@@ -1,6 +1,7 @@
+import { text } from "@styles/global.styles";
 import { StyleSheet } from "react-native";
 
-export const styles = StyleSheet.create({
+export const styles = (error: boolean) => StyleSheet.create({
     modalContainer: {
         backgroundColor: 'white',
         alignItems: 'center',
@@ -12,5 +13,16 @@ export const styles = StyleSheet.create({
         backgroundColor: 'white',
         height: 200,
         width: 200
+    },
+    message: {
+        ...text.common,
+        color: error ? 'red' : '#192553',
+        textAlign: 'center',
+        marginBottom: 15
+    },
+    questionContainer: {
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-around' 
     }
 })

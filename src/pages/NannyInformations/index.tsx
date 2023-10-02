@@ -16,7 +16,7 @@ import { getCurrentUserAsync } from "@storage/index";
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import { formatCellphoneNumber } from "@util/functions";
 import moment from "moment";
-import { useModal } from "@context/ModalContext";
+import { ModalType, useModal } from "@context/ModalContext";
 import { useDispatch, } from "react-redux";
 import { addFavoriteNanny, FavoritedNanny, removingFavoriteFromNanny } from '@features/listNanny/favoriteListNannySlice';
 import Heart from "@components/Heart";
@@ -50,7 +50,7 @@ export default function NannyInformations() {
             minimumDate: new Date(),
             onChange: (event, date) => {
                 if (event.type !== 'dismissed' && (date as Date) < new Date()) {
-                    showModal({ message: 'Não é possível escolher uma data menor ou igual à data atual. Tente novamente.', modalType: 'error' });
+                    showModal({ message: 'Não é possível escolher uma data menor ou igual à data atual. Tente novamente.', modalType: ModalType.ERROR });
                     return;
                 }
                 setDate(date as Date)
@@ -73,7 +73,7 @@ export default function NannyInformations() {
                 })
             );
         }).catch((err) => {
-            showModal({ modalType: 'error', message: err.response.data });
+            showModal({ modalType: ModalType.ERROR, message: err.response.data });
         })
 
     }

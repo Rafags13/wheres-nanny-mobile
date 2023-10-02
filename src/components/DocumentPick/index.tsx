@@ -8,7 +8,7 @@ import { Control, FieldValues, useController } from "react-hook-form";
 import RNFetchBlob from 'rn-fetch-blob';
 import { getDocumentByBase64, replacePdfExtensioNames } from "@util/functions";
 import { useContext, useState } from "react";
-import { ModalContext, ModalContextType } from "@context/ModalContext";
+import { ModalContext, ModalContextType, ModalType } from "@context/ModalContext";
 
 type Props = {
     control: Control<FieldValues, string>,
@@ -33,7 +33,7 @@ export default function DocumentPick({ control, label, documentIdentifier, hasEr
             field.onChange(result);
         }).catch((err) => {
             if (DocumentPicker.isCancel(err)) {
-                showModal({ modalType: 'error', message: 'Seleção de arquivo cancelada.' });
+                showModal({ modalType: ModalType.ERROR, message: 'Seleção de arquivo cancelada.' });
             }
         });
     }

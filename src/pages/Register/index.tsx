@@ -15,7 +15,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { registerValidationSchema, registerValidationSchemaNanny } from "@util/yupValidations";
 import ImagePicker from "@components/ImagePicker";
 import DocumentPick from "@components/DocumentPick";
-import { useModal } from "@context/ModalContext";
+import { ModalType, useModal } from "@context/ModalContext";
 import { useLoading } from "@context/LoadingContext";
 import { registerUser } from "@services/requests/UserRequests";
 import { ScrollView } from "react-native";
@@ -46,10 +46,10 @@ export default function Register() {
 
         await response.then((response) => {
             setLoading(false);
-            showModal({ message: response.data, modalType: 'success' });
+            showModal({ message: response.data, modalType: ModalType.SUCCESS });
         }).catch((error) => {
             setLoading(false);
-            showModal({ message: 'Não foi possível registrar o usuário. Tente Novamente mais tarde.', modalType: 'error' });
+            showModal({ message: 'Não foi possível registrar o usuário. Tente Novamente mais tarde.', modalType: ModalType.ERROR });
         }).finally(() => {
             navigator.navigate('login');
         })

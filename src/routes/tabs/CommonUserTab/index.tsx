@@ -11,7 +11,7 @@ import HomeNavigationPages from './HomeNavigatorPages';
 import Services from '@pages/Services';
 import { useContext, useEffect, useMemo } from 'react';
 import messaging from "@react-native-firebase/messaging";
-import { ModalContextType, ModalContext } from '@context/ModalContext';
+import { ModalContextType, ModalContext, ModalType } from '@context/ModalContext';
 import { ServiceConformationUserDto } from '@models/dto/Service/serviceConfirmationUserDto';
 import { onNotWaitingNannyResponseAnymore, isInSomeService, getCurrentService, onServiceAccept, clearCurrentService } from '@storage/index';
 
@@ -43,7 +43,7 @@ export default function CommonUserTab() {
         const response = JSON.parse(remoteData.response);
 
         showModal({
-            modalType: response.accepted ? "success" : "error",
+            modalType: response.accepted ? ModalType.SUCCESS : ModalType.ERROR,
             message: remoteData.message,
         })
 

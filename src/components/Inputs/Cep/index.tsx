@@ -6,7 +6,7 @@ import { viaCepRequestGetByCep } from "@services/apiRequests";
 import { removeAllSpecialCharacters } from "@util/functions";
 import { globalStyles } from "@styles/global.styles";
 import { useContext } from "react";
-import { ModalContext, ModalContextType } from "@context/ModalContext";
+import { ModalContext, ModalContextType, ModalType } from "@context/ModalContext";
 
 type Props = {
     label: string,
@@ -28,17 +28,17 @@ export default function Cep({ label, control, displayNameLabel = '', defaultValu
         rules,
         name: label,
     });
-    const { setValue, setError } = useFormContext();
+    const { setValue } = useFormContext();
 
     async function searchAddressByCep() {
         if (field.value === '') {
-            showModal({ modalType: 'error', message: 'o CEP é obrigatório.' })
+            showModal({ modalType: ModalType.ERROR, message: 'o CEP é obrigatório.' })
             return;
         }
         const viacepResponse = await viaCepRequestGetByCep(removeAllSpecialCharacters(field.value));
 
         if (viacepResponse.data.erro) {
-            showModal({ modalType: 'error', message: 'o CEP informado não existe.' });
+            showModal({ modalType: ModalType.ERROR, message: 'o CEP informado não existe.' });
             field.onChange('');
             return;
         }

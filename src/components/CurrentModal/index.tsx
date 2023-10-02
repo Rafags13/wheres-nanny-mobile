@@ -2,35 +2,36 @@ import Modal from 'react-native-modal';
 import Lottie from 'lottie-react-native';
 import { Text, View } from 'react-native';
 import Button from '@components/Button';
-import { useContext } from 'react';
-import { ModalContext, ModalContextType } from '@context/ModalContext';
-import { text } from '@styles/global.styles';
+import { ModalContext, ModalContextType, useModal, ModalType } from '@context/ModalContext';
 import { styles } from './style';
+import { Dictionary } from '@models/dictionary';
+
+type ModalTypes = 'success' | 'error' | 'question';
 
 export default function CurrentModal() {
-    const { isVisible, closeModal, modalInfo, sendResponse } = useContext(ModalContext) as ModalContextType;
-    const dictionary = {
-        'success': require('@lottie/success.json'),
-        'error': require('@lottie/error.json'),
-        'question': require('@lottie/question.json'),
+    const { isVisible, closeModal, modalInfo, sendResponse } = useModal();
+    const style = styles(modalInfo.modalType === ModalType.ERROR);
+    const dictionary: Dictionary<ModalTypes> = {
+        [ModalType.SUCCESS]: require('@lottie/success.json'),
+        [ModalType.ERROR]: require('@lottie/error.json'),
+        [ModalType.QUESTION]: require('@lottie/question.json'),
     }
 
     return (
         <Modal isVisible={isVisible} animationIn={"fadeIn"} animationOut={"fadeOut"}>
-            <View style={styles.modalContainer}>
+            <View style={style.modalContainer}>
                 <Lottie
                     source={dictionary[modalInfo.modalType]}
-                    style={styles.lottie}
+                    style={style.lottie}
                     autoPlay
                     loop={false}
                 />
-                {/* TODO: Refactor this */}
 
-                <Text style={[text.common, modalInfo.modalType === 'error' ? { color: 'red' } : {}, { textAlign: 'center' }, { marginBottom: 15 }]}>{modalInfo.message}</Text>
+                <Text style={style.message}>{modalInfo.message}</Text>
 
                 {modalInfo.modalType === 'question' ?
                     (
-                        <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-around' }}>
+                        <View style={style.questionContainer}>
                             <Button label={'Sim'} onClick={() => { closeModal(); sendResponse(true); }} containerStyle={{ backgroundColor: '#218838', width: '45%' }} />
                             <Button label={'Cancelar'} onClick={() => { closeModal(); sendResponse(false); }} containerStyle={{ backgroundColor: '#C82333', width: '45%' }} />
                         </View>

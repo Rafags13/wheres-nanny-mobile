@@ -1,5 +1,5 @@
 import { Background } from "@components/Background";
-import { ModalContext, ModalContextType } from "@context/ModalContext";
+import { ModalContext, ModalContextType, ModalType } from "@context/ModalContext";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { addCurrentServiceToAsync, clearCurrentService } from "@storage/index";
 import { globalStyles, text } from "@styles/global.styles";
@@ -22,7 +22,7 @@ export default function WaitingService() {
         const fiveMinutes = 30000;
         const timeOut = setTimeout(() => {
             navigator.navigate('commonUser', { screen: 'home', initial: true, });
-            showModal({ modalType: 'error', message: 'A babá não aceitou o serviço a tempo, tente novamente.' });
+            showModal({ modalType: ModalType.ERROR, message: 'A babá não aceitou o serviço a tempo, tente novamente.' });
             clearCurrentService();
         }, fiveMinutes)
 

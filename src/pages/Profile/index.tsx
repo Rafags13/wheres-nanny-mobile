@@ -13,7 +13,7 @@ import { useRef, useState } from "react";
 import { useQuery } from "react-query";
 import { viaCepRequestGetByCep } from "@services/apiRequests";
 import { ProfileUpdateDataDto } from "@dtos/Person/ProfileUpdateDataDto";
-import { useModal } from "@context/ModalContext";
+import { ModalType, useModal } from "@context/ModalContext";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { updatePasswordValidationSchema, updatePersonValidationSchema } from "@util/yupValidations";
 import { formatCellphoneNumber, formatCpf, removeSpecialCharacter } from "@util/functions";
@@ -63,11 +63,11 @@ export default function Profile() {
 		setLoading(true)
 		await updateProfile(updateDataProfile).then((response) => {
 			setLoading(false)
-			showModal({ modalType: 'success', message: response.data });
+			showModal({ modalType: ModalType.SUCCESS, message: response.data });
 			setEnabledFields(false);
 			scrollToTop();
 		}).catch((error: Error) => {
-			showModal({ modalType: "error", message: error.message })
+			showModal({ modalType: ModalType.ERROR, message: error.message })
 		});
 	}
 
@@ -101,7 +101,7 @@ export default function Profile() {
 			message.push(data[key].message);
 		}
 
-		showModal({ modalType: 'error', message: message.join("\n") })
+		showModal({ modalType: ModalType.ERROR, message: message.join("\n") })
 	}
 
 	async function onPasswordUpdate(data: any) {
@@ -112,12 +112,12 @@ export default function Profile() {
 		}
 
 		await updatePassword(updatePasswordDto).then((response) => {
-			showModal({ modalType: 'success', message: response.data });
+			showModal({ modalType: ModalType.SUCCESS, message: response.data });
 			updatePasswordForm.setValue('oldPassword', '');
 			updatePasswordForm.setValue('newPassword', '');
 			updatePasswordForm.setValue('repeatNewPassword', '');
 		}).catch((error) => {
-			showModal({ modalType: 'error', message: error.response.data });
+			showModal({ modalType: ModalType.ERROR, message: error.response.data });
 		})
 	}
 
@@ -327,7 +327,11 @@ export default function Profile() {
 							<Button
 								label={"Cancelar"}
 								onClick={() => {
-									showModal({ modalType: 'question', message: 'Deseja sair sem salvar as alterações?', function: (value: boolean) => { setEnabledFields(!value) } })
+									showModal({
+										modalType: ModalType.QUESTION,
+										message: 'Deseja sair sem salvar as alterações?',
+										function: (value: boolean) => { setEnabledFields(!value) }
+									})
 
 								}}
 								containerStyle={{ backgroundColor: '#C82333', width: '45%' }}

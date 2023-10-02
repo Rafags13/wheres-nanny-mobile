@@ -8,7 +8,7 @@ import { CommonActions, useNavigation } from "@react-navigation/native";
 import { globalStyles, text } from "@styles/global.styles";
 import MessageError from "@components/MessageError";
 import { useLoading } from "@context/LoadingContext";
-import { useModal } from "@context/ModalContext";
+import { ModalType, useModal } from "@context/ModalContext";
 import messaging from "@react-native-firebase/messaging";
 import { LoginDto } from "@dtos/User/LoginDto";
 import { LoginRequest } from "@services/requests/AutenticationRequests";
@@ -40,7 +40,7 @@ export default function Login() {
             setToken(response.data);
             sendUserToCorrectRoute(getCurrentUserAsync().typeOfUser);
         }).catch((error) => {
-            showModal({ modalType: 'error', message: error.response.data });
+            showModal({ modalType: ModalType.ERROR, message: error.response.data });
         }).finally(() => {
             setLoading(false);
         });
