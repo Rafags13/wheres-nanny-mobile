@@ -8,7 +8,7 @@ import { Control, FieldValues, useController } from "react-hook-form";
 import RNFetchBlob from 'rn-fetch-blob';
 import { getDocumentByBase64, replacePdfExtensioNames } from "@util/functions";
 import { useContext, useState } from "react";
-import { ModalContext, ModalContextType, ModalType } from "@context/ModalContext";
+import { ModalContext, ModalContextType, ModalType, useModal } from "@context/ModalContext";
 
 type Props = {
     control: Control<FieldValues, string>,
@@ -18,7 +18,7 @@ type Props = {
 }
 
 export default function DocumentPick({ control, label, documentIdentifier, hasError = false }: Props) {
-    const { showModal } = useContext(ModalContext) as ModalContextType;
+    const { showModal } = useModal();
     const { field } = useController({
         control,
         defaultValue: '',

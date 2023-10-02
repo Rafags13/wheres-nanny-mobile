@@ -6,7 +6,7 @@ import { viaCepRequestGetByCep } from "@services/apiRequests";
 import { removeAllSpecialCharacters } from "@util/functions";
 import { globalStyles } from "@styles/global.styles";
 import { useContext } from "react";
-import { ModalContext, ModalContextType, ModalType } from "@context/ModalContext";
+import { ModalContext, ModalContextType, ModalType, useModal } from "@context/ModalContext";
 
 type Props = {
     label: string,
@@ -21,7 +21,7 @@ type Props = {
 }
 
 export default function Cep({ label, control, displayNameLabel = '', defaultValue = '', disabled = false, hasError = false, rules = undefined, placeholder = '', style = {} }: Props) {
-    const { showModal } = useContext(ModalContext) as ModalContextType;
+    const { showModal } = useModal();;
     const { field } = useController({
         control,
         defaultValue,

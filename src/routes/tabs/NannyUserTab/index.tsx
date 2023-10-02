@@ -8,15 +8,15 @@ import { useNavigation } from "@react-navigation/native";
 import DashboardNavigatorPages from "./DashboardNavigatorPages";
 import { useContext, useEffect } from "react";
 import messaging from '@react-native-firebase/messaging';
-import { ModalContextType, ModalContext, ModalType } from "@context/ModalContext";
+import { ModalContextType, ModalContext, ModalType, useModal } from "@context/ModalContext";
 import { AcceptedServiceDto } from "@dtos/Person/AcceptedServiceDto";
 import { acceptService } from "@services/requests/NannyRequests";
-import { addCurrentServiceToAsync, getCurrentService, isInSomeService } from "@storage/index";
+import { addCurrentServiceToAsync } from "@storage/index";
 
 const Tab = createBottomTabNavigator();
 
 export default function NannyUserTab() {
-    const { showModal, closeModal } = useContext(ModalContext) as ModalContextType;
+    const { showModal, closeModal } = useModal();
     const navigation = useNavigation<any>();
 
     async function onModalServiceResponse(serviceAccepted: boolean, serviceId: string) {
@@ -35,7 +35,6 @@ export default function NannyUserTab() {
         }
     }
 
-    // TODO: See if its possible do a better code then this
     useEffect(() => {
         messaging().onMessage(async remoteMessage => {
             if (remoteMessage.data) {

@@ -11,8 +11,7 @@ import HomeNavigationPages from './HomeNavigatorPages';
 import Services from '@pages/Services';
 import { useContext, useEffect, useMemo } from 'react';
 import messaging from "@react-native-firebase/messaging";
-import { ModalContextType, ModalContext, ModalType } from '@context/ModalContext';
-import { ServiceConformationUserDto } from '@models/dto/Service/serviceConfirmationUserDto';
+import { ModalContextType, ModalContext, ModalType, useModal } from '@context/ModalContext';
 import { onNotWaitingNannyResponseAnymore, isInSomeService, getCurrentService, onServiceAccept, clearCurrentService } from '@storage/index';
 
 const Tab = createBottomTabNavigator();
@@ -24,6 +23,7 @@ type redirectProps = {
 
 export default function CommonUserTab() {
     const navigation = useNavigation<any>();
+    const { showModal } = useModal();
 
     function redirectUserIfAccepts({ accepted, serviceId }: redirectProps) {
         if (!accepted) {
@@ -37,8 +37,6 @@ export default function CommonUserTab() {
         onNotWaitingNannyResponseAnymore();
     }
 
-    const { showModal } = useContext(ModalContext) as ModalContextType;
-
     function onRecievedNotification(remoteData: any) {
         const response = JSON.parse(remoteData.response);
 
@@ -50,7 +48,6 @@ export default function CommonUserTab() {
         redirectUserIfAccepts({ accepted: response.accepted, serviceId: Number(response.serviceId) })
     }
 
-    // TODO: See if its possible do a better code then this
     useEffect(() => {
         messaging().onMessage(async remoteMessage => {
             if (remoteMessage?.data) {

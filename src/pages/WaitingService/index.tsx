@@ -1,17 +1,17 @@
 import { Background } from "@components/Background";
-import { ModalContext, ModalContextType, ModalType } from "@context/ModalContext";
+import { ModalContext, ModalContextType, ModalType, useModal } from "@context/ModalContext";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { addCurrentServiceToAsync, clearCurrentService } from "@storage/index";
 import { globalStyles, text } from "@styles/global.styles";
 import AnimatedLottieView from "lottie-react-native";
 import moment from "moment";
-import { useContext, useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { Text, View } from "react-native";
 import styles from "./style";
 
 export default function WaitingService() {
     const navigator = useNavigation<any>();
-    const { showModal } = useContext(ModalContext) as ModalContextType;
+    const { showModal } = useModal();;
 
     useEffect(() => {
         addCurrentServiceToAsync({

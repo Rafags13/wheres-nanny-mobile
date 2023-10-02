@@ -40,7 +40,7 @@ export default function Chat() {
             socket.emit("message", { message: data.message, user: currentUser.username, room: currentService.serviceId });
         }
     }, [currentService.serviceId]);
-    // TODO: Review this
+
     return (
         <Background.View>
             <Background.BackHeader title="Chat" />
