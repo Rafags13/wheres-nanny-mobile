@@ -45,9 +45,9 @@ export default function ListFilterNanny() {
                     <ItemToFilterListNanny icon={icon} label={label} orderBy={orderBy} setFlatListIndex={() => setFlatListIndex(flatListIndex)} />
                 )
             }}
+            contentContainerStyle={{ gap: 20, paddingVertical: 10, paddingHorizontal: 5 }}
             horizontal
             showsHorizontalScrollIndicator={false}
-            ItemSeparatorComponent={() => <View style={{ marginHorizontal: 10 }} />}
         />
     )
 }

@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useState } from "react";
+import { createContext, ReactNode, useContext, useState } from "react";
 
 export type ModalContextType = {
     isVisible: boolean,
@@ -14,7 +14,11 @@ type Props = {
     children: ReactNode
 }
 
-type ModalType = 'error' | 'success' | 'question';
+export enum ModalType {
+    ERROR = 'error',
+    SUCCESS = 'success',
+    QUESTION = 'question',
+};
 
 type ModalInfo = {
     message: string,
@@ -24,7 +28,7 @@ type ModalInfo = {
 
 export default function ModalProvider({ children }: Props) {
     const [isVisible, setOpenModal] = useState<boolean>(false);
-    const [modalInfo, setModalInfo] = useState<ModalInfo>({ message: '', modalType: 'success', function: () => { } });
+    const [modalInfo, setModalInfo] = useState<ModalInfo>({ message: '', modalType: ModalType.SUCCESS, function: () => { } });
 
     function showModal(modalInfo: ModalInfo) {
         setOpenModal(true);
@@ -46,4 +50,13 @@ export default function ModalProvider({ children }: Props) {
         <ModalContext.Provider value={{ isVisible, showModal, closeModal, modalInfo, sendResponse }}>{children}</ModalContext.Provider>
     )
 
+}
+
+export const useModal = () => {
+    const context = useContext(ModalContext);
+
+    if (!context)
+        throw new Error("useModal must be used within a ModalProvider");
+
+    return context;
 }

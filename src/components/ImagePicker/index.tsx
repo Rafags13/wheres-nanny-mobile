@@ -5,7 +5,7 @@ import { TouchableOpacity } from "react-native";
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { getPhotoByBase64 } from "@util/functions";
-import { ModalContextType, ModalContext } from "@context/ModalContext";
+import { ModalContextType, ModalContext, ModalType, useModal } from "@context/ModalContext";
 import { common, styles } from "./style";
 
 type Props = {
@@ -16,7 +16,7 @@ type Props = {
 }
 
 export default function ImagePicker({ control, label, hasError = false, defaultValue = '' }: Props) {
-    const { showModal } = useContext(ModalContext) as ModalContextType;
+    const { showModal } = useModal();
     const { field } = useController({
         control,
         defaultValue,
@@ -27,7 +27,7 @@ export default function ImagePicker({ control, label, hasError = false, defaultV
         await getPhotoByBase64().then((photo) => {
             field.onChange(photo);
         }).catch((error: Error) => {
-            showModal({ modalType: 'error', message: error.message })
+            showModal({ modalType: ModalType.ERROR, message: error.message })
         })
     }
     function removeSelectedPhoto() {

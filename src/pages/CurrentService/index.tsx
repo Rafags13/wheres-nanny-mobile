@@ -1,11 +1,10 @@
 import GoogleMap from "@components/Map";
 import Modal from "@components/Modal";
 import { TypeOfUser } from "@enums/TypeOfUser";
-import { DisplayServiceInformationDto } from "@models/dto/Chat/displayNannyServiceInformatioDto";
 import { Message } from "@models/dto/Chat/message";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import { GetServiceInformationsFromNanny, GetServiceInformationsFromPerson } from "@services/requests/ChatResquests";
-import { addNewMessage, clearCurrentService, getCurrentService, getCurrentUser } from "@storage/index";
+import { addNewMessage, clearCurrentService, getCurrentService, getCurrentUserAsync } from "@storage/index";
 import { globalStyles, text } from "@styles/global.styles";
 import { actions } from "@util/fabButtonActions";
 import { aliasToDistance, formatCellphoneNumber, formatCep } from "@util/functions";
@@ -18,7 +17,7 @@ import { useQuery } from "react-query";
 import { styles } from "./style";
 
 export default function CurrentService() {
-    const currentUser = getCurrentUser();
+    const currentUser = getCurrentUserAsync();
     const navigation = useNavigation<any>();
     const buttonRef = useRef<any>(null);
     const isNanny = useMemo(() => currentUser.typeOfUser === TypeOfUser.Nanny, []);
@@ -44,6 +43,7 @@ export default function CurrentService() {
     }, [socket]);
 
     if (isLoading) return (<></>);
+    // TODO: change this to skeleton
 
     return (
         <View style={styles.container}>
@@ -77,6 +77,7 @@ export default function CurrentService() {
                 <Text style={text.common}>E-mail (incomum): <Text style={text.title}>{data.email}</Text></Text>
 
             </Modal>
+
             <FloatingAction
                 ref={ref => buttonRef.current = ref}
                 actions={actions}
@@ -85,7 +86,6 @@ export default function CurrentService() {
                     switch (name) {
                         case 'button_chat': {
                             navigation.navigate('chat');
-                            buttonRef.current.animateButton();
                             break;
                         }
                         case 'button_cancel_service': {

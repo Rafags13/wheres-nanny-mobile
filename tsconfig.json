@@ -31,6 +31,9 @@
       "@components/*": [
         "./src/components/*"
       ],
+      "@hooks/*": [
+        "./src/hooks/*"
+      ],
       "@context/*": [
         "./src/context/*"
       ],

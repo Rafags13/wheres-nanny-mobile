@@ -4,12 +4,10 @@ import {
     BarChart,
 } from 'react-native-chart-kit'
 import { globalStyles } from "@styles/global.styles";
-import Background from "@components/Background";
+import { Background } from "@components/Background";
 import { styles } from "./style";
 import ServiceNannyCard from "@components/ServiceNannyCard";
 import { useQuery } from "react-query";
-import { useContext, useEffect } from "react";
-import { LoadingContext, LoadingContextType } from "@context/LoadingContext";
 import { NannyDashboardInformationDto } from "@dtos/Person/NannyDashboardInformationDto";
 import { getDashboardInformation } from "@services/requests/NannyRequests";
 import NotFoundService from "@components/NotFoundService";
@@ -17,13 +15,9 @@ import NotFoundService from "@components/NotFoundService";
 export default function Dashboard() {
 
     async function onRefresh() {
-        setLoading(true);
         const response = await getDashboardInformation();
-        setLoading(false);
         dashboardInformation = response.data;
     }
-
-    const { setLoading } = useContext(LoadingContext) as LoadingContextType;
     const { data, isLoading } = useQuery('GetDashboardInformation', async () => {
         const response = await getDashboardInformation();
         return response.data;
@@ -31,25 +25,21 @@ export default function Dashboard() {
 
     let dashboardInformation: NannyDashboardInformationDto = data;
 
-    useEffect(() => {
-        setLoading(isLoading);
-    }, [isLoading]);
+
 
     if (isLoading) {
         return <>
         </>
     }
+    // TODO: change this to skeleton
 
     return (
-        <Background
-            header={
+        <Background.ScrollView scrollToTopFunction={onRefresh}>
+            <Background.Header>
                 <View style={{ padding: 10, backgroundColor: '#F8FDFE' }}>
                     <Text style={globalStyles.headerTitle}>Painel de Controle</Text>
                 </View>
-            }
-            isScroll
-            functionIfScrollingToTop={onRefresh}
-        >
+            </Background.Header>
             <View style={{ padding: 10 }}>
 
                 <View>
@@ -72,7 +62,10 @@ export default function Dashboard() {
                     <Text style={styles.linechartTitle}>Serviços nos últimos 6 meses</Text>
                     <LineChart
                         onDataPointClick={(data) => {
-                            // TODO: Implement a function that send the user to visualize more this info.
+                            /* TODO: Add a funcionality to send nanny into new page and visualize her earn
+                             *  based in how person and how much she or he paid to her (display client name
+                             *       and all his payment in that month)
+                             */
                             if (data.value > 0) {
 
                             }
@@ -135,6 +128,6 @@ export default function Dashboard() {
                 </View>
 
             </View>
-        </Background>
+        </Background.ScrollView>
     )
 }

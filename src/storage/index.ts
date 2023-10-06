@@ -8,16 +8,25 @@ import { Message } from '@models/dto/Chat/message';
 
 export const storage = new MMKV({ id: 'WheresNanny' });
 
-export function getToken() {
+export function setTokenAsync(token: string) {
+    storage.set('token', token);
+}
+
+export function getTokenAsync() {
     const TOKEN = storage.getString('token') || ''
     return TOKEN;
 }
 
-export function getCurrentUser() {
-    const TOKEN = getToken();
+export function getCurrentUserAsync() {
+    const TOKEN = getTokenAsync();
     const currentUser: UserTokenDto = TOKEN !== '' ? jwt_decode(TOKEN) : new UserTokenDto();
 
     return currentUser;
+}
+
+export async function logOutAsync() {
+    await LogoutRequest();
+    storage.clearAll();
 }
 
 export function getAllNannies(): FavoritedNanny[] {
@@ -36,11 +45,6 @@ export function removeFavoriteNannyAsyncStorage(nannyId: number) {
     const allNannies = getAllNannies();
     const filteredNannies = allNannies.filter(nanny => nanny.id !== nannyId);
     storage.set('favoritedNannies', JSON.stringify(filteredNannies))
-}
-
-export async function logOut() {
-    await LogoutRequest();
-    storage.clearAll();
 }
 
 export function addCurrentServiceToAsync(currentService: CurrentServiceDto) {

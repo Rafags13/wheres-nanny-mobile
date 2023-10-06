@@ -12,12 +12,14 @@ module.exports = {
         "@styles": "./src/assets/styles",
         "@util": "./src/assets/util",
         "@components": "./src/components",
+        "@hooks": "./src/hooks",
         "@context": "./src/context",
         "@features": "./src/features",
         "@pages": './src/pages',
         "@tabs": './src/routes/tabs',
         "@services": './src/services',
         "@storage": './src/storage',
+        'moti/skeleton': 'moti/skeleton/react-native-linear-gradient'
       }
     }],
     [
