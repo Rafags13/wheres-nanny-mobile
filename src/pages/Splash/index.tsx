@@ -6,7 +6,6 @@ type Props = {
 }
 
 export default function Splash({ onComplete }: Props) {
-    const navigation = useNavigation<any>();
 
     return (
         <AnimatedLottieView
@@ -14,7 +13,7 @@ export default function Splash({ onComplete }: Props) {
             autoPlay
             loop={false}
             style={[{ flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: 'white' },]}
-            source={require('../../assets/lottie/splash.json')}
+            source={require('@lottie/splash.json')}
             onAnimationFinish={() => onComplete(true)}
         />
     )

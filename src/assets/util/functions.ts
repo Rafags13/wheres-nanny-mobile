@@ -129,6 +129,13 @@ export function formatCpf(cpf: string) {
     return formatedCpf;
 }
 
+export function formatCep(cep: string) {
+    if (!cep) return ""
+    cep = cep.replace(/\D/g, '')
+    cep = cep.replace(/(\d{5})(\d)/, '$1-$2')
+    return cep;
+}
+
 export function removeSpecialCharacter(value: string) {
     return value.replace(/[^\w\s]/gi, '').replace(/\s/g, '');
 }
@@ -145,4 +152,15 @@ export function returnRouteNameByProfileType(type: TypeOfUser): { mainContainer:
     }
 
     return routeNameByProfileType[type];
+}
+
+export function aliasToDistance(distance: number): string {
+    const oneKilometer = 1000;
+    const truncatedDistance = Math.trunc(distance);
+
+    if (truncatedDistance > oneKilometer) {
+        return `${truncatedDistance} km`;
+    }
+
+    return `${truncatedDistance} m`
 }

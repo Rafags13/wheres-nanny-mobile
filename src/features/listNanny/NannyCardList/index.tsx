@@ -18,7 +18,7 @@ export default function NannyCardList({ nannyList }: Props) {
                     <NannyCard fullname={fullname} starsCounting={starsCounting} rankCommentCount={rankCommentCount} id={id} imageUri={imageUri} />
                 )
             }}
-            style={{ flex: 1, marginTop: 20 }}
+            contentContainerStyle={{ gap: 20, paddingVertical: 10 }}
         />
     )
 }

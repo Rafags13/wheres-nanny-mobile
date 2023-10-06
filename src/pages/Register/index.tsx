@@ -2,8 +2,7 @@ import { Text, View } from "react-native";
 import { RouteProp, useNavigation, useRoute } from "@react-navigation/native";
 import { FormProvider, useForm } from "react-hook-form";
 
-import SectionList from 'react-native-tabs-section-list';
-import Input from "@components/Input";
+import DefaultInput from "@components/Inputs/Default";
 import Button from "@components/Button";
 import Checkbox from "@components/Checkbox";
 import MessageError from "@components/MessageError";
@@ -11,22 +10,20 @@ import MessageError from "@components/MessageError";
 import { globalStyles } from "@styles/global.styles";
 import { styles } from "./style";
 
-import { COMMON_USER_SECTION, NANNY_SECTION } from '@util/contants';
 import { createModelRegisterCommonUser, createModelRegisterNanny } from "@util/functions";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { registerValidationSchema, registerValidationSchemaNanny } from "@util/yupValidations";
 import ImagePicker from "@components/ImagePicker";
 import DocumentPick from "@components/DocumentPick";
-import { useContext } from "react";
-import { ModalContext, ModalContextType } from "@context/ModalContext";
-import { LoadingContextType, LoadingContext } from "@context/LoadingContext";
+import { ModalType, useModal } from "@context/ModalContext";
+import { useLoading } from "@context/LoadingContext";
 import { registerUser } from "@services/requests/UserRequests";
 import { ScrollView } from "react-native";
-import CepInput from "@components/CepInput";
-import { DeepPartial, FormState, FieldValues, ArrayPath, FieldArray, FieldErrors, Path, RegisterOptions, UseFormRegisterReturn, FieldError } from "react-hook-form/dist/types";
+import Cep from "@components/Inputs/Cep";
+import PasswordInput from "@components/Inputs/Password";
 
 export default function Register() {
-    const { setLoading } = useContext(LoadingContext) as LoadingContextType;
+    const { setLoading } = useLoading();
 
     const { params } = useRoute<RouteProp<{ params: { isNannyRegister: boolean } }, 'params'>>();
 
@@ -36,11 +33,10 @@ export default function Register() {
         });
     const navigator = useNavigation<any>();
 
-    const { showModal } = useContext(ModalContext) as ModalContextType;
+    const { showModal } = useModal();
 
     async function onRegister(data: any) {
         setLoading(true);
-        console.log(data)
         const userToRegisteSpecified =
             params?.isNannyRegister ?
                 createModelRegisterNanny(data) :
@@ -50,10 +46,10 @@ export default function Register() {
 
         await response.then((response) => {
             setLoading(false);
-            showModal({ message: response.data, modalType: 'success' });
+            showModal({ message: response.data, modalType: ModalType.SUCCESS });
         }).catch((error) => {
             setLoading(false);
-            showModal({ message: 'Não foi possível registrar o usuário. Tente Novamente mais tarde.', modalType: 'error' });
+            showModal({ message: 'Não foi possível registrar o usuário. Tente Novamente mais tarde.', modalType: ModalType.ERROR });
         }).finally(() => {
             navigator.navigate('login');
         })
@@ -71,10 +67,14 @@ export default function Register() {
 
 
                     <View style={{ marginBottom: 15 }}>
-                        <Input
-                            label={'fullname'}
+                        <DefaultInput
+                            name={'fullname'}
                             control={registerForm.control}
-                            displayNameLabel={'Nome Completo'}
+                            label={
+                                <Text style={globalStyles.label}>
+                                    Nome Completo
+                                </Text>
+                            }
                             hasError={registerForm.formState.errors?.fullname?.message !== undefined}
                         />
 
@@ -84,10 +84,14 @@ export default function Register() {
                     </View>
 
                     <View style={{ marginBottom: 15 }}>
-                        <Input
-                            label={'username'}
+                        <DefaultInput
+                            name={'username'}
                             control={registerForm.control}
-                            displayNameLabel={'Apelido (Nome de usuário)'}
+                            label={
+                                <Text style={globalStyles.label}>
+                                    Apelido (Nome de usuário)
+                                </Text>
+                            }
                             hasError={registerForm.formState.errors?.username?.message !== undefined}
                         />
 
@@ -97,10 +101,14 @@ export default function Register() {
                     </View>
 
                     <View style={{ marginBottom: 15 }}>
-                        <Input
-                            label={'email'}
+                        <DefaultInput
+                            name={'email'}
                             control={registerForm.control}
-                            displayNameLabel={'E-mail'}
+                            label={
+                                <Text style={globalStyles.label}>
+                                    E-mail
+                                </Text>
+                            }
                             hasError={registerForm.formState.errors?.email?.message !== undefined}
                         />
 
@@ -110,10 +118,14 @@ export default function Register() {
                     </View>
 
                     <View style={{ marginBottom: 15 }}>
-                        <Input
-                            label={'cellphone'}
+                        <DefaultInput
+                            name={'cellphone'}
                             control={registerForm.control}
-                            displayNameLabel={'Telefone'}
+                            label={
+                                <Text style={globalStyles.label}>
+                                    Telefone
+                                </Text>
+                            }
                             hasError={registerForm.formState.errors?.cellphone?.message !== undefined}
                         />
 
@@ -123,10 +135,14 @@ export default function Register() {
                     </View>
 
                     <View style={{ marginBottom: 15 }}>
-                        <Input
-                            label={'cpf'}
+                        <DefaultInput
+                            name={'cpf'}
                             control={registerForm.control}
-                            displayNameLabel={'CPF'}
+                            label={
+                                <Text style={globalStyles.label}>
+                                    CPF
+                                </Text>
+                            }
                             hasError={registerForm.formState.errors?.cpf?.message !== undefined}
                         />
 
@@ -136,10 +152,14 @@ export default function Register() {
                     </View>
 
                     <View style={{ marginBottom: 15 }}>
-                        <Input
-                            label={'birthdayDate'}
+                        <DefaultInput
+                            name={'birthdayDate'}
                             control={registerForm.control}
-                            displayNameLabel={'Data de Nascimento'}
+                            label={
+                                <Text style={globalStyles.label}>
+                                    Data de Nascimento
+                                </Text>
+                            }
                             hasError={registerForm.formState.errors?.birthdayDate?.message !== undefined}
                         />
 
@@ -149,12 +169,15 @@ export default function Register() {
                     </View>
 
                     <View style={{ marginBottom: 15 }}>
-                        <Input
-                            label={'password'}
+                        <PasswordInput
+                            name={'password'}
                             control={registerForm.control}
-                            displayNameLabel={'Senha'}
+                            label={
+                                <Text style={globalStyles.label}>
+                                    Senha
+                                </Text>
+                            }
                             hasError={registerForm.formState.errors?.password?.message !== undefined}
-                            isPasswordInput
                         />
 
                         {registerForm.formState.errors?.password?.message &&
@@ -163,12 +186,15 @@ export default function Register() {
                     </View>
 
                     <View style={{ marginBottom: 15 }}>
-                        <Input
-                            label={'repeatPassword'}
+                        <PasswordInput
+                            name={'repeatPassword'}
                             control={registerForm.control}
-                            displayNameLabel={'Digite a Senha Novamente'}
+                            label={
+                                <Text style={globalStyles.label}>
+                                    Digite a Senha Novamente
+                                </Text>
+                            }
                             hasError={registerForm.formState.errors?.repeatPassword?.message !== undefined}
-                            isPasswordInput
                         />
 
                         {registerForm.formState.errors?.repeatPassword?.message &&
@@ -179,7 +205,7 @@ export default function Register() {
                     <Text style={[globalStyles.subtitle, { marginTop: 20, marginBottom: 15 }]}>Endereço</Text>
 
                     <View style={{ marginBottom: 15 }}>
-                        <CepInput
+                        <Cep
                             label={"cep"}
                             control={registerForm.control}
                             displayNameLabel={'Cep'}

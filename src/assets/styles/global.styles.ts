@@ -16,6 +16,10 @@ export const text = StyleSheet.create({
         ...common.defaultText,
         fontSize: 16,
     },
+    title: {
+        ...common.title,
+        fontSize: 16
+    }
 })
 
 export const globalStyles = StyleSheet.create({

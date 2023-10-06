@@ -11,11 +11,8 @@ export default function NotFoundService() {
             </Text>
             <Text style={text.common}>
                 Nenhum serviço foi encontrado na sua conta.
-                Clique no botão abaixo e contrate um serviço,
-                ou escolha uma das babás abaixo e as contrate.
+                Escolha uma das melhores babás, abaixo e as contrate.
             </Text>
-            <Button label={"Encontrar babá"} onClick={() => { }} />
-            {/* TODO: Implement this in future, if required. */}
         </View>
     )
 }

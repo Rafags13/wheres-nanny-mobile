@@ -2,47 +2,67 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { getFocusedRouteNameFromRoute, useNavigation, } from '@react-navigation/native';
+import { CommonActions, getFocusedRouteNameFromRoute, useNavigation, } from '@react-navigation/native';
 import Favorites from '@pages/Favorites';
 import Profile from '@pages/Profile';
 import { Provider } from 'react-redux';
 import { store } from '@app/store';
 import HomeNavigationPages from './HomeNavigatorPages';
 import Services from '@pages/Services';
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 import messaging from "@react-native-firebase/messaging";
-import { ModalContextType, ModalContext } from '@context/ModalContext';
+import { ModalContextType, ModalContext, ModalType, useModal } from '@context/ModalContext';
+import { onNotWaitingNannyResponseAnymore, isInSomeService, getCurrentService, onServiceAccept, clearCurrentService } from '@storage/index';
 
 const Tab = createBottomTabNavigator();
 
+type redirectProps = {
+    accepted: boolean,
+    serviceId: number
+}
+
 export default function CommonUserTab() {
     const navigation = useNavigation<any>();
+    const { showModal } = useModal();
 
-    function redirectUserToNewServiceChat(accepted: boolean) {
-        if (accepted) {
-            navigation.navigate('chat')
+    function redirectUserIfAccepts({ accepted, serviceId }: redirectProps) {
+        if (!accepted) {
+            navigation.navigate('commonUser', { screen: 'home', initial: true, });
+            clearCurrentService();
+            return;
         }
+
+        navigation.replace("chatDerivatedPages", { screen: 'currentServiceParent', params: { serviceId: serviceId } });
+        onServiceAccept(serviceId);
+        onNotWaitingNannyResponseAnymore();
     }
 
-    const { showModal } = useContext(ModalContext) as ModalContextType;
+    function onRecievedNotification(remoteData: any) {
+        const response = JSON.parse(remoteData.response);
+
+        showModal({
+            modalType: response.accepted ? ModalType.SUCCESS : ModalType.ERROR,
+            message: remoteData.message,
+        })
+
+        redirectUserIfAccepts({ accepted: response.accepted, serviceId: Number(response.serviceId) })
+    }
+
     useEffect(() => {
         messaging().onMessage(async remoteMessage => {
             if (remoteMessage?.data) {
-                redirectUserToNewServiceChat(Boolean(remoteMessage?.data?.accepted))
-                showModal({
-                    modalType: Boolean(remoteMessage?.data.accepted) ? "success" : "error",
-                    message: remoteMessage?.data.message,
-                })
+                onRecievedNotification(remoteMessage?.data);
             }
+
         });
 
         messaging().setBackgroundMessageHandler(async backgroundMessage => {
             if (backgroundMessage) {
-                redirectUserToNewServiceChat(Boolean(backgroundMessage?.data?.accepted))
+                onRecievedNotification(backgroundMessage?.data);
             }
         })
-
     }, []);
+
     return (
         <Provider store={store}>
             <Tab.Navigator
