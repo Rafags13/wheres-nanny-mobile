@@ -2,7 +2,7 @@ import { CommonActions, RouteProp, useNavigation, useRoute } from "@react-naviga
 import { useState } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
 import { useQuery } from "react-query";
-import Background from "@components/Background";
+import { Background } from "@components/Background";
 import Button from "@components/Button";
 import Stars from "@components/Stars";
 import { useLoading } from "@context/LoadingContext";
@@ -16,7 +16,7 @@ import { getCurrentUserAsync } from "@storage/index";
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import { formatCellphoneNumber } from "@util/functions";
 import moment from "moment";
-import { useModal } from "@context/ModalContext";
+import { ModalType, useModal } from "@context/ModalContext";
 import { useDispatch, } from "react-redux";
 import { addFavoriteNanny, FavoritedNanny, removingFavoriteFromNanny } from '@features/listNanny/favoriteListNannySlice';
 import Heart from "@components/Heart";
@@ -50,7 +50,7 @@ export default function NannyInformations() {
             minimumDate: new Date(),
             onChange: (event, date) => {
                 if (event.type !== 'dismissed' && (date as Date) < new Date()) {
-                    showModal({ message: 'Não é possível escolher uma data menor ou igual à data atual. Tente novamente.', modalType: 'error' });
+                    showModal({ message: 'Não é possível escolher uma data menor ou igual à data atual. Tente novamente.', modalType: ModalType.ERROR });
                     return;
                 }
                 setDate(date as Date)
@@ -73,7 +73,7 @@ export default function NannyInformations() {
                 })
             );
         }).catch((err) => {
-            showModal({ modalType: 'error', message: err.response.data });
+            showModal({ modalType: ModalType.ERROR, message: err.response.data });
         })
 
     }
@@ -95,7 +95,8 @@ export default function NannyInformations() {
     // TODO: change this to skeleton
 
     return (
-        <Background hasBackIcon>
+        <Background.View>
+            <Background.BackHeader title="Serviço" />
             <View style={styles.basicNannyInformationSection}>
                 <Image style={globalStyles.personPhotoSmall} source={{ uri: `data:image/png;base64,${nannyInformation.imageProfileBase64Uri}` }} />
                 <View style={styles.nameAndRatingContainer}>
@@ -196,7 +197,6 @@ export default function NannyInformations() {
                 </View>
                 <Button containerStyle={{ maxWidth: 150, borderRadius: 15, height: 60 }} textStyle={{ fontSize: 16 }} label={"Contratar agora"} onClick={contractNanny} />
             </View>
-
-        </Background >
+        </Background.View>
     )
 }

@@ -1,3 +1,5 @@
+import 'react-native-reanimated'
+import 'react-native-gesture-handler'
 import { NavigationContainer } from '@react-navigation/native';
 import Routes from './routes';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';

@@ -13,7 +13,6 @@ export const styles = StyleSheet.create({
     commonServiceCardContainer: {
         backgroundColor: '#c5e2f9',
         padding: 15,
-        marginVertical: 10,
         borderRadius: 10,
         gap: 10
     },

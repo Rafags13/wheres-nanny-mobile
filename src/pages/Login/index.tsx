@@ -1,19 +1,20 @@
 import { Text, TouchableOpacity, View } from "react-native";
 import { useForm } from "react-hook-form";
 import { styles } from "./style";
-import Input from "@components/Input";
+import DefaultInput from "@components/Inputs/Default";
 import LinkNavigator from "@components/LinkNavigator";
 import Button from '@components/Button';
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import { globalStyles, text } from "@styles/global.styles";
 import MessageError from "@components/MessageError";
 import { useLoading } from "@context/LoadingContext";
-import { useModal } from "@context/ModalContext";
+import { ModalType, useModal } from "@context/ModalContext";
 import messaging from "@react-native-firebase/messaging";
 import { LoginDto } from "@dtos/User/LoginDto";
 import { LoginRequest } from "@services/requests/AutenticationRequests";
 import { returnRouteNameByProfileType } from "@util/functions";
 import { TypeOfUser } from "@enums/TypeOfUser";
+import PasswordInput from "@components/Inputs/Password";
 import useLoggedUser from "@hooks/useLoggedUser";
 import { getCurrentUserAsync } from "@storage/index";
 
@@ -39,7 +40,7 @@ export default function Login() {
             setToken(response.data);
             sendUserToCorrectRoute(getCurrentUserAsync().typeOfUser);
         }).catch((error) => {
-            showModal({ modalType: 'error', message: error.response.data });
+            showModal({ modalType: ModalType.ERROR, message: error.response.data });
         }).finally(() => {
             setLoading(false);
         });
@@ -82,10 +83,14 @@ export default function Login() {
                 para poder acessar e desfrutar do nosso sistema.
             </Text>
             <View style={{ gap: 10 }}>
-                <Input
-                    label="username"
+                <DefaultInput
+                    name="username"
                     control={control}
-                    displayNameLabel={"Nome de Usuário"}
+                    label={
+                        <Text style={globalStyles.label}>
+                            Nome de Usuário
+                        </Text>
+                    }
                     hasError={typeof errors.username?.message === 'string'}
                     rules={{
                         required: {
@@ -97,18 +102,21 @@ export default function Login() {
                 {errors.username && (
                     <MessageError errorMessage={errors.username.message as string} />
                 )}
-                <Input
-                    label="password"
+                <PasswordInput
+                    name="password"
                     control={control}
-                    displayNameLabel={"Senha"}
+                    label={
+                        <Text style={globalStyles.label}>
+                            Senha
+                        </Text>
+                    }
                     hasError={typeof errors.password?.message === 'string'}
                     rules={{
                         required: {
                             value: true,
                             message: "A Senha é obrigatória"
                         }
-                    }}
-                    isPasswordInput />
+                    }} />
                 {errors.password && (
                     <MessageError errorMessage={errors.password.message as string} />
                 )}

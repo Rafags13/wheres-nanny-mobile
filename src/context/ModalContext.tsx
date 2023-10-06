@@ -14,7 +14,11 @@ type Props = {
     children: ReactNode
 }
 
-type ModalType = 'error' | 'success' | 'question';
+export enum ModalType {
+    ERROR = 'error',
+    SUCCESS = 'success',
+    QUESTION = 'question',
+};
 
 type ModalInfo = {
     message: string,
@@ -24,7 +28,7 @@ type ModalInfo = {
 
 export default function ModalProvider({ children }: Props) {
     const [isVisible, setOpenModal] = useState<boolean>(false);
-    const [modalInfo, setModalInfo] = useState<ModalInfo>({ message: '', modalType: 'success', function: () => { } });
+    const [modalInfo, setModalInfo] = useState<ModalInfo>({ message: '', modalType: ModalType.SUCCESS, function: () => { } });
 
     function showModal(modalInfo: ModalInfo) {
         setOpenModal(true);

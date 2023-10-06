@@ -8,6 +8,5 @@ export const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 10,
         gap: 10,
-        ...globalStyles.shadow
     }
 })

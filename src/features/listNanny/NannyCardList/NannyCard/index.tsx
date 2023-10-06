@@ -20,7 +20,7 @@ export default function NannyCard({ fullname, starsCounting, rankCommentCount, i
     }
 
     return (
-        <TouchableOpacity style={[styles.labels, { marginBottom: 20 }]} activeOpacity={0.7} onPress={redirectToNannyProfile}>
+        <TouchableOpacity style={[styles.labels]} activeOpacity={0.7} onPress={redirectToNannyProfile}>
             <Image style={globalStyles.personPhotoSmall} source={{ uri: `data:image/png;base64,${imageUri}` }} />
 
             <View>

@@ -1,17 +1,17 @@
 
-import { FlatList, Text, View } from "react-native";
+import { View } from "react-native";
 import socket from "@util/socket";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Button from "@components/Button";
-import { addNewMessage, getCurrentMessages, getCurrentService, getCurrentUserAsync } from "@storage/index";
-import Input from "@components/Input";
+import { getCurrentMessages, getCurrentService, getCurrentUserAsync } from "@storage/index";
+import DefaultInput from "@components/Inputs/Default";
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useForm } from "react-hook-form";
 import { Message } from "@models/dto/Chat/message";
 import ChatListMessages from "@components/ChatListMessages";
 
 import { Dimensions } from "react-native";
-import Background from "@components/Background";
+import { Background } from "@components/Background";
 
 var width = Dimensions.get('window').width;
 
@@ -42,7 +42,8 @@ export default function Chat() {
     }, [currentService.serviceId]);
 
     return (
-        <Background hasBackIcon>
+        <Background.View>
+            <Background.BackHeader title="Chat" />
             <ChatListMessages messages={messages} />
 
             <View style={{
@@ -50,7 +51,7 @@ export default function Chat() {
                 alignItems: 'center',
                 justifyContent: 'space-around', paddingVertical: 10, flexDirection: 'row', backgroundColor: '#F8FDFE'
             }}>
-                <Input label={"message"} multiline control={control} style={{ width: width - 100 }} />
+                <DefaultInput multiline control={control} style={{ width: width - 100 }} name={"message"} />
                 <Button
                     label={""}
                     onClick={handleSubmit(onSendMessage)}
@@ -58,7 +59,6 @@ export default function Chat() {
                     icon={<Ionicons name={'paper-plane'} color={'white'} size={24} />}
                 />
             </View>
-        </Background>
-
+        </Background.View>
     )
 }
