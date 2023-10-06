@@ -1,7 +1,6 @@
 import GoogleMap from "@components/Map";
 import Modal from "@components/Modal";
 import { TypeOfUser } from "@enums/TypeOfUser";
-import { DisplayServiceInformationDto } from "@models/dto/Chat/displayNannyServiceInformatioDto";
 import { Message } from "@models/dto/Chat/message";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import { GetServiceInformationsFromNanny, GetServiceInformationsFromPerson } from "@services/requests/ChatResquests";
@@ -78,7 +77,7 @@ export default function CurrentService() {
                 <Text style={text.common}>E-mail (incomum): <Text style={text.title}>{data.email}</Text></Text>
 
             </Modal>
-            {/* TODO: Change this to better understanding */}
+
             <FloatingAction
                 ref={ref => buttonRef.current = ref}
                 actions={actions}
@@ -87,7 +86,6 @@ export default function CurrentService() {
                     switch (name) {
                         case 'button_chat': {
                             navigation.navigate('chat');
-                            buttonRef.current.animateButton();
                             break;
                         }
                         case 'button_cancel_service': {
