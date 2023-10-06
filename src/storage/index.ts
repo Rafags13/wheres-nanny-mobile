@@ -3,19 +3,30 @@ import jwt_decode from "jwt-decode";
 import { UserTokenDto } from '../assets/model/dto/User/UserTokenDto';
 import { FavoritedNanny } from '../features/listNanny/favoriteListNannySlice';
 import { LogoutRequest } from '../services/requests/AutenticationRequests';
+import { CurrentServiceDto } from '@models/dto/Chat/currentServiceDto';
+import { Message } from '@models/dto/Chat/message';
 
 export const storage = new MMKV({ id: 'WheresNanny' });
 
-export function getToken() {
+export function setTokenAsync(token: string) {
+    storage.set('token', token);
+}
+
+export function getTokenAsync() {
     const TOKEN = storage.getString('token') || ''
     return TOKEN;
 }
 
-export function getCurrentUser() {
-    const TOKEN = getToken();
+export function getCurrentUserAsync() {
+    const TOKEN = getTokenAsync();
     const currentUser: UserTokenDto = TOKEN !== '' ? jwt_decode(TOKEN) : new UserTokenDto();
 
     return currentUser;
+}
+
+export async function logOutAsync() {
+    await LogoutRequest();
+    storage.clearAll();
 }
 
 export function getAllNannies(): FavoritedNanny[] {
@@ -36,7 +47,57 @@ export function removeFavoriteNannyAsyncStorage(nannyId: number) {
     storage.set('favoritedNannies', JSON.stringify(filteredNannies))
 }
 
-export async function logOut() {
-    await LogoutRequest();
-    storage.clearAll();
+export function addCurrentServiceToAsync(currentService: CurrentServiceDto) {
+    storage.set('currentService', JSON.stringify(currentService));
+}
+
+export function clearCurrentService() {
+    storage.delete('currentService');
+}
+
+export function isInSomeService() {
+    const currentServiceExists = storage.getString('currentService') as string;
+
+    return currentServiceExists !== undefined;
+}
+
+export function getCurrentService() {
+    const currentService: CurrentServiceDto = JSON.parse(storage.getString('currentService') as string || '');
+
+    return currentService;
+}
+
+export function onNotWaitingNannyResponseAnymore() {
+    const currentService: CurrentServiceDto = JSON.parse(storage.getString('currentService') as string || '');
+
+    const newCurrentStatus: CurrentServiceDto = {
+        ...currentService,
+        waitingResponse: false,
+    }
+
+    storage.set('currentService', JSON.stringify(newCurrentStatus));
+}
+
+export function onServiceAccept(serviceId: number) {
+    const currentService: CurrentServiceDto = JSON.parse(storage.getString('currentService') as string || '');
+
+    const newCurrentServiceId: CurrentServiceDto = {
+        ...currentService,
+        serviceId
+    }
+
+    storage.set('currentService', JSON.stringify(newCurrentServiceId));
+}
+
+export function addNewMessage(message: Message) {
+    const currentService = getCurrentService();
+
+    currentService.messages?.push(message);
+
+    storage.set('currentService', JSON.stringify(currentService));
+}
+
+export function getCurrentMessages() {
+    const currentService = getCurrentService();
+    return currentService.messages || [];
 }

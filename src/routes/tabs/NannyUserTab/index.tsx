@@ -8,15 +8,16 @@ import { useNavigation } from "@react-navigation/native";
 import DashboardNavigatorPages from "./DashboardNavigatorPages";
 import { useContext, useEffect } from "react";
 import messaging from '@react-native-firebase/messaging';
-import { ModalContextType, ModalContext } from "@context/ModalContext";
+import { ModalContextType, ModalContext, ModalType, useModal } from "@context/ModalContext";
 import { AcceptedServiceDto } from "@dtos/Person/AcceptedServiceDto";
 import { acceptService } from "@services/requests/NannyRequests";
+import { addCurrentServiceToAsync } from "@storage/index";
 
 const Tab = createBottomTabNavigator();
 
 export default function NannyUserTab() {
-    const { showModal } = useContext(ModalContext) as ModalContextType;
-    const navigator = useNavigation<any>();
+    const { showModal, closeModal } = useModal();
+    const navigation = useNavigation<any>();
 
     async function onModalServiceResponse(serviceAccepted: boolean, serviceId: string) {
         var acceptedServiceDto: AcceptedServiceDto = {
@@ -26,24 +27,31 @@ export default function NannyUserTab() {
         await acceptService(acceptedServiceDto);
 
         if (serviceAccepted) {
-            navigator.navigate('chat');
+            addCurrentServiceToAsync({ waitingResponse: false, serviceId: acceptedServiceDto.serviceId, messages: [] });
+
+            navigation.navigate('chatDerivatedPages', {
+                screen: 'currentServiceNanny', params: { serviceId: serviceId }
+            });
         }
     }
 
     useEffect(() => {
         messaging().onMessage(async remoteMessage => {
-            if (remoteMessage?.data) {
-                showModal({
-                    modalType: 'question',
-                    message: remoteMessage?.data.message,
-                    function: (value: any) => onModalServiceResponse(value, remoteMessage?.data?.serviceId as string)
-                });
-            }
-        });
+            if (remoteMessage.data) {
 
-        messaging().getInitialNotification().then(initialMessage => {
-            if (initialMessage?.data?.mensagem) {
-                showModal({ modalType: 'question', message: initialMessage?.data?.message as string, function: test });
+                const response = JSON.parse(remoteMessage.data.response);
+
+                showModal({
+                    modalType: ModalType.QUESTION,
+                    message: remoteMessage?.data.message,
+                    function: (value: any) => onModalServiceResponse(value, response.serviceId)
+                });
+
+                const fiveMinutes = 300000;
+
+                setTimeout(() => {
+                    closeModal();
+                }, fiveMinutes)
             }
         });
 

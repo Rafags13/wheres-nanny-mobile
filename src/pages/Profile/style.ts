@@ -7,12 +7,12 @@ export const styles = StyleSheet.create({
         textAlign: "left",
     },
     imageProfileContainer: {
-        alignItems: 'center'
+        alignItems: 'center',
+        marginTop: 10,
     },
     nannyProfilePicture: {
         ...globalStyles.personPhotoSmall,
         borderRadius: 100,
-        marginTop: 10,
     },
     personalInformationsTitle: {
         ...globalStyles.headerTitle,

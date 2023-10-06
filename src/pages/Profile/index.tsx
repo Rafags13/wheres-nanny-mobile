@@ -1,236 +1,403 @@
-import { useNavigation } from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import { FormProvider, useForm } from "react-hook-form";
 import { Image, Text, View, } from "react-native";
-import Background from "@components/Background";
+import { Background } from "@components/Background";
 import Button from "@components/Button";
-import Input from "@components/Input";
-import { getCurrentUser, logOut } from "@storage/index";
+import DefaultInput from "@components/Inputs/Default";
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { styles } from "./style";
-import { useEffect, useRef, useState, useContext } from "react";
+import { useRef, useState } from "react";
 import { useQuery } from "react-query";
 import { viaCepRequestGetByCep } from "@services/apiRequests";
-import { LoadingContext, LoadingContextType } from "@context/LoadingContext";
 import { ProfileUpdateDataDto } from "@dtos/Person/ProfileUpdateDataDto";
-import { ModalContextType, ModalContext } from "@context/ModalContext";
+import { ModalType, useModal } from "@context/ModalContext";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { updatePasswordValidationSchema, updatePersonValidationSchema } from "@util/yupValidations";
 import { formatCellphoneNumber, formatCpf, removeSpecialCharacter } from "@util/functions";
-import CepInput from "@components/CepInput";
+import Cep from "@components/Inputs/Cep";
 import { UpdatePasswordDto } from "@dtos/User/UpdatePasswordDto";
 import { getProfileData, updatePassword, updateProfile } from "@services/requests/PersonRequests";
+import PasswordInput from "@components/Inputs/Password";
+import { globalStyles } from "@styles/global.styles";
+import useLoggedUser from "@hooks/useLoggedUser";
+import Loader from "@components/Loader";
+import { useLoading } from "@context/LoadingContext";
 
 export default function Profile() {
-    const currentUser = getCurrentUser();
-    const navigation = useNavigation<any>();
-    const scrollViewRef = useRef<any>(null);
-    const [enabledFields, setEnabledFields] = useState<boolean>(false);
-    const { showModal } = useContext(ModalContext) as ModalContextType;
-    const { setLoading } = useContext(LoadingContext) as LoadingContextType;
-    const updateProfileForm = useForm({ resolver: yupResolver(updatePersonValidationSchema) });
-    const updatePasswordForm = useForm({ resolver: yupResolver(updatePasswordValidationSchema) })
-    const { data, isLoading } = useQuery(['getProfileInformation', currentUser.id], async () => {
-        const profileData: ProfileUpdateDataDto = await createProfileModel();
-        return profileData;
-    });
+	const { currentUser, logout } = useLoggedUser();
+	const navigation = useNavigation<any>();
+	const scrollViewRef = useRef<any>(null);
+	const [enabledFields, setEnabledFields] = useState<boolean>(false);
+	const { setLoading } = useLoading();
+	const { showModal } = useModal();
+	const updatePasswordForm = useForm({ resolver: yupResolver(updatePasswordValidationSchema) });
+	const { data, isLoading } = useQuery(['getProfileInformation', currentUser.id], async () => {
+		const profileData = await createProfileModel();
+		return profileData;
+	});
 
-    async function createProfileModel() {
-        const response = await getProfileData()
-        const viacepResponse = await viaCepRequestGetByCep(currentUser.cep);
-        const profileData: ProfileUpdateDataDto = {
-            ...response.data,
-            addressFromUpdateInformation: {
-                cep: viacepResponse.data.cep,
-                bairro: viacepResponse.data.bairro,
-                cidade: viacepResponse.data.localidade,
-                logradouro: viacepResponse.data.logradouro,
-                estado: viacepResponse.data.uf
-            },
-        };
+	const updateProfileForm = useForm({ resolver: yupResolver(updatePersonValidationSchema) });
 
-        return profileData;
-    }
+	async function createProfileModel() {
+		const response = await getProfileData()
+		const viacepResponse = await viaCepRequestGetByCep(currentUser.cep);
+		const profileData = {
+			...response.data,
+			addressFromUpdateInformation: {
+				cep: viacepResponse.data.cep,
+				bairro: viacepResponse.data.bairro,
+				cidade: viacepResponse.data.localidade,
+				logradouro: viacepResponse.data.logradouro,
+				estado: viacepResponse.data.uf
+			},
+		};
 
-    useEffect(() => {
-        setLoading(isLoading)
-    }, [isLoading])
+		return profileData;
+	}
 
-    if (isLoading) {
-        return (<></>)
-    }
+	async function updateInformations(data: any) {
+		const updateDataProfile: ProfileUpdateDataDto = createUpdateProfileModel(data);
+		setLoading(true)
+		await updateProfile(updateDataProfile).then((response) => {
+			setLoading(false)
+			showModal({ modalType: ModalType.SUCCESS, message: response.data });
+			setEnabledFields(false);
+			scrollToTop();
+		}).catch((error: Error) => {
+			showModal({ modalType: ModalType.ERROR, message: error.message })
+		});
+	}
 
-    async function updateInformations(data: any) {
-        const updateDataProfile: ProfileUpdateDataDto = createUpdateProfileModel(data);
+	function createUpdateProfileModel(data: any) {
+		const updatedProfileModel: ProfileUpdateDataDto = {
+			personInformation: {
+				id: currentUser.id,
+				fullname: data.fullname,
+				cpf: removeSpecialCharacter(data.cpf),
+				email: data.email,
+				cellphone: removeSpecialCharacter(data.cellphone),
+				imageBase64: ''
+			},
+			addressFromUpdateInformation: {
+				cep: removeSpecialCharacter(data.cep),
+				bairro: "",
+				logradouro: "",
+				cidade: "",
+				estado: "",
+				complement: "",
+				number: ""
+			}
+		}
 
-        await updateProfile(updateDataProfile).then((response) => {
-            showModal({ modalType: 'success', message: response.data });
-            setEnabledFields(false);
-        }).catch((error: Error) => {
-            showModal({ modalType: "error", message: error.message })
-        });
-    }
+		return updatedProfileModel;
+	}
 
-    function createUpdateProfileModel(data: any) {
-        const updatedProfileModel: ProfileUpdateDataDto = {
-            personInformation: {
-                id: currentUser.id,
-                fullname: data.fullname,
-                cpf: removeSpecialCharacter(data.cpf),
-                email: data.email,
-                cellphone: removeSpecialCharacter(data.cellphone),
-                imageBase64: ''
-            },
-            addressFromUpdateInformation: {
-                cep: removeSpecialCharacter(data.cep),
-                bairro: "",
-                logradouro: "",
-                cidade: "",
-                estado: "",
-                complement: "",
-                number: ""
-            }
-        }
+	function onInvalid(data: any) {
+		let message = [];
+		for (const key in data) {
+			message.push(data[key].message);
+		}
 
-        return updatedProfileModel;
-    }
+		showModal({ modalType: ModalType.ERROR, message: message.join("\n") })
+	}
 
-    function onInvalid(data: any) {
-        let message = [];
-        for (const key in data) {
-            message.push(data[key].message);
-        }
+	async function onPasswordUpdate(data: any) {
+		var updatePasswordDto: UpdatePasswordDto = {
+			userId: currentUser.id,
+			oldPassword: data.oldPassword,
+			newPassword: data.newPassword
+		}
 
-        showModal({ modalType: 'error', message: message.join("\n") })
-    }
+		await updatePassword(updatePasswordDto).then((response) => {
+			showModal({ modalType: ModalType.SUCCESS, message: response.data });
+			updatePasswordForm.setValue('oldPassword', '');
+			updatePasswordForm.setValue('newPassword', '');
+			updatePasswordForm.setValue('repeatNewPassword', '');
+		}).catch((error) => {
+			showModal({ modalType: ModalType.ERROR, message: error.response.data });
+		})
+	}
 
-    async function onPasswordUpdate(data: any) {
-        var updatePasswordDto: UpdatePasswordDto = {
-            userId: currentUser.id,
-            oldPassword: data.oldPassword,
-            newPassword: data.newPassword
-        }
+	function scrollToTop() {
+		scrollViewRef.current.scrollTo({ y: 0, animated: true });
+	}
 
-        await updatePassword(updatePasswordDto).then((response) => {
-            showModal({ modalType: 'success', message: response.data });
-            updatePasswordForm.setValue('oldPassword', '');
-            updatePasswordForm.setValue('newPassword', '');
-            updatePasswordForm.setValue('repeatNewPassword', '');
-        }).catch((error) => {
-            showModal({ modalType: 'error', message: error.response.data });
-        })
-    }
+	return (
+		<Background.ScrollView
+			scrollviewRef={scrollViewRef}
+		>
+			<Background.Header style={{ padding: 10, backgroundColor: '#F8FDFE' }}>
+				<View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 10, }}>
+					<Text style={styles.title}>Meu Perfil</Text>
+					<Ionicons name="person-circle" size={32} color='#192553' />
+				</View>
+				<View style={styles.imageProfileContainer}>
+					<Loader show={isLoading} radius="round" width={75} height={75}>
+						<Image style={styles.nannyProfilePicture} source={{ uri: `data:image/png;base64,${data?.personInformation.imageBase64}` }} />
+					</Loader>
+				</View>
+			</Background.Header>
 
-    function scrollToTop() {
-        scrollViewRef.current.scrollTo({ y: 0, animated: true });
-    }
+			<FormProvider {...updateProfileForm}>
+				<View style={{ padding: 15 }}>
+					<Text style={styles.personalInformationsTitle}>Informações Pessoais</Text>
 
-    return (
-        <Background
-            header={
-                <View style={{ padding: 10, backgroundColor: '#F8FDFE' }}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 10, }}>
-                        <Text style={styles.title}>Meu Perfil</Text>
-                        <Ionicons name="person-circle" size={32} color='#192553' />
-                    </View>
-                    <View style={styles.imageProfileContainer}>
-                        <Image style={styles.nannyProfilePicture} source={{ uri: `data:image/png;base64,${data?.personInformation.imageBase64}` }} />
-                    </View>
-                </View>
-            }
-            isScroll
-            scrollviewRef={scrollViewRef}
-        >
-            <FormProvider {...updateProfileForm}>
-                <View style={{ padding: 15 }}>
-                    <Text style={styles.personalInformationsTitle}>Informações Pessoais</Text>
-                    <View style={styles.inputsContainer}>
-                        <Input defaultValue={data?.personInformation.fullname} hasError={updateProfileForm.formState.errors.fullname !== undefined} disabled={!enabledFields} label={"fullname"} control={updateProfileForm.control} displayNameLabel="Nome Completo" />
+					<View style={styles.inputsContainer}>
 
-                        <Input defaultValue={formatCpf(data?.personInformation.cpf as string)} hasError={updateProfileForm.formState.errors.cpf !== undefined} disabled={!enabledFields} label={"cpf"} control={updateProfileForm.control} displayNameLabel="Cpf" />
+						{isLoading ? (<Loader width={'100%'} height={60} />) : (
+							<DefaultInput
+								defaultValue={data?.personInformation.fullname}
+								hasError={updateProfileForm.formState.errors.fullname !== undefined}
+								disabled={!enabledFields}
+								name={"fullname"}
+								control={updateProfileForm.control}
+								label={
+									<Text style={globalStyles.label}>
+										Nome Completo
+									</Text>
+								}
+							/>)}
 
-                        <Input defaultValue={data?.personInformation.email} hasError={updateProfileForm.formState.errors.email !== undefined} disabled={!enabledFields} label={"email"} control={updateProfileForm.control} displayNameLabel="E-mail" />
+						{isLoading ? (<Loader width={'100%'} height={60} />) : (
+							<DefaultInput
+								defaultValue={formatCpf(data?.personInformation.cpf)}
+								hasError={updateProfileForm.formState.errors.cpf !== undefined}
+								disabled={!enabledFields}
+								name={"cpf"}
+								control={updateProfileForm.control}
+								label={
+									<Text style={globalStyles.label}>
+										Cpf
+									</Text>
+								}
+							/>
+						)}
 
-                        <Input defaultValue={formatCellphoneNumber(data?.personInformation.cellphone as string)} hasError={updateProfileForm.formState.errors.cellphone !== undefined} disabled={!enabledFields} label={"cellphone"} control={updateProfileForm.control} displayNameLabel="Telefone" />
-                    </View>
-                    <Text style={[styles.personalInformationsTitle, { marginTop: 20 }]}>Endereço</Text>
-                    <View style={styles.inputsContainer}>
-                        <CepInput placeholder="00000-000" hasError={updateProfileForm.formState.errors.cep !== undefined} defaultValue={data?.addressFromUpdateInformation.cep} disabled={!enabledFields} label={"cep"} control={updateProfileForm.control} displayNameLabel="Cep" />
+						{isLoading ? (<Loader width={'100%'} height={60} />) : (
+							<DefaultInput
+								defaultValue={data?.personInformation.email}
+								hasError={updateProfileForm.formState.errors.email !== undefined}
+								disabled={!enabledFields}
+								name={"email"}
+								control={updateProfileForm.control}
+								label={
+									<Text style={globalStyles.label}>
+										E-mail
+									</Text>
+								}
+							/>
+						)}
 
-                        <Input defaultValue={data?.addressFromUpdateInformation.bairro} disabled label={"neighborhood"} control={updateProfileForm.control} displayNameLabel="Bairro" />
+						{isLoading ? (<Loader width={'100%'} height={60} />) : (
+							<DefaultInput
+								defaultValue={formatCellphoneNumber(data?.personInformation.cellphone)}
+								hasError={updateProfileForm.formState.errors.cellphone !== undefined}
+								disabled={!enabledFields}
+								name={"cellphone"}
+								control={updateProfileForm.control}
+								label={
+									<Text style={globalStyles.label}>
+										Telefone
+									</Text>
+								}
+							/>
+						)}
+					</View>
 
-                        <Input defaultValue={data?.addressFromUpdateInformation.logradouro} disabled label={"publicPlace"} control={updateProfileForm.control} displayNameLabel="Logradouro" />
+					<Text style={[styles.personalInformationsTitle, { marginTop: 20 }]}>Endereço</Text>
 
-                        <Input defaultValue={data?.addressFromUpdateInformation.cidade} disabled label={"city"} control={updateProfileForm.control} displayNameLabel="Cidade" />
+					<View style={styles.inputsContainer}>
+						{isLoading ? (<Loader width={'100%'} height={60} />) : (
+							<Cep
+								placeholder="00000-000"
+								hasError={updateProfileForm.formState.errors.cep !== undefined}
+								defaultValue={data?.addressFromUpdateInformation.cep}
+								disabled={!enabledFields} label={"cep"} control={updateProfileForm.control} displayNameLabel="Cep" />
+						)}
 
-                        <Input defaultValue={data?.addressFromUpdateInformation.estado} disabled label={"state"} control={updateProfileForm.control} displayNameLabel="Estado" />
+						{isLoading ? (<Loader width={'100%'} height={60} />) : (
+							<DefaultInput
+								defaultValue={data?.addressFromUpdateInformation.bairro}
+								disabled
+								name={"neighborhood"}
+								control={updateProfileForm.control}
+								label={
+									<Text style={globalStyles.label}>
+										Bairro
+									</Text>
+								}
+							/>
+						)}
 
-                        <Input defaultValue={data?.addressFromUpdateInformation.complement} disabled={!enabledFields} label={"complement"} control={updateProfileForm.control} displayNameLabel="Complemento" />
+						{isLoading ? (<Loader width={'100%'} height={60} />) : (
+							<DefaultInput
+								defaultValue={data?.addressFromUpdateInformation.logradouro}
+								disabled
+								name={"publicPlace"}
+								control={updateProfileForm.control}
+								label={
+									<Text style={globalStyles.label}>
+										Logradouro
+									</Text>
+								}
+							/>
+						)}
 
-                        <Input defaultValue={data?.addressFromUpdateInformation.number} disabled={!enabledFields} label={"number"} control={updateProfileForm.control} displayNameLabel="Número" />
-                    </View>
-                    {!enabledFields ? (
-                        <Button
-                            label={"Alterar"}
-                            onClick={() => {
-                                setEnabledFields(true);
-                                scrollToTop();
-                            }}
-                            containerStyle={{ marginTop: 20, marginVertical: 20 }}
-                            icon={
-                                <FontAwesome5 name="pen" size={16} color={'white'} />
-                            }
-                        />
-                    ) : (
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-around', marginVertical: 10 }}>
-                            <Button
-                                label={"Salvar"}
-                                onClick={updateProfileForm.handleSubmit(updateInformations, onInvalid)}
-                                containerStyle={{ backgroundColor: '#218838', width: '45%' }}
-                                icon={
-                                    <FontAwesome name="check" size={16} color={'white'} />
-                                }
-                            />
-                            <Button
-                                label={"Cancelar"}
-                                onClick={() => {
-                                    showModal({ modalType: 'question', message: 'Deseja sair sem salvar as alterações?', function: (value: boolean) => { setEnabledFields(value) } })
+						{isLoading ? (<Loader width={'100%'} height={60} />) : (
+							<DefaultInput
+								defaultValue={data?.addressFromUpdateInformation.cidade}
+								disabled
+								name={"city"}
+								control={updateProfileForm.control}
+								label={
+									<Text style={globalStyles.label}>
+										Cidade
+									</Text>
+								}
+							/>
+						)}
 
-                                }}
-                                containerStyle={{ backgroundColor: '#C82333', width: '45%' }}
-                                icon={
-                                    <FontAwesome name="remove" size={16} color="white" />
-                                }
-                            />
-                        </View>
-                    )}
+						{isLoading ? (<Loader width={'100%'} height={60} />) : (
+							<DefaultInput
+								defaultValue={data?.addressFromUpdateInformation.estado}
+								disabled
+								name={"state"}
+								control={updateProfileForm.control}
+								label={
+									<Text style={globalStyles.label}>
+										Estado
+									</Text>
+								}
+							/>
+						)}
+						{isLoading ? (<Loader width={'100%'} height={60} />) : (
+							<DefaultInput
+								defaultValue={data?.addressFromUpdateInformation.complement}
+								disabled={!enabledFields}
+								name={"complement"}
+								control={updateProfileForm.control}
+								label={
+									<Text style={globalStyles.label}>
+										Complemento
+									</Text>
+								}
+							/>
+						)}
 
-                    <View style={styles.inputsContainer}>
+						{isLoading ? (<Loader width={'100%'} height={60} />) : (
+							<DefaultInput
+								defaultValue={data?.addressFromUpdateInformation.number}
+								disabled={!enabledFields}
+								name={"number"}
+								control={updateProfileForm.control}
+								label={
+									<Text style={globalStyles.label}>
+										Número
+									</Text>
+								}
+							/>
+						)}
+					</View>
 
-                        <Text style={styles.personalInformationsTitle}>Alterar Senha</Text>
+					{!enabledFields ? (
+						<Button
+							label={"Alterar"}
+							onClick={() => {
+								setEnabledFields(true);
+								scrollToTop();
+							}}
+							containerStyle={{ marginTop: 20, marginVertical: 20 }}
+							icon={
+								<FontAwesome5 name="pen" size={16} color={'white'} />
+							}
+						/>
+					) : (
+						<View style={{ flexDirection: 'row', justifyContent: 'space-around', marginVertical: 10 }}>
+							<Button
+								label={"Salvar"}
+								onClick={updateProfileForm.handleSubmit(updateInformations, onInvalid)}
+								containerStyle={{ backgroundColor: '#218838', width: '45%' }}
+								icon={
+									<FontAwesome name="check" size={16} color={'white'} />
+								}
+							/>
+							<Button
+								label={"Cancelar"}
+								onClick={() => {
+									showModal({
+										modalType: ModalType.QUESTION,
+										message: 'Deseja sair sem salvar as alterações?',
+										function: (value: boolean) => { setEnabledFields(!value) }
+									})
 
-                        <Input label={"oldPassword"} control={updatePasswordForm.control} displayNameLabel="Senha Atual" isPasswordInput />
-                        <Input label={"newPassword"} control={updatePasswordForm.control} displayNameLabel="Nova Senha" isPasswordInput />
-                        <Input label={"repeatNewPassword"} control={updatePasswordForm.control} displayNameLabel="Repetir Nova Senha" isPasswordInput />
+								}}
+								containerStyle={{ backgroundColor: '#C82333', width: '45%' }}
+								icon={
+									<FontAwesome name="remove" size={16} color="white" />
+								}
+							/>
+						</View>
+					)}
 
-                        <Button label="Atualizar" onClick={updatePasswordForm.handleSubmit(onPasswordUpdate, onInvalid)} containerStyle={{ marginTop: 15 }} />
+					<View style={styles.inputsContainer}>
 
-                    </View>
-                    <Button
-                        label={"Sair"}
-                        onClick={() => {
-                            logOut();
-                            navigation.replace("login")
-                        }}
-                        containerStyle={{ backgroundColor: '#C82333', marginVertical: 20 }}
-                        icon={
-                            <MaterialIcons name="logout" size={16} color="white" />
-                        }
-                    />
-                </View>
-            </FormProvider>
-        </Background>
-    )
+						<Text style={styles.personalInformationsTitle}>Alterar Senha</Text>
+
+						<PasswordInput
+							name={"oldPassword"}
+							control={updatePasswordForm.control}
+							label={
+								<Text style={globalStyles.label}>
+									Senha Atual
+								</Text>
+							}
+						/>
+						<PasswordInput
+							name={"newPassword"}
+							control={updatePasswordForm.control}
+							label={
+								<Text style={globalStyles.label}>
+									Nova Senha
+								</Text>
+							}
+						/>
+						<PasswordInput
+							name={"repeatNewPassword"}
+							control={updatePasswordForm.control}
+							label={
+								<Text style={globalStyles.label}>
+									Repetir Nova Senha
+								</Text>
+							}
+						/>
+
+						<Button label="Atualizar" onClick={updatePasswordForm.handleSubmit(onPasswordUpdate, onInvalid)} containerStyle={{ marginTop: 15 }} />
+
+					</View>
+					<Button
+						label={"Sair"}
+						onClick={() => {
+							logout();
+							navigation.dispatch(
+								CommonActions.reset({
+									index: 1,
+									routes: [
+										{ name: 'login' },
+									],
+								})
+							);
+						}}
+						containerStyle={{ backgroundColor: '#C82333', marginVertical: 20 }}
+						icon={
+							<MaterialIcons name="logout" size={16} color="white" />
+						}
+					/>
+				</View>
+			</FormProvider>
+
+		</Background.ScrollView>
+	)
 }

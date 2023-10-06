@@ -15,7 +15,9 @@ export default function Button({ label, onClick, containerStyle, textStyle, icon
     return (
         <TouchableOpacity style={[styles.buttonContainer, containerStyle]} onPress={onClick}>
             {icon}
-            <Text style={[globalStyles.labelButton, textStyle]}>{label}</Text>
+            {label !== '' && (
+                <Text style={[globalStyles.labelButton, textStyle]}>{label}</Text>
+            )}
         </TouchableOpacity>
     )
 }

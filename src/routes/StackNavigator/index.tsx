@@ -3,31 +3,47 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { useEffect } from "react";
 import { returnRouteNameByProfileType } from "@util/functions";
 import { TypeOfUser } from "@enums/TypeOfUser";
-import Chat from "@pages/Chat";
 import Login from "@pages/Login";
 import Register from "@pages/Register";
-import { getCurrentUser, getToken } from "@storage/index";
+import { getCurrentService, getCurrentUserAsync, getTokenAsync, isInSomeService } from "@storage/index";
 import CommonUserTab from "@tabs/CommonUserTab";
 import NannyUserTab from "@tabs/NannyUserTab";
+import ChatDerivatedPages from "./ChatDerivatedPages";
 
 const Stack = createNativeStackNavigator();
 
-const token = getToken();
+const token = getTokenAsync();
 
 export default function StackNavigator() {
     const navigator = useNavigation<any>();
-    const currentUser = getCurrentUser();
+    const currentUser = getCurrentUserAsync();
 
+    function redirectIfIsInService() {
+        const currentService = getCurrentService();
+        if (currentService.waitingResponse) {
+            navigator.navigate('chatDerivatedPages', {
+                screen: 'waitingService'
+            });
+            return;
+        }
+
+        navigator.navigate("chatDerivatedPages", {
+            screen: 'currentService',
+        });
+        return;
+    }
     useEffect(() => {
         function findUserLogged() {
             if (token !== '') {
-                const typeOfUser: TypeOfUser = currentUser.typeOfUser;
-                const routeName = returnRouteNameByProfileType(typeOfUser);
-                navigator.navigate(routeName.mainContainer, { screen: routeName.screen });
-                return;
+                if (!isInSomeService()) {
+                    const typeOfUser: TypeOfUser = currentUser.typeOfUser;
+                    const routeName = returnRouteNameByProfileType(typeOfUser);
+                    navigator.navigate(routeName.mainContainer, { screen: routeName.screen });
+                    return;
+                }
+                redirectIfIsInService();
             }
         }
-
         findUserLogged();
     }, []);
 
@@ -37,7 +53,7 @@ export default function StackNavigator() {
             <Stack.Screen name="register" component={Register} />
             <Stack.Screen name="commonUser" component={CommonUserTab} />
             <Stack.Screen name="nannyUser" component={NannyUserTab} />
-            <Stack.Screen name="chat" component={Chat} />
+            <Stack.Screen name="chatDerivatedPages" component={ChatDerivatedPages} />
         </Stack.Navigator>
     )
 }

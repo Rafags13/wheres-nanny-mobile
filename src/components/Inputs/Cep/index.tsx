@@ -6,7 +6,7 @@ import { viaCepRequestGetByCep } from "@services/apiRequests";
 import { removeAllSpecialCharacters } from "@util/functions";
 import { globalStyles } from "@styles/global.styles";
 import { useContext } from "react";
-import { ModalContext, ModalContextType } from "@context/ModalContext";
+import { ModalContext, ModalContextType, ModalType, useModal } from "@context/ModalContext";
 
 type Props = {
     label: string,
@@ -20,25 +20,25 @@ type Props = {
     rules?: Omit<RegisterOptions<FieldValues, string>, "disabled" | "setValueAs" | "valueAsNumber" | "valueAsDate"> | undefined
 }
 
-export default function CepInput({ label, control, displayNameLabel = '', defaultValue = '', disabled = false, hasError = false, rules = undefined, placeholder = '', style = {} }: Props) {
-    const { showModal } = useContext(ModalContext) as ModalContextType;
+export default function Cep({ label, control, displayNameLabel = '', defaultValue = '', disabled = false, hasError = false, rules = undefined, placeholder = '', style = {} }: Props) {
+    const { showModal } = useModal();;
     const { field } = useController({
         control,
         defaultValue,
         rules,
         name: label,
     });
-    const { setValue, setError } = useFormContext();
+    const { setValue } = useFormContext();
 
     async function searchAddressByCep() {
         if (field.value === '') {
-            showModal({ modalType: 'error', message: 'o CEP é obrigatório.' })
+            showModal({ modalType: ModalType.ERROR, message: 'o CEP é obrigatório.' })
             return;
         }
         const viacepResponse = await viaCepRequestGetByCep(removeAllSpecialCharacters(field.value));
 
         if (viacepResponse.data.erro) {
-            showModal({ modalType: 'error', message: 'o CEP informado não existe.' });
+            showModal({ modalType: ModalType.ERROR, message: 'o CEP informado não existe.' });
             field.onChange('');
             return;
         }
