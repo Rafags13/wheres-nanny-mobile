@@ -3,7 +3,7 @@ import { Dimensions, StyleSheet } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 import { PermissionsAndroid } from 'react-native';
-import { API_GOOGLE_MAP_KEY } from '@env';
+import { API_GOOGLE_MAP_KEY } from "@env";
 
 const { width, height } = Dimensions.get('window');
 const ASPECT_RATIO = width / height;
