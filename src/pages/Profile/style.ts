@@ -22,5 +22,11 @@ export const styles = StyleSheet.create({
     },
     inputsContainer: {
         gap: 15,
+    },
+    loadersInputContainer: {
+        gap: 10
+    },
+    loadingContainer: {
+        gap: 15,
     }
 })
