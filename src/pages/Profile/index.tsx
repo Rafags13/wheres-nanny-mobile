@@ -25,6 +25,46 @@ import { globalStyles } from "@styles/global.styles";
 import useLoggedUser from "@hooks/useLoggedUser";
 import Loader from "@components/Loader";
 import { useLoading } from "@context/LoadingContext";
+import { Skeleton } from "moti/skeleton";
+import useFakeApiCallRequests from "@hooks/useFakeApiCallRequest";
+
+function ProfileSkeleton() {
+	return (
+		<Skeleton.Group show={true}>
+			<View style={{ gap: 15 }}>
+				<Skeleton width={150} colorMode='light' colors={['rgb(222, 220, 220)', 'rgb(160, 160, 160)']} />
+
+				<View style={{ gap: 5 }}>
+					<Skeleton width={100} height={20} colorMode='light' colors={['rgb(222, 220, 220)', 'rgb(160, 160, 160)']} />
+					<Skeleton width={'100%'} height={40} colorMode='light' colors={['rgb(222, 220, 220)', 'rgb(160, 160, 160)']} />
+				</View>
+
+				<View style={{ gap: 5 }}>
+					<Skeleton width={50} height={20} colorMode='light' colors={['rgb(222, 220, 220)', 'rgb(160, 160, 160)']} />
+					<Skeleton width={'100%'} height={40} colorMode='light' colors={['rgb(222, 220, 220)', 'rgb(160, 160, 160)']} />
+				</View>
+
+				<View style={{ gap: 5 }}>
+					<Skeleton width={60} height={20} colorMode='light' colors={['rgb(222, 220, 220)', 'rgb(160, 160, 160)']} />
+					<Skeleton width={'100%'} height={40} colorMode='light' colors={['rgb(222, 220, 220)', 'rgb(160, 160, 160)']} />
+				</View>
+
+				<View style={{ gap: 5, marginBottom: 15 }}>
+					<Skeleton width={70} height={20} colorMode='light' colors={['rgb(222, 220, 220)', 'rgb(160, 160, 160)']} />
+					<Skeleton width={'100%'} height={40} colorMode='light' colors={['rgb(222, 220, 220)', 'rgb(160, 160, 160)']} />
+				</View>
+
+				<Skeleton width={150} colorMode='light' colors={['rgb(222, 220, 220)', 'rgb(160, 160, 160)']} />
+
+				<View style={{ gap: 5 }}>
+					<Skeleton width={50} colorMode='light' colors={['rgb(222, 220, 220)', 'rgb(160, 160, 160)']} />
+					<Skeleton width={'100%'} height={40} colorMode='light' colors={['rgb(222, 220, 220)', 'rgb(160, 160, 160)']} />
+				</View>
+			</View>
+		</Skeleton.Group>
+	)
+
+}
 
 export default function Profile() {
 	const { currentUser, logout } = useLoggedUser();
@@ -143,258 +183,247 @@ export default function Profile() {
 
 			<FormProvider {...updateProfileForm}>
 				<View style={{ padding: 15 }}>
-					<Text style={styles.personalInformationsTitle}>Informações Pessoais</Text>
-
-					<View style={styles.inputsContainer}>
-
-						{isLoading ? (<Loader width={'100%'} height={60} />) : (
-							<DefaultInput
-								defaultValue={data?.personInformation.fullname}
-								hasError={updateProfileForm.formState.errors.fullname !== undefined}
-								disabled={!enabledFields}
-								name={"fullname"}
-								control={updateProfileForm.control}
-								label={
-									<Text style={globalStyles.label}>
-										Nome Completo
-									</Text>
-								}
-							/>)}
-
-						{isLoading ? (<Loader width={'100%'} height={60} />) : (
-							<DefaultInput
-								defaultValue={formatCpf(data?.personInformation.cpf)}
-								hasError={updateProfileForm.formState.errors.cpf !== undefined}
-								disabled={!enabledFields}
-								name={"cpf"}
-								control={updateProfileForm.control}
-								label={
-									<Text style={globalStyles.label}>
-										Cpf
-									</Text>
-								}
-							/>
-						)}
-
-						{isLoading ? (<Loader width={'100%'} height={60} />) : (
-							<DefaultInput
-								defaultValue={data?.personInformation.email}
-								hasError={updateProfileForm.formState.errors.email !== undefined}
-								disabled={!enabledFields}
-								name={"email"}
-								control={updateProfileForm.control}
-								label={
-									<Text style={globalStyles.label}>
-										E-mail
-									</Text>
-								}
-							/>
-						)}
-
-						{isLoading ? (<Loader width={'100%'} height={60} />) : (
-							<DefaultInput
-								defaultValue={formatCellphoneNumber(data?.personInformation.cellphone)}
-								hasError={updateProfileForm.formState.errors.cellphone !== undefined}
-								disabled={!enabledFields}
-								name={"cellphone"}
-								control={updateProfileForm.control}
-								label={
-									<Text style={globalStyles.label}>
-										Telefone
-									</Text>
-								}
-							/>
-						)}
-					</View>
-
-					<Text style={[styles.personalInformationsTitle, { marginTop: 20 }]}>Endereço</Text>
-
-					<View style={styles.inputsContainer}>
-						{isLoading ? (<Loader width={'100%'} height={60} />) : (
-							<Cep
-								placeholder="00000-000"
-								hasError={updateProfileForm.formState.errors.cep !== undefined}
-								defaultValue={data?.addressFromUpdateInformation.cep}
-								disabled={!enabledFields} label={"cep"} control={updateProfileForm.control} displayNameLabel="Cep" />
-						)}
-
-						{isLoading ? (<Loader width={'100%'} height={60} />) : (
-							<DefaultInput
-								defaultValue={data?.addressFromUpdateInformation.bairro}
-								disabled
-								name={"neighborhood"}
-								control={updateProfileForm.control}
-								label={
-									<Text style={globalStyles.label}>
-										Bairro
-									</Text>
-								}
-							/>
-						)}
-
-						{isLoading ? (<Loader width={'100%'} height={60} />) : (
-							<DefaultInput
-								defaultValue={data?.addressFromUpdateInformation.logradouro}
-								disabled
-								name={"publicPlace"}
-								control={updateProfileForm.control}
-								label={
-									<Text style={globalStyles.label}>
-										Logradouro
-									</Text>
-								}
-							/>
-						)}
-
-						{isLoading ? (<Loader width={'100%'} height={60} />) : (
-							<DefaultInput
-								defaultValue={data?.addressFromUpdateInformation.cidade}
-								disabled
-								name={"city"}
-								control={updateProfileForm.control}
-								label={
-									<Text style={globalStyles.label}>
-										Cidade
-									</Text>
-								}
-							/>
-						)}
-
-						{isLoading ? (<Loader width={'100%'} height={60} />) : (
-							<DefaultInput
-								defaultValue={data?.addressFromUpdateInformation.estado}
-								disabled
-								name={"state"}
-								control={updateProfileForm.control}
-								label={
-									<Text style={globalStyles.label}>
-										Estado
-									</Text>
-								}
-							/>
-						)}
-						{isLoading ? (<Loader width={'100%'} height={60} />) : (
-							<DefaultInput
-								defaultValue={data?.addressFromUpdateInformation.complement}
-								disabled={!enabledFields}
-								name={"complement"}
-								control={updateProfileForm.control}
-								label={
-									<Text style={globalStyles.label}>
-										Complemento
-									</Text>
-								}
-							/>
-						)}
-
-						{isLoading ? (<Loader width={'100%'} height={60} />) : (
-							<DefaultInput
-								defaultValue={data?.addressFromUpdateInformation.number}
-								disabled={!enabledFields}
-								name={"number"}
-								control={updateProfileForm.control}
-								label={
-									<Text style={globalStyles.label}>
-										Número
-									</Text>
-								}
-							/>
-						)}
-					</View>
-
-					{!enabledFields ? (
-						<Button
-							label={"Alterar"}
-							onClick={() => {
-								setEnabledFields(true);
-								scrollToTop();
-							}}
-							containerStyle={{ marginTop: 20, marginVertical: 20 }}
-							icon={
-								<FontAwesome5 name="pen" size={16} color={'white'} />
-							}
-						/>
+					{isLoading ? (
+						<ProfileSkeleton />
 					) : (
-						<View style={{ flexDirection: 'row', justifyContent: 'space-around', marginVertical: 10 }}>
+						<>
+							<Text style={styles.personalInformationsTitle}>Informações Pessoais</Text>
+
+							<View style={styles.inputsContainer}>
+
+								<DefaultInput
+									defaultValue={data?.personInformation.fullname}
+									hasError={updateProfileForm.formState.errors.fullname !== undefined}
+									disabled={!enabledFields}
+									name={"fullname"}
+									control={updateProfileForm.control}
+									label={
+										<Text style={globalStyles.label}>
+											Nome Completo
+										</Text>
+									}
+								/>
+
+								<DefaultInput
+									defaultValue={formatCpf(data?.personInformation.cpf)}
+									hasError={updateProfileForm.formState.errors.cpf !== undefined}
+									disabled={!enabledFields}
+									name={"cpf"}
+									control={updateProfileForm.control}
+									label={
+										<Text style={globalStyles.label}>
+											Cpf
+										</Text>
+									}
+								/>
+
+								<DefaultInput
+									defaultValue={data?.personInformation.email}
+									hasError={updateProfileForm.formState.errors.email !== undefined}
+									disabled={!enabledFields}
+									name={"email"}
+									control={updateProfileForm.control}
+									label={
+										<Text style={globalStyles.label}>
+											E-mail
+										</Text>
+									}
+								/>
+
+								<DefaultInput
+									defaultValue={formatCellphoneNumber(data?.personInformation.cellphone)}
+									hasError={updateProfileForm.formState.errors.cellphone !== undefined}
+									disabled={!enabledFields}
+									name={"cellphone"}
+									control={updateProfileForm.control}
+									label={
+										<Text style={globalStyles.label}>
+											Telefone
+										</Text>
+									}
+								/>
+							</View>
+
+							<Text style={[styles.personalInformationsTitle, { marginTop: 20 }]}>Endereço</Text>
+
+							<View style={styles.inputsContainer}>
+								<Cep
+									placeholder="00000-000"
+									hasError={updateProfileForm.formState.errors.cep !== undefined}
+									defaultValue={data?.addressFromUpdateInformation.cep}
+									disabled={!enabledFields}
+									label={"cep"}
+									control={updateProfileForm.control}
+									displayNameLabel="Cep"
+								/>
+								<DefaultInput
+									defaultValue={data?.addressFromUpdateInformation.bairro}
+									disabled
+									name={"neighborhood"}
+									control={updateProfileForm.control}
+									label={
+										<Text style={globalStyles.label}>
+											Bairro
+										</Text>
+									}
+								/>
+
+								<DefaultInput
+									defaultValue={data?.addressFromUpdateInformation.logradouro}
+									disabled
+									name={"publicPlace"}
+									control={updateProfileForm.control}
+									label={
+										<Text style={globalStyles.label}>
+											Logradouro
+										</Text>
+									}
+								/>
+
+								<DefaultInput
+									defaultValue={data?.addressFromUpdateInformation.cidade}
+									disabled
+									name={"city"}
+									control={updateProfileForm.control}
+									label={
+										<Text style={globalStyles.label}>
+											Cidade
+										</Text>
+									}
+								/>
+
+								<DefaultInput
+									defaultValue={data?.addressFromUpdateInformation.estado}
+									disabled
+									name={"state"}
+									control={updateProfileForm.control}
+									label={
+										<Text style={globalStyles.label}>
+											Estado
+										</Text>
+									}
+								/>
+
+								<DefaultInput
+									defaultValue={data?.addressFromUpdateInformation.complement}
+									disabled={!enabledFields}
+									name={"complement"}
+									control={updateProfileForm.control}
+									label={
+										<Text style={globalStyles.label}>
+											Complemento
+										</Text>
+									}
+								/>
+
+								<DefaultInput
+									defaultValue={data?.addressFromUpdateInformation.number}
+									disabled={!enabledFields}
+									name={"number"}
+									control={updateProfileForm.control}
+									label={
+										<Text style={globalStyles.label}>
+											Número
+										</Text>
+									}
+								/>
+							</View>
+
+							{!enabledFields ? (
+								<Button
+									label={"Alterar"}
+									onClick={() => {
+										setEnabledFields(true);
+										scrollToTop();
+									}}
+									containerStyle={{ marginTop: 20, marginVertical: 20 }}
+									icon={
+										<FontAwesome5 name="pen" size={16} color={'white'} />
+									}
+								/>
+							) : (
+								<View style={{ flexDirection: 'row', justifyContent: 'space-around', marginVertical: 10 }}>
+									<Button
+										label={"Salvar"}
+										onClick={updateProfileForm.handleSubmit(updateInformations, onInvalid)}
+										containerStyle={{ backgroundColor: '#218838', width: '45%' }}
+										icon={
+											<FontAwesome name="check" size={16} color={'white'} />
+										}
+									/>
+									<Button
+										label={"Cancelar"}
+										onClick={() => {
+											showModal({
+												modalType: ModalType.QUESTION,
+												message: 'Deseja sair sem salvar as alterações?',
+												function: (value: boolean) => { setEnabledFields(!value) }
+											})
+
+										}}
+										containerStyle={{ backgroundColor: '#C82333', width: '45%' }}
+										icon={
+											<FontAwesome name="remove" size={16} color="white" />
+										}
+									/>
+								</View>
+							)}
+
+							<View style={styles.inputsContainer}>
+
+								<Text style={styles.personalInformationsTitle}>Alterar Senha</Text>
+
+								<PasswordInput
+									name={"oldPassword"}
+									control={updatePasswordForm.control}
+									label={
+										<Text style={globalStyles.label}>
+											Senha Atual
+										</Text>
+									}
+								/>
+								<PasswordInput
+									name={"newPassword"}
+									control={updatePasswordForm.control}
+									label={
+										<Text style={globalStyles.label}>
+											Nova Senha
+										</Text>
+									}
+								/>
+								<PasswordInput
+									name={"repeatNewPassword"}
+									control={updatePasswordForm.control}
+									label={
+										<Text style={globalStyles.label}>
+											Repetir Nova Senha
+										</Text>
+									}
+								/>
+
+								<Button label="Atualizar" onClick={updatePasswordForm.handleSubmit(onPasswordUpdate, onInvalid)} containerStyle={{ marginTop: 15 }} />
+
+							</View>
 							<Button
-								label={"Salvar"}
-								onClick={updateProfileForm.handleSubmit(updateInformations, onInvalid)}
-								containerStyle={{ backgroundColor: '#218838', width: '45%' }}
-								icon={
-									<FontAwesome name="check" size={16} color={'white'} />
-								}
-							/>
-							<Button
-								label={"Cancelar"}
+								label={"Sair"}
 								onClick={() => {
-									showModal({
-										modalType: ModalType.QUESTION,
-										message: 'Deseja sair sem salvar as alterações?',
-										function: (value: boolean) => { setEnabledFields(!value) }
-									})
-
+									logout();
+									navigation.dispatch(
+										CommonActions.reset({
+											index: 1,
+											routes: [
+												{ name: 'login' },
+											],
+										})
+									);
 								}}
-								containerStyle={{ backgroundColor: '#C82333', width: '45%' }}
+								containerStyle={{ backgroundColor: '#C82333', marginVertical: 20 }}
 								icon={
-									<FontAwesome name="remove" size={16} color="white" />
+									<MaterialIcons name="logout" size={16} color="white" />
 								}
 							/>
-						</View>
+						</>
 					)}
-
-					<View style={styles.inputsContainer}>
-
-						<Text style={styles.personalInformationsTitle}>Alterar Senha</Text>
-
-						<PasswordInput
-							name={"oldPassword"}
-							control={updatePasswordForm.control}
-							label={
-								<Text style={globalStyles.label}>
-									Senha Atual
-								</Text>
-							}
-						/>
-						<PasswordInput
-							name={"newPassword"}
-							control={updatePasswordForm.control}
-							label={
-								<Text style={globalStyles.label}>
-									Nova Senha
-								</Text>
-							}
-						/>
-						<PasswordInput
-							name={"repeatNewPassword"}
-							control={updatePasswordForm.control}
-							label={
-								<Text style={globalStyles.label}>
-									Repetir Nova Senha
-								</Text>
-							}
-						/>
-
-						<Button label="Atualizar" onClick={updatePasswordForm.handleSubmit(onPasswordUpdate, onInvalid)} containerStyle={{ marginTop: 15 }} />
-
-					</View>
-					<Button
-						label={"Sair"}
-						onClick={() => {
-							logout();
-							navigation.dispatch(
-								CommonActions.reset({
-									index: 1,
-									routes: [
-										{ name: 'login' },
-									],
-								})
-							);
-						}}
-						containerStyle={{ backgroundColor: '#C82333', marginVertical: 20 }}
-						icon={
-							<MaterialIcons name="logout" size={16} color="white" />
-						}
-					/>
 				</View>
 			</FormProvider>
 
