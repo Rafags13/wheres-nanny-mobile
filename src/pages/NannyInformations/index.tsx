@@ -5,7 +5,6 @@ import { useQuery } from "react-query";
 import { Background } from "@components/Background";
 import Button from "@components/Button";
 import Stars from "@components/Stars";
-import { useLoading } from "@context/LoadingContext";
 import { NannyContractDto } from "@dtos/Person/NannyContractDto";
 import { globalStyles, text } from "@styles/global.styles";
 import { Slider } from '@miblanchard/react-native-slider';
@@ -131,10 +130,6 @@ export default function NannyInformations() {
 
         return createContractNanny;
     }
-
-    if (isLoading) return (<></>)
-
-    // TODO: change this to skeleton
 
     return (
         <Background.View>
