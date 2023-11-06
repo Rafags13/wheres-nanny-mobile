@@ -52,8 +52,6 @@ export default function Dashboard() {
 
     let dashboardInformation: NannyDashboardInformationDto = data;
 
-    // TODO: change this to skeleton
-
     return (
         <Background.ScrollView scrollToTopFunction={onRefresh}>
             <Background.Header>
