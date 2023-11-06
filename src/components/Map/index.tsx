@@ -23,6 +23,7 @@ type Props = {
 }
 
 export default function GoogleMap({ originCoordinates, destinationCoordinates, distanceHigherThenOneKilometer = false }: Props) {
+
     const refMap = useRef<any>(null);
 
     useEffect(() => {

@@ -1,5 +1,6 @@
 import GoogleMap from "@components/Map";
 import Modal from "@components/Modal";
+import { useLoading } from "@context/LoadingContext";
 import { TypeOfUser } from "@enums/TypeOfUser";
 import { Message } from "@models/dto/Chat/message";
 import { CommonActions, useNavigation } from "@react-navigation/native";
@@ -18,15 +19,19 @@ import { styles } from "./style";
 
 export default function CurrentService() {
     const currentUser = getCurrentUserAsync();
+    const { setLoading } = useLoading();
+    const isNanny = currentUser.typeOfUser === TypeOfUser.Nanny;
     const navigation = useNavigation<any>();
     const buttonRef = useRef<any>(null);
-    const isNanny = useMemo(() => currentUser.typeOfUser === TypeOfUser.Nanny, []);
     const { data, isLoading } =
         useQuery(['GetServiceInformationsFromNanny', currentUser.id], async () => {
+            setLoading(true);
             const currentService = getCurrentService();
             const data = isNanny ?
                 await GetServiceInformationsFromNanny(currentService.serviceId as number) :
                 await GetServiceInformationsFromPerson(currentService.serviceId as number);
+
+            setLoading(false);
 
             return data.data;
         });
@@ -43,7 +48,6 @@ export default function CurrentService() {
     }, [socket]);
 
     if (isLoading) return (<></>);
-    // TODO: change this to skeleton
 
     return (
         <View style={styles.container}>
