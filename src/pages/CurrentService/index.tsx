@@ -1,10 +1,12 @@
 import GoogleMap from "@components/Map";
 import Modal from "@components/Modal";
 import { useLoading } from "@context/LoadingContext";
+import { ModalType, useModal } from "@context/ModalContext";
 import { TypeOfUser } from "@enums/TypeOfUser";
 import { Message } from "@models/dto/Chat/message";
 import { CommonActions, useNavigation } from "@react-navigation/native";
-import { GetServiceInformationsFromNanny, GetServiceInformationsFromPerson } from "@services/requests/ChatResquests";
+import { postData } from "@services/apiRequests";
+import { CancelTheService, GetServiceInformationsFromNanny, GetServiceInformationsFromPerson } from "@services/requests/ChatResquests";
 import { addNewMessage, clearCurrentService, getCurrentService, getCurrentUserAsync } from "@storage/index";
 import { globalStyles, text } from "@styles/global.styles";
 import { actions } from "@util/fabButtonActions";
@@ -19,14 +21,15 @@ import { styles } from "./style";
 
 export default function CurrentService() {
     const currentUser = getCurrentUserAsync();
+    const currentService = getCurrentService();
     const { setLoading } = useLoading();
+    const { showModal } = useModal();
     const isNanny = currentUser.typeOfUser === TypeOfUser.Nanny;
     const navigation = useNavigation<any>();
     const buttonRef = useRef<any>(null);
     const { data, isLoading } =
         useQuery(['GetServiceInformationsFromNanny', currentUser.id], async () => {
             setLoading(true);
-            const currentService = getCurrentService();
             const data = isNanny ?
                 await GetServiceInformationsFromNanny(currentService.serviceId as number) :
                 await GetServiceInformationsFromPerson(currentService.serviceId as number);
@@ -35,6 +38,39 @@ export default function CurrentService() {
 
             return data.data;
         });
+
+    const cancelService = async () => {
+        showModal({
+            message: "Você deseja mesmo cancelar o serviço?",
+            modalType: ModalType.QUESTION,
+            function: async (wantToCancel) => {
+                console.log(wantToCancel)
+                if (!wantToCancel) return;
+
+                await CancelTheService(currentService.serviceId || 0).then((response) => {
+                    showModal({
+                        message: response.data,
+                        modalType: ModalType.SUCCESS
+                    })
+                }).catch((reason) => {
+                    console.log(reason)
+                });
+
+                navigation.dispatch(
+                    CommonActions.reset({
+                        index: 1,
+                        routes: [
+                            { name: isNanny ? 'nannyUser' : 'commonUser' },
+                        ],
+                    })
+                );
+                clearCurrentService();
+
+
+            }
+        })
+
+    }
 
     useEffect(() => {
         socket.on('message', (data) => {
@@ -93,15 +129,7 @@ export default function CurrentService() {
                             break;
                         }
                         case 'button_cancel_service': {
-                            navigation.dispatch(
-                                CommonActions.reset({
-                                    index: 1,
-                                    routes: [
-                                        { name: isNanny ? 'nannyUser' : 'commonUser' },
-                                    ],
-                                })
-                            );
-                            clearCurrentService();
+                            cancelService();
                             break;
                         }
                     }

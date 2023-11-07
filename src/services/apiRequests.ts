@@ -6,9 +6,9 @@ export async function getData(route: string, params?: {}) {
     return await api.get(route, params);
 }
 
-export async function postData(route: string, body: any) {
+export async function postData(route: string, body?: any, params?: any) {
     api.defaults.headers.common["Authorization"] = `Bearer ${getTokenAsync()}`;
-    return await api.post(route, JSON.stringify(body));
+    return await api.post(route, JSON.stringify(body), {params: params});
 }
 
 export async function postDataAnonymous(route: string, body: any) {
