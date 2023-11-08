@@ -9,6 +9,9 @@ import { getCurrentService, getCurrentUserAsync, getTokenAsync, isInSomeService 
 import CommonUserTab from "@tabs/CommonUserTab";
 import NannyUserTab from "@tabs/NannyUserTab";
 import ChatDerivatedPages from "./ChatDerivatedPages";
+import messaging from '@react-native-firebase/messaging';
+import { TypeOfNotification } from "@enums/TypeOfNotification";
+import { ModalType, useModal } from "@context/ModalContext";
 
 const Stack = createNativeStackNavigator();
 
@@ -19,6 +22,8 @@ export default function StackNavigator() {
     const currentUser = getCurrentUserAsync();
 
     function redirectIfIsInService() {
+        if (!isInSomeService()) return;
+
         const currentService = getCurrentService();
         if (currentService.waitingResponse) {
             navigator.navigate('chatDerivatedPages', {
@@ -30,8 +35,8 @@ export default function StackNavigator() {
         navigator.navigate("chatDerivatedPages", {
             screen: 'currentService',
         });
-        return;
     }
+
     useEffect(() => {
         function findUserLogged() {
             if (token !== '') {

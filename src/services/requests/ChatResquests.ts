@@ -12,6 +12,5 @@ export async function GetServiceInformationsFromPerson(serviceId: number) {
 
 export async function CancelTheService(serviceId: number) {
     const isClient = getCurrentUserAsync().typeOfUser === TypeOfUser.CommonUser;
-    console.log(isClient);
     return await postData(`Service/CancelService/${serviceId}`, null, {isClient: isClient});
 }
