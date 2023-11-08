@@ -70,9 +70,7 @@ export default function CurrentService() {
             message: "Você deseja mesmo cancelar o serviço?",
             modalType: ModalType.QUESTION,
             function: (wantToCancel) => {
-                console.log(wantToCancel)
                 if (wantToCancel) {
-                    console.log(`serviço cancelado por ${currentUser.username}`)
                     CancelTheService(currentService.serviceId || 0).then((response) => {
                         showModal({
                             message: response.data,
@@ -89,8 +87,6 @@ export default function CurrentService() {
                         );
                         clearCurrentService();
                     }).catch((reason) => {
-                        console.log('deu erro')
-                        console.log(reason)
                     });
                 }
 

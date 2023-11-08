@@ -26,7 +26,6 @@ export default function WaitingService() {
 
         function sendUserIfNannyAccepts() {
             messaging().onMessage((remoteMessage) => {
-                console.log(remoteMessage?.data?.typeOfNotification);
                 if (remoteMessage?.data?.typeOfNotification === TypeOfNotification.Positive.toString()) {
                     const response = JSON.parse(remoteMessage?.data?.response as string);
 
