@@ -1,10 +1,14 @@
 import GoogleMap from "@components/Map";
 import Modal from "@components/Modal";
+import { useLoading } from "@context/LoadingContext";
+import { ModalType, useModal } from "@context/ModalContext";
+import { TypeOfNotification } from "@enums/TypeOfNotification";
 import { TypeOfUser } from "@enums/TypeOfUser";
 import { Message } from "@models/dto/Chat/message";
 import { CommonActions, useNavigation } from "@react-navigation/native";
-import { GetServiceInformationsFromNanny, GetServiceInformationsFromPerson } from "@services/requests/ChatResquests";
-import { addNewMessage, clearCurrentService, getCurrentService, getCurrentUserAsync } from "@storage/index";
+import { postData } from "@services/apiRequests";
+import { CancelTheService, GetServiceInformationsFromNanny, GetServiceInformationsFromPerson } from "@services/requests/ChatResquests";
+import { addNewMessage, clearCurrentService, getCurrentService, getCurrentUserAsync, onNotWaitingNannyResponseAnymore, onServiceAccept } from "@storage/index";
 import { globalStyles, text } from "@styles/global.styles";
 import { actions } from "@util/fabButtonActions";
 import { aliasToDistance, formatCellphoneNumber, formatCep } from "@util/functions";
@@ -15,21 +19,81 @@ import { Image, Text, View } from "react-native";
 import { FloatingAction } from "react-native-floating-action";
 import { useQuery } from "react-query";
 import { styles } from "./style";
+import messaging from '@react-native-firebase/messaging';
+
+
 
 export default function CurrentService() {
     const currentUser = getCurrentUserAsync();
+    const currentService = getCurrentService();
+    const { setLoading } = useLoading();
+    const { showModal } = useModal();
+    const isNanny = currentUser.typeOfUser === TypeOfUser.Nanny;
     const navigation = useNavigation<any>();
     const buttonRef = useRef<any>(null);
-    const isNanny = useMemo(() => currentUser.typeOfUser === TypeOfUser.Nanny, []);
     const { data, isLoading } =
-        useQuery(['GetServiceInformationsFromNanny', currentUser.id], async () => {
-            const currentService = getCurrentService();
+        useQuery(['GetServiceInformationsFromNanny', currentService.serviceId], async () => {
             const data = isNanny ?
                 await GetServiceInformationsFromNanny(currentService.serviceId as number) :
                 await GetServiceInformationsFromPerson(currentService.serviceId as number);
 
             return data.data;
         });
+
+    useEffect(() => {
+        function onCancelService() {
+            messaging().onMessage(remoteMessage => {
+                if (remoteMessage?.data?.typeOfNotification === TypeOfNotification.Negative.toString()) {
+                    showModal({
+                        modalType: ModalType.ERROR,
+                        message: remoteMessage.data.message
+                    });
+
+                    const currentUser = getCurrentUserAsync();
+                    navigation.dispatch(
+                        CommonActions.reset({
+                            index: 1,
+                            routes: [
+                                { name: currentUser.typeOfUser === TypeOfUser.Nanny ? 'nannyUser' : 'commonUser' },
+                            ],
+                        })
+                    );
+                }
+            })
+        }
+
+        onCancelService();
+    }, []);
+
+    const cancelService = async () => {
+        showModal({
+            message: "Você deseja mesmo cancelar o serviço?",
+            modalType: ModalType.QUESTION,
+            function: (wantToCancel) => {
+                if (wantToCancel) {
+                    CancelTheService(currentService.serviceId || 0).then((response) => {
+                        showModal({
+                            message: response.data,
+                            modalType: ModalType.SUCCESS
+                        });
+
+                        navigation.dispatch(
+                            CommonActions.reset({
+                                index: 1,
+                                routes: [
+                                    { name: isNanny ? 'nannyUser' : 'commonUser' },
+                                ],
+                            })
+                        );
+                        clearCurrentService();
+                    }).catch((reason) => {
+                    });
+                }
+
+            }
+        })
+
+    }
 
     useEffect(() => {
         socket.on('message', (data) => {
@@ -43,7 +107,6 @@ export default function CurrentService() {
     }, [socket]);
 
     if (isLoading) return (<></>);
-    // TODO: change this to skeleton
 
     return (
         <View style={styles.container}>
@@ -89,15 +152,7 @@ export default function CurrentService() {
                             break;
                         }
                         case 'button_cancel_service': {
-                            navigation.dispatch(
-                                CommonActions.reset({
-                                    index: 1,
-                                    routes: [
-                                        { name: isNanny ? 'nannyUser' : 'commonUser' },
-                                    ],
-                                })
-                            );
-                            clearCurrentService();
+                            cancelService();
                             break;
                         }
                     }

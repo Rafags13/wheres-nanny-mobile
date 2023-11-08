@@ -12,6 +12,7 @@ import { ModalContextType, ModalContext, ModalType, useModal } from "@context/Mo
 import { AcceptedServiceDto } from "@dtos/Person/AcceptedServiceDto";
 import { acceptService } from "@services/requests/NannyRequests";
 import { addCurrentServiceToAsync } from "@storage/index";
+import { TypeOfNotification } from "@enums/TypeOfNotification";
 
 const Tab = createBottomTabNavigator();
 
@@ -30,31 +31,37 @@ export default function NannyUserTab() {
             addCurrentServiceToAsync({ waitingResponse: false, serviceId: acceptedServiceDto.serviceId, messages: [] });
 
             navigation.navigate('chatDerivatedPages', {
-                screen: 'currentServiceNanny', params: { serviceId: serviceId }
+                screen: 'currentService', params: { serviceId: serviceId }
             });
         }
     }
-
     useEffect(() => {
-        messaging().onMessage(async remoteMessage => {
-            if (remoteMessage.data) {
+        const unsubscribe = messaging().onMessage(async remoteMessage => {
+            if (remoteMessage?.data) {
+                if (remoteMessage?.data?.typeOfNotification === TypeOfNotification.Question.toString()) {
+                    const response = JSON.parse(remoteMessage.data.response);
+                    showModal({
+                        modalType: ModalType.QUESTION,
+                        message: remoteMessage?.data.message,
+                        function: (serviceAccepted: any) => onModalServiceResponse(serviceAccepted, response.serviceId)
+                    });
 
-                const response = JSON.parse(remoteMessage.data.response);
+                    const fiveMinutes = 300000;
+
+                    setTimeout(() => {
+                        closeModal();
+                    }, fiveMinutes)
+                    return;
+                }
 
                 showModal({
-                    modalType: ModalType.QUESTION,
-                    message: remoteMessage?.data.message,
-                    function: (value: any) => onModalServiceResponse(value, response.serviceId)
+                    modalType: remoteMessage?.data?.typeOfNotification === TypeOfNotification.Positive.toString() ? ModalType.SUCCESS : ModalType.ERROR,
+                    message: remoteMessage?.data.message
                 });
-
-                const fiveMinutes = 300000;
-
-                setTimeout(() => {
-                    closeModal();
-                }, fiveMinutes)
             }
         });
 
+        return unsubscribe;
     }, []);
 
     return (
