@@ -2,7 +2,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import Routes from './routes';
 import { AppProvider } from './context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet'
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import 'moment/locale/pt';
 
 export default function App() {
   return (

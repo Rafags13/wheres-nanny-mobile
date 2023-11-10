@@ -1,5 +1,4 @@
 import axios from "axios";
-import { getCurrentUser, getToken } from "@storage/index";
 
 const api = axios.create({
     baseURL: 'http://192.168.0.13:22325/api/v1/',

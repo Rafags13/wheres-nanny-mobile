@@ -164,3 +164,16 @@ export function aliasToDistance(distance: number): string {
 
     return `${truncatedDistance} m`
 }
+
+export const formatCurrency = (amount: number) => {
+    const CURRENCY_FORMAT = 'R$ ';
+    const formatedNumber = String(amount).replace(".", ",").replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+
+    return CURRENCY_FORMAT + formatedNumber;
+}
+
+export function capitalize(str: string): string {
+    var newString = str.substring(0, 1).toUpperCase() + str.substring(1, str.length);
+
+    return newString;
+}
