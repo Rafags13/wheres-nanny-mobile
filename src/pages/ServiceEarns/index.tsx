@@ -11,20 +11,27 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import moment from "moment";
 import { capitalize, formatCurrency } from "@util/functions";
+import { getData } from "@services/apiRequests";
+import { getCurrentUserAsync } from "@storage/index";
+import { NannyEarnDto } from "@models/dto/Nanny/NannyEarnDto";
+import { useLoading } from "@context/LoadingContext";
+import Loader from "@components/Loader";
 
 export default function ServiceEarns() {
+  const currentUser = getCurrentUserAsync();
   const { params: { countingService, monthIndex } } = useRoute<RouteProp<{ params: { monthIndex: number, countingService: number } }, 'params'>>();
+  const { isLoading, data } = useQuery<NannyEarnDto, Error>(['earnsFromNanny', monthIndex], async () => {
+    const response = await getData(`Nanny/GetEarnsByMonth/${monthIndex}/${currentUser.id}`);
 
-  // const { isLoading, data} = useQuery(['earnsFromNanny', params.monthIndex], () => {
-  //   const response
-  // });
+    return response.data;
+  });
 
   return (
-    <Background.View>
-      <Background.BackHeader title={"Novembro"} />
+    <Background.ScrollView>
+      <Background.BackHeader title={capitalize(moment().month(monthIndex - 1).format('MMMM'))} />
 
-      <View style={{ flex: 1, paddingHorizontal: 20, paddingVertical: 10, justifyContent: 'space-between' }}>
-        <View >
+      <View style={{ gap: 20, paddingHorizontal: 20, paddingVertical: 10, justifyContent: 'space-between' }}>
+        <View>
           <View style={styles.titleContainer}>
             <Text style={styles.title}>Seus Ganhos</Text>
             <FontAwesome name="dollar" size={20} color='#192553' />
@@ -32,9 +39,12 @@ export default function ServiceEarns() {
           <Line styles={{ backgroundColor: '#192553' }} />
           <View style={{ marginVertical: 10 }}>
 
-            <Text style={globalStyles.label}>Preço por serviço: {formatCurrency(300)}</Text>
-            <Text style={globalStyles.label}>Famílias atendidas: {countingService}</Text>
-            <Text style={globalStyles.label}>Total: <Text style={styles.nameOfHigherPayer}>{formatCurrency(300 * countingService)}</Text></Text>
+            <Loader show={isLoading} height={20} width={200}>
+              <Text style={globalStyles.label}>Famílias atendidas: {countingService} </Text>
+            </Loader>
+            <Loader show={isLoading} height={20} width={150}>
+              <Text style={globalStyles.label}>Total: <Text style={styles.nameOfHigherPayer}>{formatCurrency(data?.totalEarn as number)}</Text></Text>
+            </Loader>
           </View>
 
         </View>
@@ -47,8 +57,17 @@ export default function ServiceEarns() {
           <Line styles={{ backgroundColor: '#192553' }} />
 
           <View style={{ marginLeft: 10, marginVertical: 10 }}>
-            <Text style={text.common}>Cliente: <Text style={styles.nameOfHigherPayer}>Rafael Veiga!!!</Text></Text>
-            <Text style={text.common}>Trabalham Juntos Desde:  <Text style={styles.nameOfHigherPayer}>{capitalize(moment(new Date()).format('MMMM [de] YYYY'))}</Text></Text>
+            <Loader show={isLoading} height={20}>
+
+              <Text style={text.common}>Cliente: <Text style={styles.nameOfHigherPayer}>{data?.mainPeopleWhoHireHer[0].name}!!!</Text></Text>
+            </Loader>
+            <Loader show={isLoading} height={20}>
+
+              <Text style={text.common}>Trabalham Juntos Desde: <Text style={styles.nameOfHigherPayer}>
+                {capitalize(moment(data?.mainPeopleWhoHireHer[0].dateFromFirstHire).format('MMMM [de] YYYY'))}
+              </Text>
+              </Text>
+            </Loader>
 
           </View>
         </View>
@@ -59,13 +78,27 @@ export default function ServiceEarns() {
             <Ionicons name="podium" size={20} color='#192553' />
           </View>
           <Line styles={{ backgroundColor: '#192553' }} />
-
-          <MainPayerCard imageUri={""} name={"Rafael Veiga"} totalPayment={300.05} dateFromFirstHire={new Date()} serviceId={0} position={1} />
-          <MainPayerCard imageUri={""} name={"Rafael Veiga"} totalPayment={300.05} dateFromFirstHire={new Date()} serviceId={0} position={2} />
-          <MainPayerCard imageUri={""} name={"Rafael Veiga"} totalPayment={300.05} dateFromFirstHire={new Date()} serviceId={0} position={3} />
-
+          <View style={{ marginVertical: 10 }}>
+            {isLoading ? (
+              <View style={{ gap: 10 }}>
+                <View style={{ padding: 10 }}>
+                  <Loader height={70} width={'100%'} />
+                </View>
+                <View style={{ padding: 10 }}>
+                  <Loader height={70} width={'100%'} />
+                </View>
+                <View style={{ padding: 10 }}>
+                  <Loader height={70} width={'100%'} />
+                </View>
+              </View>
+            ) :
+              data?.mainPeopleWhoHireHer.map((person, index) => (
+                <MainPayerCard key={person.id} imageUri={person.uriClient} name={person.name} totalPayment={person.totalPayment} dateFromFirstHire={person.dateFromFirstHire} serviceId={person.id} position={index + 1} />
+              ))
+            }
+          </View>
         </View>
       </View>
-    </Background.View>
+    </Background.ScrollView>
   )
 }

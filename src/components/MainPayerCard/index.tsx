@@ -39,7 +39,7 @@ export default function MainPayerCard({ imageUri, name, totalPayment, dateFromFi
           <Text style={styles.nameText}>{name}</Text>
           <Ionicons name="trophy" color={positionToColorFromTrophy[position] as ColorValue} size={20} />
         </View>
-        <Text style={text.common}>Último serviço: {moment(dateFromFirstHire).format('DD/MM/YYYY [às] HH:mm')}</Text>
+        <Text style={text.common}>Primeiro Serviço: {moment(dateFromFirstHire).format('DD/MM/YYYY [às] HH:mm')}</Text>
         <Text style={text.common}>Valor total: {formatCurrency(totalPayment)}</Text>
       </View>
     </TouchableOpacity>

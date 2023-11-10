@@ -88,7 +88,7 @@ export default function Dashboard() {
                                      *       and all his payment in that month)
                                      */
                                     if (data.value > 0) {
-                                        const monthIndex = dashboardInformation.countingServiceChart[data.index];
+                                        const monthIndex = dashboardInformation.countingServiceChart[data.index].monthIndex;
                                         navigator.navigate('earns', { monthIndex, countingService: data.value })
                                     }
                                 }}
