@@ -9,4 +9,5 @@ export class NannyDashboardInformationDto {
 
 class CountingChartDto {
     data!: number
+    monthIndex!: string
 }

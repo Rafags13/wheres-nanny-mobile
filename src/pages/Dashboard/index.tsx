@@ -14,6 +14,7 @@ import NotFoundService from "@components/NotFoundService";
 import { Skeleton } from "moti/skeleton";
 import useFakeApiCallRequests from "@hooks/useFakeApiCallRequest";
 import Loader from "@components/Loader";
+import { useNavigation } from "@react-navigation/native";
 
 function DashboardSkeleton() {
     return (
@@ -40,6 +41,7 @@ function DashboardSkeleton() {
 }
 
 export default function Dashboard() {
+    const navigator = useNavigation<any>();
 
     async function onRefresh() {
         const response = await getDashboardInformation();
@@ -86,14 +88,15 @@ export default function Dashboard() {
                                      *       and all his payment in that month)
                                      */
                                     if (data.value > 0) {
-
+                                        const monthIndex = dashboardInformation.countingServiceChart[data.index];
+                                        navigator.navigate('earns', { monthIndex, countingService: data.value })
                                     }
                                 }}
                                 data={{
                                     labels: dashboardInformation.monthNames,
                                     datasets: [
                                         {
-                                            data: dashboardInformation.countingServiceChart.map((value) => { return value.data })
+                                            data: dashboardInformation.countingServiceChart.map((value) => { return value.data }),
                                         }
                                     ]
                                 }}
