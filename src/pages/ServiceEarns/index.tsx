@@ -93,7 +93,7 @@ export default function ServiceEarns() {
               </View>
             ) :
               data?.mainPeopleWhoHireHer.map((person, index) => (
-                <MainPayerCard key={person.id} imageUri={person.uriClient} name={person.name} totalPayment={person.totalPayment} dateFromFirstHire={person.dateFromFirstHire} serviceId={person.id} position={index + 1} />
+                <MainPayerCard key={person.id} imageUri={person.uriClient} name={person.name} totalPayment={person.totalPayment} dateFromFirstHire={person.dateFromFirstHire} serviceId={person.firstServiceId} position={index + 1} />
               ))
             }
           </View>
