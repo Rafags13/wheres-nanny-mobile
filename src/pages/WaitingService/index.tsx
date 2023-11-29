@@ -49,8 +49,9 @@ export default function WaitingService() {
             showModal({ modalType: ModalType.ERROR, message: 'A babá não aceitou o serviço a tempo, tente novamente.' });
             clearCurrentService();
         }, fiveMinutes);
+        sendUserIfNannyAccepts();
 
-        return () => { clearTimeout(timeOut); sendUserIfNannyAccepts(); };
+        return () => { clearTimeout(timeOut); };
     }, []);
 
 
