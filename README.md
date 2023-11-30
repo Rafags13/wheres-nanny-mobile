@@ -8,6 +8,15 @@
 
 #### Já se sentiu mais aliviado depois dessa notícia, não? Então vem com a gente, fazer parte dessa rede que quer revolucionar o mercado de babás do brasil🩵🤍!!
 
+## Tecnologias Usadas
+
+- React Native (0.71);
+- Backend: .NET Framework 6;
+- Notificações: Firebase Notifications;
+- Chat em tempo real: Socket.io.
+
+Link para o backend: https://github.com/Rafags13/WheresNannyApi
+
 ## Telas do aplicativo
 ### Splash screen
 
